@@ -13,3 +13,9 @@
 * [İsmail Kaya](./gereksinimler/ismail_kaya_gereksinimler.md)
 * [Alper Avcı](./gereksinimler/alper_avci_gereksinimler.md)
 * [Kamil Özdemir](./gereksinimler/kamil_ozdemir_gereksinimler.md)
+
+# Planlama Çizelgesi
+
+* [Çizelge | Trello](https://trello.com/invite/b/ENIJ4ZpO/ATTI01f9e93770f2e1de38fa88ae877f596f9C7B51DD/second-seller-project)
+
+
