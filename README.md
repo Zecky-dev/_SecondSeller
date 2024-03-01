@@ -8,6 +8,11 @@
 
 # Gereksinimler
 
+## Toplu
+
+* [Toplu Gereksinimler](https://docs.google.com/document/d/1N8lFLVW_QsM5EvsIZXxgdqkuHhha9_1a/edit?usp=sharing&ouid=102161627059726115996&rtpof=true&sd=true)
+
+## Dağıtılmış
 * [Zekeriya Dönmez](./gereksinimler/zekeriya_donmez_gereksinimler.md)
 * [Selin Aydemir](./gereksinimler/selin_aydemir_gereksinimler.md)
 * [İsmail Kaya](./gereksinimler/ismail_kaya_gereksinimler.md)
