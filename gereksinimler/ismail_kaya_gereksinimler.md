@@ -1,0 +1,1 @@
+# İsmail Kaya - Gereksinimler

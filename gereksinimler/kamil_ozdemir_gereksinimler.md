@@ -1,0 +1,1 @@
+# Kamil Özdemir - Gereksinimler
