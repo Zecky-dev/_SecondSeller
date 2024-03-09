@@ -1,9 +1,10 @@
 # İsmail Kaya - Gereksinimler
-- Konum paylaşma
-- Giriş yapma
-- Filtreleme işlemleri (tarih,fiyat,fiyat aralığı)
-- Favorilerden kaldırma
-- İlan düzenlenmesi
-- Arama yapma
+- Konum paylaşma: Kullanıcıların bulundukları lokasyonu diğer kullanıcılara bildirme durumudur.
+- Giriş yapma: Kullanıcıların uygulamaya erişmek için kimliklerini doğrulamalarını sağlar. Bu özellik sayesinde kullanıcılar uygulamada sunulan hizmetleri tam anlamıyla kullanabilirler. Giriş yapma özelliği aynı zamanda kullanıcıların hesaplarını güvende tutmalarına da yardımcı olur. Kullanıcılar genellikle bir şifre oluşturarak hesaplarını korur ve gizliliklerini sağlamak için çeşitli güvenlik önlemleri alabilirler.
+- Filtreleme işlemleri (tarih,fiyat,fiyat aralığı): Kullanıcıların uygulamada arama yaptıklarında sonuçları belirli kriterlere göre daraltmalarını sağlayan bir özelliktir. Bu özellik sayesinde kullanıcılar, aradıkları öğeleri veya hizmetleri daha hızlı ve daha kolay bir şekilde bulabilirler. Fiyat aralığına göre sıralarsak kullanıcı minimum bir fiyat ve maksimum bir fiyat aralığı belirler. Bu fiyat aralığındaki ürünleri listeler. Artan veya azalan fiyata göre sıralarsak kullanıcı artan fiyatı veya azalan fiyatı seçerek sırası ile ürünler listelenir. Artan veya azalan tarihe göre sıralarsak kullanıcı artan tarihi veya azalan tarihi seçerek sırası ile ürünler listelenir. 
 
-- Bildirimlerin açılıp kapatılabilmesi
+- Favorilerden kaldırma: Kullanıcıların uygulamada beğendikleri veya ilgilendikleri öğeleri favori olarak işaretledikten sonra bu öğeleri favoriler listelerinden çıkarmalarını sağlayan bir özelliktir. Bu özellik sayesinde kullanıcılar, favoriler listelerini düzenleyerek istedikleri öğeleri daha kolay kontrol edebilirler. Ayrıca, kullanıcıların istedikleri öğeleri kolayca bulmalarını sağlar, çünkü gereksiz öğeleri favoriler listesinden kaldırarak listeyi daha anlamlı hale getirebilirler.
+- İlan düzenlenmesi: Kullanıcıların uygulamada yayınladıkları ürün ilanlarını daha sonra güncellemeler veya değişiklikler yapmak için düzenlemelerini sağlayan bir özelliktir. Bu özellik sayesinde kullanıcılar, ilanlarını istedikleri şekilde güncelleyebilir, düzeltebilir veya yeniden düzenleyebilirler. İlan düzenleme özelliği, kullanıcıların ilanlarını güncel tutmalarına ve doğru bilgilerle potansiyel alıcıları cezbetmelerine yardımcı olur. 
+- Arama yapma: Kullanıcıların uygulamada bulunan içeriği belirli kriterlere göre aramasını sağlayan bir özelliktir. Bu özellik sayesinde kullanıcılar, istedikleri ürünleri, hizmetleri veya içeriği daha hızlı ve daha kolay bir şekilde bulabilirler. Arama yapma özelliği, kullanıcıların istedikleri içeriği hızlı bir şekilde bulmalarına ve uygulama içinde gezinirken zaman kazanmalarına yardımcı olur.
+
+- Bildirimlerin açılıp kapatılabilmesi: Kullanıcıların uygulamada alacakları bildirimleri istedikleri şekilde yönetmelerini sağlayan bir özelliktir. Bu özellik sayesinde kullanıcılar, uygulama tarafından gönderilen bildirimleri açıp kapatma seçeneğine sahiptirler, böylece istedikleri zaman almak istedikleri bilgilere erişebilirler veya almak istemedikleri bildirimleri engelleyebilirler.
