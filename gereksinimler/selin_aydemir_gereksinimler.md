@@ -1,5 +1,5 @@
 # Selin Aydemir - Gereksinimler
-- Fiyat teklifi gönderme : s
+- Fiyat teklifi gönderme : :)
 - Konum paylaşma
 - Favorilerin listelenmesi
 - İlanı silme
