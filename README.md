@@ -22,5 +22,5 @@
 # Planlama Çizelgesi
 
 * [Çizelge | Trello](https://trello.com/invite/b/ENIJ4ZpO/ATTI01f9e93770f2e1de38fa88ae877f596f9C7B51DD/second-seller-project)
-
+* [Çizelge | Excell](https://docs.google.com/spreadsheets/d/1gdnxZjhAnc16fZfDhh_rU9n-3mZEeakM/edit?usp=sharing&ouid=102161627059726115996&rtpof=true&sd=true)
 
