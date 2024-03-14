@@ -4,7 +4,7 @@
 
 **Proje Kategorisi**: İkinci el e-ticaret
 
-**Referans Uygulama**: [Letgo.com]("https://www.letgo.com/")
+**Referans Uygulama**: [Letgo.com](https://www.letgo.com/)
 
 **Uygulama Adresi**:
 
@@ -19,7 +19,7 @@
 - Selin Aydemir
 
 1. [Proje Planı](https://www.ibb.co/KD4mMqV)
-2. [Gereksinim Analizi]("./gereksinimler/gereksinim_analizi.md")
+2. [Gereksinim Analizi](/gereksinimler/gereksinim_analizi.md)
 3. [Durum Diyagramı]()
 4. [Durum Senaryoları]()
 5. [Veritabanı Diyagramı]()
