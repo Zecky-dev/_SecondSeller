@@ -18,7 +18,7 @@
 - Kamil Özdemir
 - Selin Aydemir
 
-1. [Proje Planı]("https://ibb.co/KD4mMqV")
+1. [Proje Planı](https://www.ibb.co/KD4mMqV)
 2. [Gereksinim Analizi]("./gereksinimler/gereksinim_analizi.md")
 3. [Durum Diyagramı]()
 4. [Durum Senaryoları]()
