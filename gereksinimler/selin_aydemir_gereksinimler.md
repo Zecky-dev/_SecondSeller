@@ -2,9 +2,8 @@
 
 - Fiyat teklifi gönderme : Kullanıcılar ilanın detaylarına girip sohbet butonuna tıkladıkları zaman sohbet ekranıyla karşılaşırlar ve sohbet ekranında sadece sayı girişi yapılabilen fiyat teklifi girebilecekleri bir alan bulunur. Bu alana istediği fiyat teklifini giren kullanıcılar gönder butonu ile satıcılara gönderebilirler.
  
-- Konum paylaşma : Kullanıcılar sohbet ekranında açılan bir buton ile güncel konumlarını birbirleri ile kolayca paylaşabilirler.
-  
-- Favorilerin listelenmesi : Kullanıcılar uygulamadaki ilgilerini çeken ilanlara daha sonra hızlı ve kolay erişebilmek amacıyla ilanın kenarında bulunan kalp butonuna tıklayarak favoriler listesine ekleyebilirler. Favoriler ekranına girdiğimizde kullanıcının daha önce favoriler listesine eklemiş olduğu ilanlar görüntülenir.
+  - Favorilerin listelenmesi : Kullanıcılar uygulamadaki ilgilerini çeken ilanlara daha sonra hızlı ve kolay erişebilmek amacıyla ilanın kenarında bulunan kalp butonuna tıklayarak favoriler listesine ekleyebilirler. Favoriler ekranına girdiğimizde kullanıcının daha önce favoriler listesine eklemiş olduğu ilanlar görüntülenir.
+  - Favorilerde arama:  Kullanıcılar uygulamadaki ilgilerini çeken ilanlara daha sonra hızlı ve kolay erişebilmek amacıyla ilanın kenarında bulunan kalp butonuna tıklayarak favoriler listesine ekleyebilirler. Favoriler ekranına girdiğimizde kullanıcının daha önce favoriler listesine eklemiş olduğu ilanlar görüntülenir.Kullanıcılar favorilerindeki ilanları arasında arama yapabilirler.
   
 - İlanı silme : Kullanıcılar çeşitli sebeplerle uygulamada paylaştıkları bir ilanı yayınlamaktan vazgeçebilirler. Bu durumda uygulamanın alt kısmında bulunan menüden ilanlarım listesine girerek yayınlamak istemedikleri ilanlarını kalıcı olarak silebilirler.
   
