@@ -6,7 +6,7 @@
   
 - Favorilerin listelenmesi : Kullanıcılar uygulamadaki ilgilerini çeken ilanlara daha sonra hızlı ve kolay erişebilmek amacıyla ilanın kenarında bulunan kalp butonuna tıklayarak favoriler listesine ekleyebilirler. Favoriler ekranına girdiğimizde kullanıcının daha önce favoriler listesine eklemiş olduğu ilanlar görüntülenir.
   
-- İlanı silme : Kullanıcılar çeşitli sebeplerle uygulamada paylaştıkları bir ilanı yayınlamaktan vazgeçebilirler. Bu durumda profil ekranından ilanlarım listesine girerek yayınlamak istemedikleri ilanlarını kalıcı olarak silebilirler.
+- İlanı silme : Kullanıcılar çeşitli sebeplerle uygulamada paylaştıkları bir ilanı yayınlamaktan vazgeçebilirler. Bu durumda uygulamanın alt kısmında bulunan menüden ilanlarım listesine girerek yayınlamak istemedikleri ilanlarını kalıcı olarak silebilirler.
   
 - İlanın satıldı olarak işaretlenmesi :Kullanıcılar uygulamada yayınladıkları bir ilan satıldığı takdirde profil ekranından ilanlarının listesine girerek ilanı satıldı olarak işaretleyebilirler.
   
