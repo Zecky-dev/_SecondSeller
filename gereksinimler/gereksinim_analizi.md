@@ -13,7 +13,7 @@
 
 - Fiyat teklifi gönderme
 - Favorilerin listelenmesi
-- Favorilerde ürün arama
+- Arama yapma
 - İlanı silme
 - İlanın satıldı olarak işaretlenmesi
 - Otomatik mesaj
