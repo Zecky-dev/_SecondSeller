@@ -8,7 +8,6 @@ const padding = {
 }
 const margin = padding
 const borderRadius = padding
-
 const fontSize = {
     L1: 8,
     L2: 12,
@@ -19,17 +18,22 @@ const fontSize = {
     L7: 48,
     L8: 64
 }
-
 const borderWidth = {
     thin: 0.5,
     normal: 1,
     medium: 1.5
 }
 
+const APP_NAME = "SecondSeller"
+const APP_SLOGAN = "İkinci el, birinci sınıf kalite!"
+
+
 export default {
     padding,
     margin,
     fontSize,
     borderRadius,
-    borderWidth
+    borderWidth,
+    APP_NAME,
+    APP_SLOGAN
 }

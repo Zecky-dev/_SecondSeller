@@ -8,7 +8,7 @@ const bubble = {
     margin: CONSTANTS.margin.L1,
     padding: CONSTANTS.padding.L2,
     borderColor: 'black',
-    borderWidth: 1,
+    borderWidth: CONSTANTS.borderWidth.thin,
     borderTopLeftRadius: CONSTANTS.borderRadius.L2,
     borderTopRightRadius: CONSTANTS.borderRadius.L2,
 }

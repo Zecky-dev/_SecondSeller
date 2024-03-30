@@ -1,1 +1,1 @@
-export {default as ChatBubble} from './ChatBubble'
+export { default } from './ChatBubble'

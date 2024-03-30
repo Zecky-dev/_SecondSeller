@@ -4,6 +4,7 @@ import {Image,View,Text,Pressable, ImageBackground,TouchableOpacity} from 'react
 import styles from './AdvertisemetCard.style'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
+
 import COLORS from '../../utils/colors'
 import CONSTANTS from '../../utils/constants'
 
@@ -21,7 +22,6 @@ const AdvertisementCard = ({
             style={styles.cardContainer}
             activeOpacity={.7}
         >
-
             <View>
                 <Image source={require('../../assets/images/advertisement.jpeg')} style={styles.image}/>
                 <Pressable
@@ -38,13 +38,8 @@ const AdvertisementCard = ({
                     />
                 </Pressable>
             </View>
-
             <Text style={styles.name}>{product.name}</Text>
             <Text style={styles.price}>{product.price} TL</Text>
-
-
-
-
         </TouchableOpacity>
     )
 }

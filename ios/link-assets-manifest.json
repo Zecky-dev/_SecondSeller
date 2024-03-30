@@ -1,0 +1,13 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Galada-Regular.ttf",
+      "sha1": "99171ab5411bae22675f86ff67e731a475d55222"
+    },
+    {
+      "path": "assets/fonts/Satisfy-Regular.ttf",
+      "sha1": "fd2f096e9d0cd82b9f8e191d7f73167176d0f729"
+    }
+  ]
+}
