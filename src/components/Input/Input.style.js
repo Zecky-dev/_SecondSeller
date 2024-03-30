@@ -1,7 +1,6 @@
 import {StyleSheet} from 'react-native'
 
-import CONSTANTS from '../../utils/constants'
-import COLORS from '../../utils/colors'
+import { COLORS, CONSTANTS } from '@utils'
 
 export default StyleSheet.create({
     outerContainer: {

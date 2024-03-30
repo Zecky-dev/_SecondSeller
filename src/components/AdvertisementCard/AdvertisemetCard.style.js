@@ -1,18 +1,17 @@
 import { StyleSheet } from "react-native";
 
-import CONSTANTS from '../../utils/constants'
-import COLORS from '../../utils/colors'
+import { COLORS, CONSTANTS } from '@utils'
 
 export default StyleSheet.create({
     cardContainer: {
         flex:1,
-        margin: 4,
+        margin: CONSTANTS.margin.L1,
         alignItems: 'center',
-        borderColor: 'black',
-        padding: 4,
-        borderWidth: 0.5,
+        borderColor: COLORS.black,
+        padding: CONSTANTS.padding.L1,
+        borderWidth: CONSTANTS.borderWidth.thin,
         alignSelf: 'flex-start',
-        borderRadius: 2,
+        borderRadius: CONSTANTS.borderRadius.L1,
     },
     imageContainer: {
 

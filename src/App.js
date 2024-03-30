@@ -2,8 +2,7 @@ import React from 'react';
 import {StatusBar, View} from 'react-native';
 
 // Constants
-import COLORS from './utils/colors';
-import CONSTANTS from './utils/constants';
+import { COLORS, CONSTANTS } from '@utils';
 
 // React Navigation
 import {NavigationContainer} from '@react-navigation/native';
@@ -13,15 +12,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 // Icon
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-// Pages - After Auth
-import Home from './pages/Home';
-import Advertisements from './pages/Advertisements';
-import CreateAdvertisement from './pages/CreateAdvertisement';
-import Profile from './pages/Profile';
-
-// Pages - Auth
-import Login from './pages/Auth/Login';
-import Register from './pages/Auth/Register';
+// Pages
+import { Profile, Home, Advertisements, CreateAdvertisement, Login, Register } from '@pages';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -111,7 +103,7 @@ const AuthStack = () => {
 
 const App = () => {
 
-  const loggedIn = false;
+  const loggedIn = true;
 
   return (
     <View style={{flex: 1}}>

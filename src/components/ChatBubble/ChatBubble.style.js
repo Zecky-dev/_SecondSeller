@@ -1,13 +1,12 @@
 import {StyleSheet} from 'react-native';
 
-import CONSTANTS from '../../utils/constants';
-import COLORS from '../../utils/colors';
+import { COLORS, CONSTANTS } from '@utils'
 
 const bubble = {
     width: '75%',
     margin: CONSTANTS.margin.L1,
     padding: CONSTANTS.padding.L2,
-    borderColor: 'black',
+    borderColor: COLORS.black,
     borderWidth: CONSTANTS.borderWidth.thin,
     borderTopLeftRadius: CONSTANTS.borderRadius.L2,
     borderTopRightRadius: CONSTANTS.borderRadius.L2,
