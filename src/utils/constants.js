@@ -25,8 +25,8 @@ const borderWidth = {
 }
 
 const APP_NAME = "SecondSeller"
-const APP_SLOGAN = "İkinci el, birinci sınıf kalite!"
-
+const APP_SLOGAN = "Ikinci el, birinci sınıf kalite!"
+const APP_FONT = 'Galada-Regular'
 
 export default {
     padding,
@@ -35,5 +35,6 @@ export default {
     borderRadius,
     borderWidth,
     APP_NAME,
-    APP_SLOGAN
+    APP_SLOGAN,
+    APP_FONT
 }
