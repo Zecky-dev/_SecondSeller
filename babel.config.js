@@ -8,7 +8,9 @@ module.exports = {
           src: './src',
           '@components': './src/components',
           '@utils':'./src/utils',
+          '@utils/*':'./src/utils/*',
           '@pages':'./src/pages',
+          '@assets/images': './src/assets/images'
         },
       },
     ],

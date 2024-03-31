@@ -12,7 +12,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         margin: CONSTANTS.margin.L2,
         borderRadius: CONSTANTS.borderRadius.L1,
-        alignSelf: 'flex-start',
+        // alignSelf: 'flex-start',
         minWidth: 120,
     },
     label: {

@@ -13,6 +13,7 @@ const Input = ({
     keyboardType = "default",
     secret,
     additionalStyles,
+    errors
 }) => {
 
     const [inputVisible,setInputVisible] = useState(false)
@@ -33,10 +34,10 @@ const Input = ({
 
             <View style={[styles.inputContainer,additionalStyles?.inputContainerr]}>
                 <TextInput
-                    placeholder={placeholder}
+                    placeholder={placeholder}asd
                     onChangeText={onChangeText}
                     keyboardType={keyboardType}
-                    secureTextEntry={!inputVisible}
+                    secureTextEntry={secret && !inputVisible}
                     style={styles.input}
                 />
                 {
@@ -55,6 +56,8 @@ const Input = ({
                     )
                 }
             </View>
+
+            {errors && <Text>{errors}</Text>}
             
             
         
