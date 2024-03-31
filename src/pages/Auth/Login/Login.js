@@ -14,11 +14,13 @@ import {Input, Button} from '@components';
 import LoginVector from '@assets/images/login_vector.png';
 
 import {Formik} from 'formik';
-import { LoginSchema } from '@utils/validationSchemas';
+import {LoginSchema} from '@utils/validationSchemas';
 
 const Login = () => {
   return (
-    <ScrollView style={{height: '100%'}} contentContainerStyle={styles.container}>
+    <ScrollView
+      style={{height: '100%'}}
+      contentContainerStyle={styles.container}>
       <Text style={styles.appName}>{CONSTANTS.APP_NAME}</Text>
       <Text style={styles.appSlogan}>{CONSTANTS.APP_SLOGAN}</Text>
 
@@ -31,25 +33,35 @@ const Login = () => {
         }}
         validationSchema={LoginSchema}
         onSubmit={values => console.log('Login', values)}>
-        {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          errors,
+          touched,
+        }) => (
           <View>
             <Input
-            placeholder="E-posta Adresi"
-            onChangeText={handleChange('email')}
-            errors={ touched.email && errors.email && errors.email }/>
-            <Input
-            placeholder="Şifre"
-            secret={true}
-            onChangeText={handleChange('password')}
-            errors={ touched.password && errors.password && errors.password }
+              placeholder="E-posta Adresi"
+              onChangeText={handleChange('email')}
+              errors={touched.email && errors.email && errors.email}
             />
-            <Button
-              label="Giriş Yap"
-              onPress={handleSubmit}
-            />  
+            <Input
+              placeholder="Şifre"
+              secret={true}
+              onChangeText={handleChange('password')}
+              errors={touched.password && errors.password && errors.password}
+            />
+            <Button label="Giriş Yap" onPress={handleSubmit} />
           </View>
         )}
       </Formik>
+
+      <View style={styles.createAccountLabelContainer}>
+        <Text style={styles.createAccountLabel} >Hesabın yok mu?</Text>
+        <Text style={styles.createAccountLabelButton} >{'\t'}Kayıt Ol</Text>
+      </View>
 
       <Pressable onPress={() => console.log('Şifremi unuttum')}>
         <Text style={styles.forgotPasswordLabel}>Şifremi Unuttum</Text>
@@ -58,4 +70,4 @@ const Login = () => {
   );
 };
 
-export default Login
+export default Login;

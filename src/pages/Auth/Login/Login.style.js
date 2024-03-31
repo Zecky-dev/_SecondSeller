@@ -20,13 +20,27 @@ export default StyleSheet.create({
         flexGrow: 1,
         justifyContent: 'center',
     },
-    forgotPasswordLabel: {
+    createAccountLabelContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      marginTop: CONSTANTS.margin.L3
+    },
+    createAccountLabel:{
         color: COLORS.black,
+        fontSize: CONSTANTS.fontSize.L3
+    },
+    createAccountLabelButton:{
+        color: COLORS.link,
+        textDecorationLine: 'underline',
+        fontSize: CONSTANTS.fontSize.L3
+    },
+    forgotPasswordLabel: {
+        color: COLORS.link,
         textDecorationLine: 'underline',
         fontSize: CONSTANTS.fontSize.L4,
         textAlign: 'center',
         marginTop: CONSTANTS.margin.L3,
-        fontWeight: '700'
+        fontWeight: '400'
     },
     vectorImage: {
         width: '75%',
