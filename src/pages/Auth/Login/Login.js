@@ -13,6 +13,7 @@ import {Input, Button} from '@components';
 // Assets
 import LoginVector from '@assets/images/login_vector.png';
 
+// Formik & Validations
 import {Formik} from 'formik';
 import { LoginSchema } from '@utils/validationSchemas';
 
@@ -36,10 +37,12 @@ const Login = () => {
             <Input
             placeholder="E-posta Adresi"
             onChangeText={handleChange('email')}
+            value={values.email}
             errors={ touched.email && errors.email && errors.email }/>
             <Input
             placeholder="Şifre"
             secret={true}
+            value={values.password}
             onChangeText={handleChange('password')}
             errors={ touched.password && errors.password && errors.password }
             />
