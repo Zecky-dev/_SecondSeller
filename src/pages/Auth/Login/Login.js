@@ -16,7 +16,7 @@ import LoginVector from '@assets/images/login_vector.png';
 import {Formik} from 'formik';
 import {LoginSchema} from '@utils/validationSchemas';
 
-const Login = () => {
+const Login = ({navigation}) => {
   return (
     <ScrollView
       style={{height: '100%'}}
@@ -60,7 +60,7 @@ const Login = () => {
 
       <View style={styles.createAccountLabelContainer}>
         <Text style={styles.createAccountLabel} >Hesabın yok mu?</Text>
-        <Text style={styles.createAccountLabelButton} >{'\t'}Kayıt Ol</Text>
+        <Text style={styles.createAccountLabelButton} onPress={() => navigation.navigate("RegisterScreen")} >{'\t'}Kayıt Ol</Text>
       </View>
 
       <Pressable onPress={() => console.log('Şifremi unuttum')}>
