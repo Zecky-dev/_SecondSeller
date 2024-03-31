@@ -22,5 +22,8 @@ export default StyleSheet.create({
     input: {
         flex: 1,
         fontSize: CONSTANTS.fontSize.L3
+    },
+    errorMessage: {
+        color: COLORS.red,
     }
 })

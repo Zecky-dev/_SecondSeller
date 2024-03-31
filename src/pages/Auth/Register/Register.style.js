@@ -22,6 +22,19 @@ export default StyleSheet.create({
     width: '50%',
     alignSelf: 'center',
     marginTop: -CONSTANTS.margin.L4,
-    marginBottom: CONSTANTS.margin.L4
+    marginBottom: CONSTANTS.margin.L4,
+  },
+  additionalStylesContainer: {
+    alignSelf: 'flex-start',
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    borderWidth: CONSTANTS.borderWidth.thin,
+    backgroundColor: COLORS.transparent,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    margin: 0,
+    top: CONSTANTS.margin.L4,
+    left: CONSTANTS.margin.L4,
   },
 });

@@ -7,7 +7,7 @@ import styles from './Button.style'
 
 const Button = ({
     onPress,
-    label = "Button Label",
+    label = "",
     icon = null,
     vertical = false,
     additionalStyles = { container: {}, label: {} },

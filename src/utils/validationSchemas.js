@@ -19,10 +19,10 @@ const LoginSchema = yup.object().shape({
     .email(ERRORS.email)
     .required(ERRORS.required),
   password: yup
-  .string(ERRORS.string)
-  .required(ERRORS.required)
-  .min(6, ({min}) => ERRORS.min(min))
-  .max(24, ({max}) => ERRORS.max(max)),
+    .string(ERRORS.string)
+    .required(ERRORS.required)
+    .min(6, ({min}) => ERRORS.min(min))
+    .max(24, ({max}) => ERRORS.max(max)),
 });
 
 const RegisterSchema = yup.object().shape({
@@ -37,14 +37,17 @@ const RegisterSchema = yup.object().shape({
     .required(ERRORS.required),
   phoneNumber: yup
     .string(ERRORS.phoneNumber)
+    .required(ERRORS.required)
     .matches(phoneNumberRegex, ERRORS.phoneNumber),
-  password: yup.string(ERRORS.string).required(ERRORS.required),
+  password: yup
+    .string(ERRORS.string)
+    .required(ERRORS.required)
+    .min(6, ({min}) => ERRORS.min(min))
+    .max(24, ({max}) => ERRORS.max(max)),
   passwordConfirm: yup
     .string(ERRORS.string)
+    .required(ERRORS.required)
     .oneOf([yup.ref('password'), null], ERRORS.passwordConfirm),
 });
 
-export {
-    LoginSchema,
-    RegisterSchema
-}
+export {LoginSchema, RegisterSchema};

@@ -13,13 +13,13 @@ export default StyleSheet.create({
         margin: CONSTANTS.margin.L2,
         borderRadius: CONSTANTS.borderRadius.L1,
         // alignSelf: 'flex-start',
-        minWidth: 120,
+        //minWidth: 120,
     },
     label: {
         color: COLORS.white,
         fontSize: CONSTANTS.fontSize.L4
     },
     icon: {
-        marginRight: CONSTANTS.margin.L1
+        //marginRight: CONSTANTS.margin.L1
     }
 })
