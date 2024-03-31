@@ -11,11 +11,12 @@ const Input = ({
     placeholder = "",
     onChangeText,
     keyboardType = "default",
-    secret,
+    secret = false,
     additionalStyles,
+    value
 }) => {
 
-    const [inputVisible,setInputVisible] = useState(false)
+    const [inputVisible,setInputVisible] = useState(secret)
 
     return (
         <View style={[
@@ -36,8 +37,9 @@ const Input = ({
                     placeholder={placeholder}
                     onChangeText={onChangeText}
                     keyboardType={keyboardType}
-                    secureTextEntry={!inputVisible}
+                    secureTextEntry={inputVisible}
                     style={styles.input}
+                    value={value}
                 />
                 {
                     secret && (
@@ -46,7 +48,7 @@ const Input = ({
                         >
                             <Icon
                             name={
-                                inputVisible ? "eye" : "eye-off"
+                                inputVisible ? "eye-off" : "eye"
                             }
                             color={COLORS.blackMuted}
                             size={CONSTANTS.fontSize.L5}/>

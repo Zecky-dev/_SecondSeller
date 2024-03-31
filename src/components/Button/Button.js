@@ -21,7 +21,7 @@ const Button = ({
             style={[
                 styles.container, 
                 (icon && vertical) && { flexDirection: 'column', alignItems: 'center' },
-                additionalStyles
+                additionalStyles?.container
             ]}
             activeOpacity={.7}
         >
@@ -38,7 +38,7 @@ const Button = ({
 
                 {
                     label !== "" && (
-                        <Text style={styles.label}>
+                        <Text style={[styles.label, additionalStyles?.label]}>
                             {label}
                         </Text>
                     )

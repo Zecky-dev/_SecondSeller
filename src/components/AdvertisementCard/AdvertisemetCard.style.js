@@ -4,7 +4,7 @@ import { COLORS, CONSTANTS } from '@utils'
 
 export default StyleSheet.create({
     cardContainer: {
-        flex:1,
+        flex: 1,
         margin: CONSTANTS.margin.L1,
         alignItems: 'center',
         borderColor: COLORS.black,

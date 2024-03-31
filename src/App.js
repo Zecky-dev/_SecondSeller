@@ -94,6 +94,7 @@ const AuthStack = () => {
         screenOptions={{
             headerShown: false,
         }}
+        initialRouteName='RegisterScreen'
     >
       <Stack.Screen name="LoginScreen" component={Login} />
       <Stack.Screen name="RegisterScreen" component={Register} />
@@ -103,7 +104,7 @@ const AuthStack = () => {
 
 const App = () => {
 
-  const loggedIn = true;
+  const loggedIn = false;
 
   return (
     <View style={{flex: 1}}>
