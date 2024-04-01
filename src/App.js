@@ -103,7 +103,7 @@ const AuthStack = () => {
 
 const App = () => {
 
-  const loggedIn = false;
+  const loggedIn = true;
 
   return (
     <View style={{flex: 1}}>

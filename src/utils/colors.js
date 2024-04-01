@@ -5,5 +5,6 @@ export default {
     blackMuted: "rgba(0,0,0,0.5)",
     white: "#FFFFFF",
     link: "#387ADF",
-    transparent: "transparent"
+    transparent: "transparent",
+    green: "#85BB65"
 }
