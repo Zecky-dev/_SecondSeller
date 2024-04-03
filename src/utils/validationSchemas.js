@@ -2,10 +2,13 @@ import * as yup from 'yup';
 
 const ERRORS = {
   string: 'Metin formatında giriş yapınız.',
+  number: 'Sayı formatında giriş yapınız.',
   email: 'E-posta formatına uygun giriş yapınız.',
   phoneNumber: 'Telefon numarası geçerli formatta değildir.',
   passwordConfirm: 'Girdiğiniz şifreler uyuşmuyor',
   required: 'Bu alanın girilmesi zorunludur.',
+  positive: 'Bu alana pozitif bir değer girmelisiniz.',
+  default: "Geçerli bir değer seçiniz.",
   min: min => `Minimum ${min} karakter uzunluğunda giriş yapınız.`,
   max: max => `Maksimum ${max} karakter uzunluğunda giriş yapınız.`,
 };
@@ -50,4 +53,31 @@ const RegisterSchema = yup.object().shape({
     .oneOf([yup.ref('password'), null], ERRORS.passwordConfirm),
 });
 
-export {LoginSchema, RegisterSchema};
+const CreateAdvertisementSchema = yup.object().shape({
+  advertisementName: yup
+    .string(ERRORS.string)
+    .trim()
+    .required(ERRORS.required)
+    .min(3, ({min}) => ERRORS.min(min))
+    .max(64, ({max}) => ERRORS.max(max)),
+  advertisementDescription: yup
+    .string(ERRORS.string)
+    .trim()
+    .required(ERRORS.required)
+    .min(12, ({min}) => ERRORS.min(min))
+    .max(240, ({max}) => ERRORS.max(max)),
+  advertisementPrice: yup
+    .number(ERRORS.number)
+    .positive(ERRORS.positive)
+    .required(ERRORS.required),
+  advertisementCategory: yup
+    .string(ERRORS.string)
+    .required(ERRORS.required)
+    .notOneOf(['default'], ERRORS.default),
+  advertisementImageURIS: yup
+    .array(yup.string())
+    .min(1, "En az 1 fotoğraf seçilmelidir.")  
+    .required(ERRORS.required)
+});
+
+export {LoginSchema, RegisterSchema, CreateAdvertisementSchema};

@@ -28,12 +28,26 @@ const APP_NAME = "SecondSeller"
 const APP_SLOGAN = "Ikinci el, birinci sınıf kalite!"
 const APP_FONT = 'Galada-Regular'
 
+const ADVERTISEMENT_CATEGORIES = [
+    {
+      key: 1,label: "Teknoloji", value: "Technology"
+    },
+    {
+      key: 2, label: "Giyim", value:  "clothes"
+    },
+    {
+      key: 3, label: "Araç", value: "vehicle"
+    }
+  ]
+
+
 export default {
     padding,
     margin,
     fontSize,
     borderRadius,
     borderWidth,
+    ADVERTISEMENT_CATEGORIES,
     APP_NAME,
     APP_SLOGAN,
     APP_FONT

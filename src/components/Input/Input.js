@@ -14,7 +14,8 @@ const Input = ({
     secret = false,
     additionalStyles,
     errors,
-    value
+    value,
+    multiline = false,
 }) => {
 
     const [inputVisible,setInputVisible] = useState(secret)
@@ -40,6 +41,7 @@ const Input = ({
                     keyboardType={keyboardType}
                     secureTextEntry={inputVisible}
                     style={styles.input}
+                    multiline
                     value={value}
                 />
                 {
