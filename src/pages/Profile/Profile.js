@@ -1,12 +1,70 @@
-import React from 'react'
-import {View,Text} from 'react-native'
+import React from 'react';
+import {View, Text, Image} from 'react-native';
 
-const Home = () => {
-    return (
-        <View>
-            <Text>Home.js</Text>
-        </View>
-    )
-}
+import {Button} from '@components';
 
-export default Home
+import styles from './Profile.style.js';
+import {COLORS, CONSTANTS} from '@utils';
+
+const profileButtonStyle = {
+  container: {
+    width: '90%',
+    backgroundColor: 'transparent',
+    borderWidth: CONSTANTS.borderWidth.thin,
+    borderColor: COLORS.black,    
+  },
+  label: {
+    marginLeft: CONSTANTS.margin.L1,
+    color: COLORS.black,
+    fontSize: CONSTANTS.fontSize.L4,
+  },
+};
+
+const Profile = () => {
+  const dummyUser = {
+    imageURL: 'https://randomuser.me/api/portraits/men/71.jpg',
+    name: 'John Doe',
+  };
+
+  return (
+    <View style={styles.container}>
+      <Image source={{uri: dummyUser.imageURL}} style={styles.image} />
+      <Text style={styles.name}>{dummyUser.name}</Text>
+
+      <Button
+        onPress={() => console.log('Profil düzenle')}
+        icon={{
+          name: 'pencil',
+          color: COLORS.black,
+          size: CONSTANTS.fontSize.L5,
+        }}
+        label="Profil Düzenle"
+        additionalStyles={profileButtonStyle}
+      />
+
+      <Button
+        onPress={() => console.log('Profil düzenle')}
+        icon={{
+          name: 'theme-light-dark',
+          color: COLORS.black,
+          size: CONSTANTS.fontSize.L5,
+        }}
+        label="Tema Değiştir"
+        additionalStyles={profileButtonStyle}
+      />
+
+      <Button
+        onPress={() => console.log('Profil düzenle')}
+        icon={{
+          name: 'logout',
+          color: COLORS.black,
+          size: CONSTANTS.fontSize.L5,
+        }}
+        label="Çıkış Yap"
+        additionalStyles={profileButtonStyle}
+      />
+    </View>
+  );
+};
+
+export default Profile;

@@ -2,6 +2,8 @@ import {Text,View} from 'react-native'
 import RNPickerSelect from 'react-native-picker-select'
 
 import styles from '../Input/Input.style'
+import styles2 from './OptionPicker.style'
+
 import {CONSTANTS} from '@utils'
 
 
@@ -14,11 +16,7 @@ const OptionPicker = ({label,items,setSelectedItem,errors}) => {
         items={items}
         placeholder={{key: 4, label: "Lütfen Seçiniz...", value: "default"}}
         style={{
-          viewContainer: {
-            borderColor: 'rgba(0,0,0,0.5)',
-            borderWidth: 0.7,
-            borderRadius: 4
-          },
+          viewContainer: styles2.container
         }}
       />
       {errors && <Text style={styles.errorMessage}>{errors}</Text>} 

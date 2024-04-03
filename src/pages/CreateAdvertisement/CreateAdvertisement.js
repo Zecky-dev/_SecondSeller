@@ -77,6 +77,7 @@ const CreateAdvertisement = () => {
             <Input
               label={'İlan İsmi'}
               onChangeText={handleChange('advertisementName')}
+              value={values.advertisementName}
               errors={
                 errors.advertisementName &&
                 touched.advertisementName &&
@@ -86,6 +87,7 @@ const CreateAdvertisement = () => {
 
             <Input
               label={'İlan Açıklaması'}
+              value={values.advertisementDescription}
               onChangeText={handleChange('advertisementDescription')}
               errors={
                 errors.advertisementDescription &&
@@ -98,6 +100,7 @@ const CreateAdvertisement = () => {
             <Input
               keyboardType="number-pad"
               label={'İlan Fiyatı'}
+              value={values.advertisementPrice}
               onChangeText={val => {
                 const value = Number(val);
                 setFieldValue('advertisementPrice', value);

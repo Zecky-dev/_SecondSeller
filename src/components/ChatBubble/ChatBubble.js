@@ -3,20 +3,23 @@ import {View, Text} from 'react-native';
 
 import styles from './ChatBubble.style';
 
-const ChatBubble = ({owner}) => {
+const ChatBubble = ({isOwner,messageDetails}) => {
   
-  const bubbleContainer = owner ? styles.bubbleContainer_right : styles.bubbleContainer_left   
-  const bubble = owner ? styles.bubble_right : styles.bubble_left
+
+  const bubbleContainer = isOwner ? styles.bubbleContainer_right : styles.bubbleContainer_left   
+  const bubble = isOwner ? styles.bubble_right : styles.bubble_left
+
+  const {messageId,message,messageOwner,messageDate} = messageDetails
 
 
   return (
     <View style={bubbleContainer}>
       <View style={bubble}>
-        <Text style={styles.messageOwner}>Ben</Text>
+        <Text style={styles.messageOwner}>{messageOwner}</Text>
         <Text style={styles.message}>
-          Officia ut culpa aliqua occaecat culpa consectetur dolor sint irure.{' '}
+          {message}
         </Text>
-        <Text style={styles.messageDate}>19:06 AM</Text>
+        <Text style={styles.messageDate}>{messageDate}</Text>
       </View>
     </View>
   );
