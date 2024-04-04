@@ -40,6 +40,10 @@ const ADVERTISEMENT_CATEGORIES = [
     }
   ]
 
+const mockData =  {
+  
+}
+
 
 export default {
     padding,

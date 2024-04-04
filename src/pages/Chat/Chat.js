@@ -3,13 +3,7 @@ import {View, Text,FlatList} from 'react-native';
 import styles from './Chat.style'
 
 import {ChatBubble,ChatInput} from '@components';
-
-function Message(messageId,message,messageOwner,messageDate) {
-    this.messageId = messageId
-    this.message = message,
-    this.messageOwner = messageOwner
-    this.messageDate = messageDate
-}
+import { Message } from '@utils/models';
 
 const Chat = () => {
   
