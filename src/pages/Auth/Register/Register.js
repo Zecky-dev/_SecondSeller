@@ -1,106 +1,128 @@
-import {Button, Input} from '@components';
-import {Formik} from 'formik';
-import React from 'react';
+// Components
+import React, { useEffect, useState } from 'react';
 import {ScrollView, Text, View} from 'react-native';
+import {Button, Input,Animation} from '@components';
 
-import styles from './Register.style';
+// Styles & Colors
 import {COLORS, CONSTANTS} from '@utils';
+import styles from './Register.style';
+
+// Forms and Validations
+import {Formik} from 'formik';
 import {RegisterSchema} from '@utils/validationSchemas';
+
+// Register
+import { register } from '../../../services/userServices';
 
 const initialValues = {
   nameSurname: '',
-  email: '',
+  emailAddress: '',
   phoneNumber: '',
   password: '',
   passwordConfirm: '',
 };
 
-const handleSubmit = user => {
-  console.log(user);
-};
+
 
 // validation ekle
 
 const Register = ({navigation}) => {
-  return (
-    <>
-      <Button
-        onPress={() => navigation.goBack()}
-        icon={{
-          name: 'chevron-left',
-          size: CONSTANTS.fontSize.L7,
-          color: COLORS.black,
-        }}
-        additionalStyles={{
-          container: styles.additionalStylesContainer
-        }}
-      />
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.formContainer}>
-        <Text style={styles.appName}>{CONSTANTS.APP_NAME}</Text>
-        <View style={styles.title} />
-        <Formik
-          initialValues={initialValues}
-          onSubmit={user => handleSubmit(user)}
-          validationSchema={RegisterSchema}>
-          {({handleChange, handleSubmit, values, errors, touched}) => (
-            <>
-              <Input
-                label={'Ad Soyad'}
-                onChangeText={handleChange('nameSurname')}
-                value={values.nameSurname}
-                errors={
-                  touched.nameSurname &&
-                  errors.nameSurname &&
-                  errors.nameSurname
-                }
-              />
-              <Input
-                label={'E-posta Adresi'}
-                onChangeText={handleChange('email')}
-                value={values.email}
-                keyboardType="email-address"
-                errors={touched.email && errors.email && errors.email}
-                placeholder="info@secondeseller.com"
-              />
-              <Input
-                label={'Telefon Numarası'}
-                onChangeText={handleChange('phoneNumber')}
-                value={values.phoneNumber}
-                keyboardType="number-pad"
-                errors={
-                  touched.phoneNumber &&
-                  errors.phoneNumber &&
-                  errors.phoneNumber
-                }
-                placeholder="0555-555-5555"
-              />
-              <Input
-                label={'Şifre'}
-                onChangeText={handleChange('password')}
-                value={values.password}
-                secret={true}
-                errors={touched.password && errors.password && errors.password}
-              />
-              <Input
-                label={'Şifre Tekrar'}
-                onChangeText={handleChange('passwordConfirm')}
-                value={values.passwordConfirm}
-                secret={true}
-                errors={
-                  touched.passwordConfirm &&
-                  errors.passwordConfirm &&
-                  errors.passwordConfirm
-                }
-              />
-              <Button onPress={handleSubmit} label="KAYIT OL" />
-            </>
-          )}
-        </Formik>
-      </ScrollView>
-    </>
-  );
+
+  const [loading,setLoading] = useState(false)
+
+  if(!loading) {
+    return (
+      <>
+        <Button
+          onPress={() => navigation.goBack()}
+          icon={{
+            name: 'chevron-left',
+            size: CONSTANTS.fontSize.L7,
+            color: COLORS.black,
+          }}
+          additionalStyles={{
+            container: styles.additionalStylesContainer
+          }}
+        />
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.formContainer}>
+          <Text style={styles.appName}>{CONSTANTS.APP_NAME}</Text>
+          <View style={styles.title} />
+          <Formik
+            initialValues={initialValues}
+            onSubmit={ async (user) => {
+              setLoading(true)
+              const response = await register(user)
+              console.log(response)
+              setLoading(false)
+            }}
+            validationSchema={RegisterSchema}>
+            {({handleChange, handleSubmit, values, errors, touched}) => (
+              <>
+                <Input
+                  label={'Ad Soyad'}
+                  onChangeText={handleChange('nameSurname')}
+                  value={values.nameSurname}
+                  errors={
+                    touched.nameSurname &&
+                    errors.nameSurname &&
+                    errors.nameSurname
+                  }
+                />
+                <Input
+                  label={'E-posta Adresi'}
+                  onChangeText={handleChange('emailAddress')}
+                  value={values.email}
+                  keyboardType="email-address"
+                  errors={touched.email && errors.email && errors.email}
+                  placeholder="info@secondeseller.com"
+                />
+                <Input
+                  label={'Telefon Numarası'}
+                  onChangeText={handleChange('phoneNumber')}
+                  value={values.phoneNumber}
+                  keyboardType="number-pad"
+                  errors={
+                    touched.phoneNumber &&
+                    errors.phoneNumber &&
+                    errors.phoneNumber
+                  }
+                  placeholder="0555-555-5555"
+                />
+                <Input
+                  label={'Şifre'}
+                  onChangeText={handleChange('password')}
+                  value={values.password}
+                  secret={true}
+                  errors={touched.password && errors.password && errors.password}
+                />
+                <Input
+                  label={'Şifre Tekrar'}
+                  onChangeText={handleChange('passwordConfirm')}
+                  value={values.passwordConfirm}
+                  secret={true}
+                  errors={
+                    touched.passwordConfirm &&
+                    errors.passwordConfirm &&
+                    errors.passwordConfirm
+                  }
+                />
+                <Button onPress={handleSubmit} label="KAYIT OL" />
+              </>
+            )}
+          </Formik>
+        </ScrollView>
+      </>
+    );
+  }
+
+  else {
+    return <Animation animationName={"test"}/>
+  }
+
+
+  
 };
 
 export default Register;

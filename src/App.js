@@ -7,7 +7,7 @@ import { COLORS, CONSTANTS } from '@utils';
 // React Navigation
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Icon
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -103,7 +103,7 @@ const AuthStack = () => {
 
 const App = () => {
 
-  const loggedIn = true;
+  const loggedIn = false;
 
   return (
     <View style={{flex: 1}}>

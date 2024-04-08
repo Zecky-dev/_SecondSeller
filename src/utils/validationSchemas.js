@@ -34,7 +34,7 @@ const RegisterSchema = yup.object().shape({
     .required(ERRORS.required)
     .min(3, ({min}) => ERRORS.min(min))
     .max(24, ({max}) => ERRORS.max(max)),
-  email: yup
+  emailAddress: yup
     .string(ERRORS.string)
     .email(ERRORS.email)
     .required(ERRORS.required),

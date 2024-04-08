@@ -6,7 +6,8 @@
         "@utils": ["./utils"],
         "@utils/*": ["./utils/*"],
         "@pages": ["./pages"],
-        "@assets/images": ["./assets/images"]
+        "@assets/images": ["./assets/images"],
+        "@services/*": ["./services/*"]
       }
     }
   }
