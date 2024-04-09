@@ -15,6 +15,7 @@ const Input = ({
     additionalStyles,
     errors,
     value,
+    maxLength,
     multiline = false,
 }) => {
 
@@ -43,6 +44,7 @@ const Input = ({
                     style={styles.input}
                     multiline
                     value={value}
+                    maxLength={maxLength}
                 />
                 {
                     secret && (

@@ -12,7 +12,7 @@ import {Formik} from 'formik';
 import {RegisterSchema} from '@utils/validationSchemas';
 
 // Register
-import { register } from '../../../services/userServices';
+import {sendEmailVerification } from '../../../services/userServices';
 
 const initialValues = {
   nameSurname: '',
@@ -53,9 +53,9 @@ const Register = ({navigation}) => {
             initialValues={initialValues}
             onSubmit={ async (user) => {
               setLoading(true)
-              const response = await register(user)
-              console.log(response)
+              const response = await sendEmailVerification(user)
               setLoading(false)
+              navigation.navigate('EmailVerificationScreen', { verificationCode: response.data, user } )              
             }}
             validationSchema={RegisterSchema}>
             {({handleChange, handleSubmit, values, errors, touched}) => (

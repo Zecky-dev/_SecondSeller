@@ -13,7 +13,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Pages
-import { Profile, Home, Advertisements, CreateAdvertisement, Login, Register } from '@pages';
+import { Profile, Home, Advertisements, CreateAdvertisement, Login, Register, EmailValidation } from '@pages';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -97,6 +97,8 @@ const AuthStack = () => {
     >
       <Stack.Screen name="LoginScreen" component={Login} />
       <Stack.Screen name="RegisterScreen" component={Register} />
+      <Stack.Screen name='EmailVerificationScreen' component={EmailValidation} />
+      <Stack.Screen name='HomeScreen' component={Home}/>
     </Stack.Navigator>
   );
 };
