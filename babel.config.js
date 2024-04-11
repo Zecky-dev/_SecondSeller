@@ -11,7 +11,8 @@ module.exports = {
           '@utils/*':'./src/utils/*',
           '@pages':'./src/pages',
           '@assets/images': './src/assets/images',
-          '@services/*': './src/services/*'
+          '@services/*': './src/services/*',
+          '@context/*': './src/context/*'
         },
       },
     ],

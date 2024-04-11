@@ -1,10 +1,13 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, Image} from 'react-native';
 
 import {Button} from '@components';
 
 import styles from './Profile.style.js';
 import {COLORS, CONSTANTS} from '@utils';
+
+import Storage from '@utils/Storage.js';
+import { useUser } from '../../context/UserProvider.js';
 
 const profileButtonStyle = {
   container: {
@@ -21,6 +24,13 @@ const profileButtonStyle = {
 };
 
 const Profile = () => {
+
+  const {user,setUser} = useUser()
+
+  useEffect(() =>{
+    console.log(user)
+  },[])
+
   const dummyUser = {
     imageURL: 'https://randomuser.me/api/portraits/men/71.jpg',
     name: 'John Doe',
@@ -54,7 +64,10 @@ const Profile = () => {
       />
 
       <Button
-        onPress={() => console.log('Profil düzenle')}
+        onPress={ async () => {
+          await Storage.removeData('token')
+          setUser(null)
+        }}
         icon={{
           name: 'logout',
           color: COLORS.black,

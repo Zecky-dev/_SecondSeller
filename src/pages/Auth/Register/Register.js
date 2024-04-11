@@ -1,5 +1,5 @@
 // Components
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {ScrollView, Text, View} from 'react-native';
 import {Button, Input,Animation} from '@components';
 
@@ -13,6 +13,7 @@ import {RegisterSchema} from '@utils/validationSchemas';
 
 // Register
 import {sendEmailVerification } from '../../../services/userServices';
+import { showFlashMessage } from '@utils/functions';
 
 const initialValues = {
   nameSurname: '',
@@ -54,10 +55,16 @@ const Register = ({navigation}) => {
             onSubmit={ async (user) => {
               setLoading(true)
               const response = await sendEmailVerification(user)
+              if(response.status.toString().startsWith('2')) {
+                navigation.navigate('EmailVerificationScreen', { verificationCode: response.data, user } )              
+              }
+              else {
+                showFlashMessage(response.status,response.message)
+              }
               setLoading(false)
-              navigation.navigate('EmailVerificationScreen', { verificationCode: response.data, user } )              
             }}
-            validationSchema={RegisterSchema}>
+            validationSchema={RegisterSchema}
+            >
             {({handleChange, handleSubmit, values, errors, touched}) => (
               <>
                 <Input
@@ -73,9 +80,9 @@ const Register = ({navigation}) => {
                 <Input
                   label={'E-posta Adresi'}
                   onChangeText={handleChange('emailAddress')}
-                  value={values.email}
+                  value={values.emailAddress}
                   keyboardType="email-address"
-                  errors={touched.email && errors.email && errors.email}
+                  errors={touched.emailAddress && errors.emailAddress && errors.emailAddress}
                   placeholder="info@secondeseller.com"
                 />
                 <Input
@@ -118,7 +125,7 @@ const Register = ({navigation}) => {
   }
 
   else {
-    return <Animation animationName={"test"}/>
+    return <Animation animationName={"loading"}/>
   }
 
 

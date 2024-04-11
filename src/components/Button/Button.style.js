@@ -21,5 +21,8 @@ export default StyleSheet.create({
     },
     icon: {
         //marginRight: CONSTANTS.margin.L1
+    },
+    loadingIndicator: {
+        marginRight: CONSTANTS.margin.L2
     }
 })

@@ -1,19 +1,42 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StatusBar, View} from 'react-native';
 
+
 // Constants
-import { COLORS, CONSTANTS } from '@utils';
+import {COLORS, CONSTANTS} from '@utils';
 
 // React Navigation
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 // Icon
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Pages
-import { Profile, Home, Advertisements, CreateAdvertisement, Login, Register, EmailValidation } from '@pages';
+import {
+  Profile,
+  Home,
+  Advertisements,
+  CreateAdvertisement,
+  Login,
+  Register,
+  EmailValidation,
+} from '@pages';
+
+// Context
+import UserContextProvider, {useUser} from './context/UserProvider';
+
+// FlashMessage
+import FlashMessage from 'react-native-flash-message';
+
+// Storage
+import Storage from '@utils/Storage';
+import { getUserFromToken, jwtDecode } from '@utils/functions';
+import { getUser } from './services/userServices'; 
+
+
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -91,31 +114,64 @@ const BottomTabs = () => {
 const AuthStack = () => {
   return (
     <Stack.Navigator
-        screenOptions={{
-            headerShown: false,
-        }}
-    >
+      screenOptions={{
+        headerShown: false,
+      }}
+      initialRouteName='LoginScreen'
+      >
       <Stack.Screen name="LoginScreen" component={Login} />
       <Stack.Screen name="RegisterScreen" component={Register} />
-      <Stack.Screen name='EmailVerificationScreen' component={EmailValidation} />
-      <Stack.Screen name='HomeScreen' component={Home}/>
+      <Stack.Screen
+        name="EmailVerificationScreen"
+        component={EmailValidation}
+      />
     </Stack.Navigator>
   );
 };
 
 const App = () => {
 
-  const loggedIn = false;
+  const {user,setUser} = useUser()
 
+  useEffect(() => {
+    const checkToken = async () => {
+      const userData = await getUserFromToken();
+      setUser(userData);
+    };
+    checkToken()
+  }, []);
+
+  useEffect(() => {
+    console.log(user)
+  },[user])
+
+  
+  
   return (
-    <View style={{flex: 1}}>
-      <StatusBar backgroundColor={COLORS.primary} barStyle={'light-content'} />
-      <NavigationContainer>
-        {loggedIn ? <BottomTabs /> : <AuthStack/>}
-        
-      </NavigationContainer>
-    </View>
+    <>
+      <View style={{flex: 1}}>  
+        <StatusBar
+          backgroundColor={COLORS.primary}
+          barStyle={'light-content'}
+        />
+        <NavigationContainer>
+          {user ? <BottomTabs /> : <AuthStack />}
+        </NavigationContainer>
+      </View>
+      <FlashMessage position={"top"}/>
+    </>
+    
   );
 };
 
-export default App;
+const AppWithContext = () => {
+  return (
+    <UserContextProvider>
+      <App/>
+    </UserContextProvider>
+  )
+}
+
+
+
+export default AppWithContext;

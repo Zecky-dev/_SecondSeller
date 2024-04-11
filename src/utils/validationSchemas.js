@@ -17,7 +17,7 @@ const phoneNumberRegex =
   /(^[0\s]?[\s]?)([(]?)([5])([0-9]{2})([)]?)([\s]?)([0-9]{3})([\s]?)([0-9]{2})([\s]?)([0-9]{2})$/g;
 
 const LoginSchema = yup.object().shape({
-  email: yup
+  emailAddress: yup
     .string(ERRORS.string)
     .email(ERRORS.email)
     .required(ERRORS.required),
