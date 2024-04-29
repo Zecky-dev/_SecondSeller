@@ -1,6 +1,6 @@
+import Geolocation from '@react-native-community/geolocation';
 import { showMessage } from "react-native-flash-message";
 import { Buffer } from 'buffer' 
-
 import { getUser } from "../services/userServices";
 import Storage from "./Storage";
 
@@ -41,6 +41,26 @@ const jwtDecode = (token) => {
     return null        
 }
 
+// Anlık konum almaak için bir promise döndürür
+const getCurrentLocation = () => {
+    return new Promise((resolve, reject) => {
+      Geolocation.getCurrentPosition(
+        position => {
+          const {longitude, latitude} = position.coords;
+          resolve({longitude, latitude});
+        },
+        error => {
+          showMessage({
+            message: `${error.code} : ${error.message}`,
+          });
+          reject(null);
+        },
+      );
+    });
+  };
+
+
+
 // Token'i decode ederek token'de saklanan kullanıcı
 // id'si ile kullanıcı verilerini döndürür.
 const getUserFromToken = async () => {
@@ -61,5 +81,6 @@ const getUserFromToken = async () => {
 
 export {
     showFlashMessage,
-    getUserFromToken
+    getUserFromToken,
+    getCurrentLocation
 }
