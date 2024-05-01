@@ -76,6 +76,7 @@ const register = async values => {
 const login = async values => {
   try {
     const {emailAddress, password} = values;
+    console.log(BASE_URL)
     const response = await axios.post(`${BASE_URL}/user/login`, {
       emailAddress,
       password,

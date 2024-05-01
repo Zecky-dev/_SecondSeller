@@ -75,7 +75,7 @@ const CreateAdvertisementSchema = yup.object().shape({
     .required(ERRORS.required)
     .notOneOf(['default'], ERRORS.default),
   advertisementImageURIS: yup
-    .array(yup.string())
+    .array(yup.object())
     .min(1, "En az 1 fotoğraf seçilmelidir.")  
     .required(ERRORS.required)
 });

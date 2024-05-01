@@ -1,5 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {Image, ScrollView, Text, View} from 'react-native';
+import {
+  Alert,
+  Image,
+  PermissionsAndroid,
+  Platform,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 
 import {launchImageLibrary} from 'react-native-image-picker';
 import {Button, Slider, Input} from '@components';
@@ -10,8 +18,16 @@ import {CONSTANTS} from '@utils';
 import {Formik} from 'formik';
 import {CreateAdvertisementSchema} from '@utils/validationSchemas';
 
-import styles from './CreateAdvertisement.style'
+import styles from './CreateAdvertisement.style';
 
+// Advertisement services
+import {createAdvertisement as createAdvertisementAPI} from '../../services/advertisementServices';
+import {showMessage} from 'react-native-flash-message';
+
+// GeoLocation
+import Geolocation from '@react-native-community/geolocation';
+
+import { getUserFromToken } from '@utils/functions';
 
 // Galeriden resim seçilir, slider'a set edilir.
 const takeImageFromGallery = async (setImageURIS, setFieldValue) => {
@@ -33,9 +49,13 @@ const CreateAdvertisement = () => {
   // Galeriden seçilen resimlerin dizisini tutan state
   const [imageURIS, setImageURIS] = useState([]);
 
+  const createAdvertisement = async values => {
+    console.log(values)
+
+  };
+
   return (
-    <ScrollView
-      contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Formik
         initialValues={{
           advertisementName: '',
@@ -45,7 +65,7 @@ const CreateAdvertisement = () => {
           advertisementImageURIS: [],
         }}
         validationSchema={CreateAdvertisementSchema}
-        onSubmit={values => console.log(values)}>
+        onSubmit={values => createAdvertisement(values)}>
         {({
           handleChange,
           handleBlur,
