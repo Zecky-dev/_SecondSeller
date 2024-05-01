@@ -76,7 +76,6 @@ const register = async values => {
 const login = async values => {
   try {
     const {emailAddress, password} = values;
-    console.log(BASE_URL)
     const response = await axios.post(`${BASE_URL}/user/login`, {
       emailAddress,
       password,
@@ -93,6 +92,7 @@ const login = async values => {
         message: err.response.data.message,
       };
     } else if (err.request) {
+      console.log(err)
       return {
         status: 'Network Error',
         message:

@@ -1,26 +1,36 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState } from 'react';
+
+// Components
+
 import {
-  Image,
   ScrollView,
   Text,
   View,
   PermissionsAndroid,
-  Platform,
 } from 'react-native';
 
-import {launchImageLibrary} from 'react-native-image-picker';
 import {Button, Slider, Input} from '@components';
-
 import Dropdown from '../../components/OptionPicker/OptionPicker';
+
 import {CONSTANTS} from '@utils';
 
+// Formik
 import {Formik} from 'formik';
 import {CreateAdvertisementSchema} from '@utils/validationSchemas';
 
+// Styles
 import styles from './CreateAdvertisement.style';
 
+// Utility functions
+import {launchImageLibrary} from 'react-native-image-picker';
 import {showMessage} from 'react-native-flash-message';
 import {getUserFromToken,getCurrentLocation} from '@utils/functions';
+
+// Create advertisement service
+import { createAdvertisementAPI } from '../../services/advertisementServices';
+
+// useUser
+import { useUser } from '../../context/UserProvider';
 
 // Galeriden resim seçilir, slider'a set edilir.
 const takeImageFromGallery = async (setImageURIS, setFieldValue) => {
@@ -44,6 +54,7 @@ const CreateAdvertisement = () => {
   // Galeriden seçilen resimlerin dizisini tutan state
   const [imageURIS, setImageURIS] = useState([]);
   const [loading, setLoading] = useState(false);
+  const {user : User} = useUser(); 
 
   // Konum, kullanıcı ve ilan bilgilerini konsola yazdıran fonksiyon
   const createAdvertisement = async values => {
@@ -62,7 +73,7 @@ const CreateAdvertisement = () => {
         if (location !== null && location !== undefined) {
           user = await getUserFromToken();
           advertisementData = { ...values, location, owner: user._id  }
-          console.log(advertisementData);
+          await createAdvertisementAPI(advertisementData, User.token)
           setLoading(false);
           setImageURIS([])
         }
@@ -80,7 +91,7 @@ const CreateAdvertisement = () => {
       if (location !== null && location !== undefined) {
         user = await getUserFromToken();
         advertisementData = { ...values, location, owner: user._id  }
-        console.log(advertisementData);
+        createAdvertisementAPI(advertisementData, User.token)
         setLoading(false);
         setImageURIS([])
       }
