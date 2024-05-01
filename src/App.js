@@ -141,9 +141,7 @@ const App = () => {
     checkToken()
   }, []);
 
-  useEffect(() => {
-    console.log(user)
-  },[user])
+  
 
   
   

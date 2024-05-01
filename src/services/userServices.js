@@ -93,6 +93,7 @@ const login = async values => {
         message: err.response.data.message,
       };
     } else if (err.request) {
+      console.log(err)
       return {
         status: 'Network Error',
         message:
