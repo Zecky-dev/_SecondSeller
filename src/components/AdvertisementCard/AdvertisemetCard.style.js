@@ -30,7 +30,8 @@ const littleCardStyles = StyleSheet.create({
   name: {
     color: COLORS.black,
     fontSize: CONSTANTS.fontSize.L4,
-    fontWeight: '400',
+    fontWeight: 'bold',
+    marginTop: CONSTANTS.margin.L2,
   },
   addFavoriteButton: {
     position: 'absolute',

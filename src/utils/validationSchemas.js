@@ -54,28 +54,28 @@ const RegisterSchema = yup.object().shape({
 });
 
 const CreateAdvertisementSchema = yup.object().shape({
-  advertisementName: yup
+  title: yup
     .string(ERRORS.string)
     .trim()
     .required(ERRORS.required)
     .min(3, ({min}) => ERRORS.min(min))
     .max(64, ({max}) => ERRORS.max(max)),
-  advertisementDescription: yup
+  description: yup
     .string(ERRORS.string)
     .trim()
     .required(ERRORS.required)
     .min(12, ({min}) => ERRORS.min(min))
     .max(240, ({max}) => ERRORS.max(max)),
-  advertisementPrice: yup
+  price: yup
     .number(ERRORS.number)
     .positive(ERRORS.positive)
     .required(ERRORS.required),
-  advertisementCategory: yup
+  category: yup
     .string(ERRORS.string)
     .required(ERRORS.required)
     .notOneOf(['default'], ERRORS.default),
-  advertisementImageURIS: yup
-    .array(yup.object())
+  images: yup
+    .array(yup.string())
     .min(1, "En az 1 fotoğraf seçilmelidir.")  
     .required(ERRORS.required)
 });

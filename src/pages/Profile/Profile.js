@@ -27,9 +27,6 @@ const Profile = () => {
 
   const {user,setUser} = useUser()
 
-  useEffect(() =>{
-    console.log(user)
-  },[])
 
   const dummyUser = {
     imageURL: 'https://randomuser.me/api/portraits/men/71.jpg',

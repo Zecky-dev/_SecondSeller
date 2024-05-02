@@ -20,7 +20,6 @@ const EmailVerification = ({navigation, route}) => {
     if (verificationCode === code) {
       setLoading(true);
       const response = await register(user);
-      console.log(response);
       if (response.status.toString().startsWith('2')) {
         await Storage.storeData('token', response.data);
         const user = await getUserFromToken();

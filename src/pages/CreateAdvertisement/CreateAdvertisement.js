@@ -1,20 +1,15 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
 // Components
+import {ScrollView, Text, View, PermissionsAndroid} from 'react-native';
 
-import {
-  ScrollView,
-  Text,
-  View,
-  PermissionsAndroid,
-} from 'react-native';
-
-import {Button, Slider, Input} from '@components';
+import {Button, Slider, Input,Animation} from '@components';
 import Dropdown from '../../components/OptionPicker/OptionPicker';
 
+// Constants
 import {CONSTANTS} from '@utils';
 
-// Formik
+// Formik & Form Validation
 import {Formik} from 'formik';
 import {CreateAdvertisementSchema} from '@utils/validationSchemas';
 
@@ -24,102 +19,111 @@ import styles from './CreateAdvertisement.style';
 // Utility functions
 import {launchImageLibrary} from 'react-native-image-picker';
 import {showMessage} from 'react-native-flash-message';
-import {getUserFromToken,getCurrentLocation} from '@utils/functions';
+import {
+  getUserFromToken,
+  resizeImage,
+  locationPermissionGranted,
+  getCurrentLocation,
+} from '@utils/functions';
 
-// Create advertisement service
-import { createAdvertisementAPI } from '../../services/advertisementServices';
+// Service functions
+import {createAdvertisementAPI} from '../../services/advertisementServices';
+import {uploadImagesAndGetURLs} from '../../services/otherServices';
 
-// useUser
-import { useUser } from '../../context/UserProvider';
+// useUser hook
+import {useUser} from '../../context/UserProvider';
 
-// Galeriden resim seçilir, slider'a set edilir.
-const takeImageFromGallery = async (setImageURIS, setFieldValue) => {
+// Galeriden resim seçilir, boyutu küçültülür ve slider'a set edilir.
+const takeImageFromGallery = async (setImages, setFieldValue) => {
   const result = await launchImageLibrary({
     mediaType: 'photo',
     cameraType: 'back',
     quality: 1,
     selectionLimit: 3,
   });
-  const imageURIS = [];
+  const images = [];
+
   for (let asset of result.assets) {
-    imageURIS.push(asset.uri);
+    try {
+      const resizedImage = await resizeImage(asset, 1280, 720);
+      if (resizeImage !== null) {
+        images.push(resizedImage.uri);
+      }
+    } catch (err) {
+      showMessage({
+        message: 'Resim seçilirken hata meydana geldi, tekrar deneyiniz!',
+        type: 'danger',
+      });
+      return;
+    }
   }
-  setImageURIS(imageURIS);
-  setFieldValue('advertisementImageURIS', imageURIS);
+  setImages(images);
+  setFieldValue('images', images);
 };
 
-
-
-const CreateAdvertisement = () => {
+const CreateAdvertisement = ({navigation}) => {
   // Galeriden seçilen resimlerin dizisini tutan state
-  const [imageURIS, setImageURIS] = useState([]);
+  const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const {user : User} = useUser(); 
+  const {user: User} = useUser();
 
   // Konum, kullanıcı ve ilan bilgilerini konsola yazdıran fonksiyon
   const createAdvertisement = async values => {
-    let location, user, advertisementData;
-    const granted = await PermissionsAndroid.check(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    );
-    if (!granted) {
-      const permissionRequestResult = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      );
-      if (permissionRequestResult === 'granted') {
-        // Konum bilgisini al
-        setLoading(true);
-        location = await getCurrentLocation();
-        if (location !== null && location !== undefined) {
-          user = await getUserFromToken();
-          advertisementData = { ...values, location, owner: user._id  }
-          await createAdvertisementAPI(advertisementData, User.token)
-          setLoading(false);
-          setImageURIS([])
-        }
-      } else {
-        showMessage({
-          message:
-            'Konum iznini vermeden ilan paylaşımı yapamazsınız, uygulama ayarlarından konum iznini veriniz.',
-          type: 'warning',
-        });
-      }
-    } else {
-      // Konum bilgisini al
+    let location, user, advertisementData, imageURLs;
+    const locationPermission = await locationPermissionGranted();
+    if (locationPermission) {
       setLoading(true);
+      user = await getUserFromToken();
+      imageURLs = await uploadImagesAndGetURLs(images);
       location = await getCurrentLocation();
-      if (location !== null && location !== undefined) {
-        user = await getUserFromToken();
-        advertisementData = { ...values, location, owner: user._id  }
-        createAdvertisementAPI(advertisementData, User.token)
-        setLoading(false);
-        setImageURIS([])
+      // location = { longitude: 37.157, latitude: 12.14578}
+      advertisementData = {
+        ...values,
+        location,
+        owner: user._id,
+        images: imageURLs,
+      };
+      const response = await createAdvertisementAPI(
+        advertisementData,
+        User.token,
+      );
+      const {status,message} = response.data;
+      if (status !== 'success') {
+        showMessage({
+          message,
+          type: 'danger',
+        });
+        return;
       }
+      navigation.navigate('HomeScreen')
+      setLoading(false);
+      setImages([]);
+    } else {
+      showMessage({
+        message:
+          'Konum iznini vermeden ilan paylaşımı yapamazsınız, uygulama ayarlarından konum iznini veriniz.',
+        type: 'warning',
+      });
     }
   };
 
   if (loading) {
-    return (
-      <View style="flex: 1; justify-content: center; align-items: center">
-        <Text>Loading!</Text>
-      </View>
-    );
+    return <Animation animationName={"loading"} />
   } else {
     return (
       <ScrollView contentContainerStyle={styles.container}>
         <Formik
           initialValues={{
-            advertisementName: '',
-            advertisementDescription: '',
-            advertisementPrice: 0,
-            advertisementCategory: 'default',
-            advertisementImageURIS: [],
+            title: '',
+            description: '',
+            price: '',
+            category: 'default',
+            images: [],
           }}
           validationSchema={CreateAdvertisementSchema}
           onSubmit={values => createAdvertisement(values)}>
           {({
             handleChange,
-            handleBlur,
             handleSubmit,
             values,
             errors,
@@ -129,43 +133,31 @@ const CreateAdvertisement = () => {
             <>
               {/* Resim Seçme */}
               <Slider
-                images={imageURIS}
-                errors={
-                  errors.advertisementImageURIS &&
-                  touched.advertisementImageURIS &&
-                  errors.advertisementImageURIS
-                }
+                images={images}
+                errors={errors.images && touched.images && errors.images}
               />
               <Button
-                onPress={() =>
-                  takeImageFromGallery(setImageURIS, setFieldValue)
-                }
+                onPress={() => takeImageFromGallery(setImages, setFieldValue)}
                 label={
-                  imageURIS.length !== 0
-                    ? 'Fotoğrafları Değiştir'
-                    : 'Fotoğraf Seç'
+                  images.length !== 0 ? 'Fotoğrafları Değiştir' : 'Fotoğraf Seç'
                 }
               />
 
               <Input
                 label={'İlan İsmi'}
-                onChangeText={handleChange('advertisementName')}
-                value={values.advertisementName}
-                errors={
-                  errors.advertisementName &&
-                  touched.advertisementName &&
-                  errors.advertisementName
-                }
+                onChangeText={handleChange('title')}
+                value={values.title}
+                errors={errors.title && touched.title && errors.title}
               />
 
               <Input
                 label={'İlan Açıklaması'}
-                value={values.advertisementDescription}
-                onChangeText={handleChange('advertisementDescription')}
+                value={values.description}
+                onChangeText={handleChange('description')}
                 errors={
-                  errors.advertisementDescription &&
-                  touched.advertisementDescription &&
-                  errors.advertisementDescription
+                  errors.description &&
+                  touched.description &&
+                  errors.description
                 }
                 multiline
               />
@@ -173,29 +165,18 @@ const CreateAdvertisement = () => {
               <Input
                 keyboardType="number-pad"
                 label={'İlan Fiyatı'}
-                value={values.advertisementPrice}
-                onChangeText={val => {
-                  const value = Number(val);
-                  setFieldValue('advertisementPrice', value);
-                }}
-                errors={
-                  errors.advertisementPrice &&
-                  touched.advertisementPrice &&
-                  errors.advertisementPrice
-                }
+                value={values.price}
+                onChangeText={val => setFieldValue('price', val)}
+                errors={errors.price && touched.price && errors.price}
               />
 
               <Dropdown
                 label={'İlan Kategorisi'}
                 items={CONSTANTS.ADVERTISEMENT_CATEGORIES}
                 setSelectedItem={selectedCategory => {
-                  setFieldValue('advertisementCategory', selectedCategory);
+                  setFieldValue('category', selectedCategory.toLowerCase());
                 }}
-                errors={
-                  errors.advertisementCategory &&
-                  touched.advertisementCategory &&
-                  errors.advertisementCategory
-                }
+                errors={errors.category && touched.category && errors.category}
               />
 
               <Button onPress={handleSubmit} label="İlan Oluştur" />

@@ -17,6 +17,7 @@ const Input = ({
     value,
     maxLength,
     multiline = false,
+    onSubmitEditing,
 }) => {
 
     const [inputVisible,setInputVisible] = useState(secret)
@@ -35,16 +36,17 @@ const Input = ({
                 </Text>
             ) }
 
-            <View style={[styles.inputContainer,additionalStyles?.inputContainerr]}>
+            <View style={[styles.inputContainer,additionalStyles?.inputContainer]}>
                 <TextInput
-                    placeholder={placeholder}asd
+                    placeholder={placeholder}
                     onChangeText={onChangeText}
                     keyboardType={keyboardType}
                     secureTextEntry={inputVisible}
                     style={styles.input}
-                    multiline
+                    multiline = {multiline}
                     value={value}
                     maxLength={maxLength}
+                    onSubmitEditing={onSubmitEditing}
                 />
                 {
                     secret && (

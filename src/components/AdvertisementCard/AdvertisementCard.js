@@ -17,15 +17,15 @@ import CONSTANTS from '../../utils/constants';
 import { Button } from '@components';
 
 const LittleCard = ({advertisement, onPress,isOwner,styles}) => {
-  const {imageURL, name, price} = advertisement;
+  const {images, title, price} = advertisement;
   const [liked, setLiked] = useState(false);
   return (
     <TouchableOpacity
       onPress={onPress}
       style={styles.cardContainer}
-      activeOpacity={0.7}>
+      activeOpacity={.7}>
       <View>
-        <Image source={{uri: imageURL[0]}} style={styles.image} />
+        <Image source={{uri: images[0]}} style={styles.image} />
         {!isOwner && (
           <Pressable
             onPress={() => setLiked(!liked)}
@@ -38,7 +38,7 @@ const LittleCard = ({advertisement, onPress,isOwner,styles}) => {
           </Pressable>
         )}
       </View>
-      <Text style={styles.name}>{name}</Text>
+      <Text style={styles.name}>{title}</Text>
       <Text style={styles.price}>{price} TL</Text>
     </TouchableOpacity>
   );
@@ -46,12 +46,12 @@ const LittleCard = ({advertisement, onPress,isOwner,styles}) => {
 
 const BigCard = ({advertisement,onPress,isOwner,styles}) => {
     
-    const { name, description, imageURL, price } = advertisement
+    const { name, description, images, price } = advertisement
     const [liked, setLiked] = useState(false);
 
     return (
         <TouchableOpacity activeOpacity={.7} style={styles.cardContainer}>
-          <Image source={{uri: imageURL[0]}} style={styles.image}/>
+          <Image source={{uri: images[0]}} style={styles.image}/>
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.description}>{description}</Text>
           <Text style={styles.price}>{price} TL</Text>

@@ -5,6 +5,8 @@ import styles from './Advertisements.style'
 
 import { AdvertisementCard } from '@components'
 
+import { mockAdvertisements } from '@utils/mockData'
+
 const Advertisements = ({advertisements}) => {
 
     const user = "Zecky"
@@ -12,8 +14,8 @@ const Advertisements = ({advertisements}) => {
     return (
         <View style={styles.container}>
             <FlatList
-                data={advertisements}
-                renderItem={({item}) => <AdvertisementCard advertisement={item} isOwner={user === item.owner} big={true} onPress={() => console.log("Test")}/>}
+                data={mockAdvertisements}
+                renderItem={({item}) => <AdvertisementCard advertisement={item} isOwner={user === item.owner} onPress={() => console.log("Test")}/>}
             />
         </View>
     )

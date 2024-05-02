@@ -22,7 +22,8 @@ export default StyleSheet.create({
     },
 
     outerContainer: {
-        margin: CONSTANTS.margin.L2
+        margin: CONSTANTS.margin.L2,
+        flex: 1,
     },
 
     descriptionTitle: {

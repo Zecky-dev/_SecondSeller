@@ -22,6 +22,7 @@ import {
   Login,
   Register,
   EmailValidation,
+  AdvertisementDetail,
 } from '@pages';
 
 // Context
@@ -31,15 +32,25 @@ import UserContextProvider, {useUser} from './context/UserProvider';
 import FlashMessage from 'react-native-flash-message';
 
 // Storage
-import Storage from '@utils/Storage';
-import { getUserFromToken, jwtDecode } from '@utils/functions';
-import { getUser } from './services/userServices'; 
+import { getUserFromToken } from '@utils/functions';
 
 
 
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+
+// İlanlar sayfası için kullanılan stack
+const HomeStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen component={Home} name='AdvertisementsScreen' />
+      <Stack.Screen component={AdvertisementDetail} name='AdvertisementDetailScreen' />
+    </Stack.Navigator>
+  )
+}
+
+
 
 const BottomTabs = () => {
   return (
@@ -60,7 +71,7 @@ const BottomTabs = () => {
       }}>
       <Tab.Screen
         name="HomeScreen"
-        component={Home}
+        component={HomeStack}
         options={{
           title: 'Anasayfa',
           tabBarIcon: ({focused, color, size}) => {

@@ -30,14 +30,14 @@ const APP_FONT = 'Galada-Regular'
 
 const ADVERTISEMENT_CATEGORIES = [
     {
-      key: 1,label: "Teknoloji", value: "Technology"
+      key: 1,label: "Teknoloji", value: "technology"
     },
     {
       key: 2, label: "Giyim", value:  "clothes"
     },
     {
       key: 3, label: "Araç", value: "vehicle"
-    }
+    } 
   ]
 
 const mockData =  {

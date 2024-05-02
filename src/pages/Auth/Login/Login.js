@@ -41,7 +41,6 @@ const Login = ({navigation}) => {
       setUser(user)
     }
     else {
-      console.log(response)
       showFlashMessage(response.status,response.message)
     }
     
