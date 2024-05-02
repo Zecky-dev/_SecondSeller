@@ -33,7 +33,11 @@ const Home = ({navigation}) => {
   };
 
   useEffect(() => {
-    getAllAdvertisements();
+    const unsubscribe = navigation.addListener('focus', () => {
+      console.log("focused")
+      getAllAdvertisements();
+    }) 
+    return unsubscribe;
   }, []);
 
   if (loading) {
@@ -60,7 +64,7 @@ const Home = ({navigation}) => {
         ) : (
           <FlatList
             data={advertisements}
-            keyExtractor={(item, index) => item.id}
+            keyExtractor={(item, index) => item._id}
             numColumns={2}
             renderItem={({item}) => (
               <AdvertisementCard

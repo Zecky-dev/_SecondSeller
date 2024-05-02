@@ -75,8 +75,8 @@ const CreateAdvertisement = ({navigation}) => {
       setLoading(true);
       user = await getUserFromToken();
       imageURLs = await uploadImagesAndGetURLs(images);
-      location = await getCurrentLocation();
-      // location = { longitude: 37.157, latitude: 12.14578}
+      // location = await getCurrentLocation();
+      location = { longitude: 37.157, latitude: 12.14578}
       advertisementData = {
         ...values,
         location,
