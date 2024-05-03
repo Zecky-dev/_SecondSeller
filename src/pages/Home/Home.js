@@ -1,15 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, FlatList} from 'react-native';
-
-import {Advertisements, EmailValidation} from '@pages';
+import {View, FlatList} from 'react-native';
 
 import {useUser} from '../../context/UserProvider';
 import {Button, Input, AdvertisementCard, Animation} from '@components';
 
-import {mockAdvertisements} from '@utils/mockData';
 import {getAllAdvertisementAPI} from '../../services/advertisementServices';
-import { showFlashMessage } from 'react-native-flash-message';
-import { favoriteUnFavorite } from '../../services/userServices';
+import {favoriteUnFavorite} from '../../services/userServices';
 
 const Home = ({navigation}) => {
   const [search, setSearch] = useState('');
@@ -35,9 +31,9 @@ const Home = ({navigation}) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      console.log("focused")
+      console.log('focused');
       getAllAdvertisements();
-    }) 
+    });
     return unsubscribe;
   }, []);
 
