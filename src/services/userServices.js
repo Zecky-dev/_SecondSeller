@@ -216,4 +216,4 @@ const favoriteUnFavorite = async (userID,postID) => {
   }
 }
 
-export {register, login, sendEmailVerification,getUser, favoriteUnFavorite};
+export {register, login, sendEmailVerification,getUser, favoriteUnFavorite, updateUser, changePassword};

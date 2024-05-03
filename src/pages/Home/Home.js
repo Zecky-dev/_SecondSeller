@@ -7,8 +7,10 @@ import {Button, Input, AdvertisementCard, Animation} from '@components';
 import {getAllAdvertisementAPI} from '../../services/advertisementServices';
 import {favoriteUnFavorite} from '../../services/userServices';
 
+import FilterModal from './components/FilterModal/FilterModal';
+
 const Home = ({navigation}) => {
-  const [search, setSearch] = useState('');
+  const [filterModalVisible, setFilterModalVisible] = useState(false)
   const [loading, setLoading] = useState(false);
   const [advertisements, setAdvertisements] = useState([]);
   const {user} = useUser();
@@ -51,7 +53,7 @@ const Home = ({navigation}) => {
           />
 
           <Button
-            onPress={() => console.log('Filtreleme Modal Aç')}
+            onPress={() => setFilterModalVisible(true)}
             icon={{name: 'filter', color: 'white', size: 24}}
           />
         </View>
@@ -59,24 +61,27 @@ const Home = ({navigation}) => {
         {loading ? (
           <Animation animationName={'loading'} />
         ) : (
-          <FlatList
-            data={advertisements}
-            keyExtractor={(item, index) => item._id}
-            numColumns={2}
-            renderItem={({item}) => (
-              <AdvertisementCard
-                advertisement={item}
-                isOwner={user._id === item.owner}
-                favoriteUnfavorite={favoriteUnFavorite}
-                big={false}
-                onPress={() => {
-                  navigation.navigate('AdvertisementDetailScreen', {
-                    id: item._id,
-                  });
-                }}
-              />
-            )}
-          />
+          <>
+            <FlatList
+              data={advertisements}
+              keyExtractor={(item, index) => item._id}
+              numColumns={2}
+              renderItem={({item}) => (
+                <AdvertisementCard
+                  advertisement={item}
+                  isOwner={user._id === item.owner}
+                  favoriteUnfavorite={favoriteUnFavorite}
+                  big={false}
+                  onPress={() => {
+                    navigation.navigate('AdvertisementDetailScreen', {
+                      id: item._id,
+                    });
+                  }}
+                />
+              )}
+            />
+            <FilterModal isVisible={filterModalVisible} />
+          </>
         )}
       </View>
     );

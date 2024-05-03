@@ -1,4 +1,7 @@
+import { View , Text } from 'react-native'
 import Modal from 'react-native-modal';
+
+import styles from './FilterModal.style'
 
 const FilterModal = ({isVisible, setVisible}) => {
   return (
@@ -7,7 +10,7 @@ const FilterModal = ({isVisible, setVisible}) => {
         isVisible={isVisible}
         onBackButtonPress={() => setVisible(!isVisible)}
         onBackdropPress={() => setVisible(!isVisible)}>
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, backgroundColor: 'white'}}>
           <Text>I am the modal content</Text>
         </View>
       </Modal>
