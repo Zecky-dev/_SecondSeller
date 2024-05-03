@@ -8,7 +8,7 @@ const ERRORS = {
   passwordConfirm: 'Girdiğiniz şifreler uyuşmuyor',
   required: 'Bu alanın girilmesi zorunludur.',
   positive: 'Bu alana pozitif bir değer girmelisiniz.',
-  default: "Geçerli bir değer seçiniz.",
+  default: 'Geçerli bir değer seçiniz.',
   min: min => `Minimum ${min} karakter uzunluğunda giriş yapınız.`,
   max: max => `Maksimum ${max} karakter uzunluğunda giriş yapınız.`,
 };
@@ -28,7 +28,7 @@ const LoginSchema = yup.object().shape({
     .max(24, ({max}) => ERRORS.max(max)),
 });
 
-const RegisterSchema = yup.object().shape({
+const BasicsSchema = {
   nameSurname: yup
     .string(ERRORS.string)
     .required(ERRORS.required)
@@ -42,6 +42,12 @@ const RegisterSchema = yup.object().shape({
     .string(ERRORS.phoneNumber)
     .required(ERRORS.required)
     .matches(phoneNumberRegex, ERRORS.phoneNumber),
+};
+
+const UpdateProfileSchema = yup.object().shape(BasicsSchema);
+
+const RegisterSchema = yup.object().shape({
+  ...BasicsSchema,
   password: yup
     .string(ERRORS.string)
     .required(ERRORS.required)
@@ -76,8 +82,31 @@ const CreateAdvertisementSchema = yup.object().shape({
     .notOneOf(['default'], ERRORS.default),
   images: yup
     .array(yup.string())
-    .min(1, "En az 1 fotoğraf seçilmelidir.")  
-    .required(ERRORS.required)
+    .min(1, 'En az 1 fotoğraf seçilmelidir.')
+    .required(ERRORS.required),
 });
 
-export {LoginSchema, RegisterSchema, CreateAdvertisementSchema};
+const ChangePasswordSchema = yup.object().shape({
+  oldPassword: yup
+    .string(ERRORS.string)
+    .required(ERRORS.required)
+    .min(6, ({min}) => ERRORS.min(min))
+    .max(24, ({max}) => ERRORS.max(max)),
+  newPassword: yup
+    .string(ERRORS.string)
+    .required(ERRORS.required)
+    .min(6, ({min}) => ERRORS.min(min))
+    .max(24, ({max}) => ERRORS.max(max)),
+    newPasswordConfirm: yup
+    .string(ERRORS.string)
+    .required(ERRORS.required)
+    .oneOf([yup.ref('newPassword'), null], ERRORS.passwordConfirm),
+});
+
+export {
+  LoginSchema,
+  RegisterSchema,
+  CreateAdvertisementSchema,
+  UpdateProfileSchema,
+  ChangePasswordSchema,
+};

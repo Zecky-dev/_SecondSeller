@@ -8,7 +8,7 @@ import {Button, Input, AdvertisementCard, Animation} from '@components';
 
 import {mockAdvertisements} from '@utils/mockData';
 import {getAllAdvertisementAPI} from '../../services/advertisementServices';
-import { showFlashMessage } from 'react-native-flash-message';
+import { showFlashMessage, showMessage } from 'react-native-flash-message';
 
 const Home = ({navigation}) => {
   const [search, setSearch] = useState('');

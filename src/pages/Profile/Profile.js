@@ -7,14 +7,14 @@ import styles from './Profile.style.js';
 import {COLORS, CONSTANTS} from '@utils';
 
 import Storage from '@utils/Storage.js';
-import { useUser } from '../../context/UserProvider.js';
+import {useUser} from '../../context/UserProvider.js';
 
 const profileButtonStyle = {
   container: {
     width: '90%',
     backgroundColor: 'transparent',
     borderWidth: CONSTANTS.borderWidth.thin,
-    borderColor: COLORS.black,    
+    borderColor: COLORS.black,
   },
   label: {
     marginLeft: CONSTANTS.margin.L1,
@@ -23,23 +23,23 @@ const profileButtonStyle = {
   },
 };
 
-const Profile = () => {
-
-  const {user,setUser} = useUser()
-
-
-  const dummyUser = {
-    imageURL: 'https://randomuser.me/api/portraits/men/71.jpg',
-    name: 'John Doe',
-  };
+const Profile = ({navigation}) => {
+  const {user, setUser} = useUser();
 
   return (
     <View style={styles.container}>
-      <Image source={{uri: dummyUser.imageURL}} style={styles.image} />
-      <Text style={styles.name}>{dummyUser.name}</Text>
+      <Image
+        source={{
+          uri: user.imageURL
+            ? user.imageURL
+            : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+        }}
+        style={styles.image}
+      />
+      <Text style={styles.name}>{user.nameSurname}</Text>
 
       <Button
-        onPress={() => console.log('Profil düzenle')}
+        onPress={() => navigation.navigate('ProfileEditScreen')}
         icon={{
           name: 'pencil',
           color: COLORS.black,
@@ -61,9 +61,9 @@ const Profile = () => {
       />
 
       <Button
-        onPress={ async () => {
-          await Storage.removeData('token')
-          setUser(null)
+        onPress={async () => {
+          await Storage.removeData('token');
+          setUser(null);
         }}
         icon={{
           name: 'logout',
