@@ -15,6 +15,7 @@ const createAdvertisementAPI = async (values, token) => {
           },
         },
       );
+
       return {
         status: response.status,
         message: response.message,
@@ -45,39 +46,59 @@ const createAdvertisementAPI = async (values, token) => {
 
 // ID'si bilinen ilanın detaylarını getirmek için kullanılan servis fonksiyonu
 const getAdvertisementAPI = async (id, token) => {
-  if(token) {
+  if (token) {
     try {
-      const advertisement = await axios.get(`${BASE_URL}/advertisements/${id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
-      })
-      return advertisement;
-    }
-    catch(err) { 
-      return null;
-    }
-  }
-}
-
-  const getAllAdvertisementAPI = async (token) => {
-    if(token) {
-      try {
-        const advertisements = await axios.get(`${BASE_URL}/advertisements`, {
+      const advertisement = await axios.get(
+        `${BASE_URL}/advertisements/${id}`,
+        {
           headers: {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + token,
           },
-        })
-        return advertisements;
-      }
-      catch(err) { 
-        console.log("ADVERTISEMENT_GET_ERROR",err);
-        return null;
-      }
+        },
+      );
+      return advertisement;
+    } catch (err) {
+      return null;
     }
+  }
+};
 
-}
+const getAllAdvertisementAPI = async token => {
+  if (token) {
+    try {
+      const advertisements = await axios.get(`${BASE_URL}/advertisements`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+      });
+      return advertisements;
+    } catch (err) {
+      console.log('ADVERTISEMENT_GET_ERROR', err);
+      return null;
+    }
+  }
+};
 
-export {createAdvertisementAPI,getAdvertisementAPI,getAllAdvertisementAPI};
+const getAdvertisementByUserIdAPI = async (id, token) => {
+  if (token) {
+    try {
+      const advertisements = await axios.get(
+        `${BASE_URL}/advertisements/user?id=${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+          },
+        },
+      );
+      return advertisements.data.data;
+    } catch (err) {
+      console.log('ADVERTISEMENT_GET_ERROR', err);
+      return null;
+    }
+  }
+};
+
+export {createAdvertisementAPI, getAdvertisementAPI, getAllAdvertisementAPI, getAdvertisementByUserIdAPI};
