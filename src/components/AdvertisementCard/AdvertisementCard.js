@@ -4,19 +4,30 @@ import {
   View,
   Text,
   Pressable,
-  ImageBackground,
   TouchableOpacity,
-  ImageBase,
 } from 'react-native';
 
-import {littleCardStyles, bigCardStyles} from './AdvertisemetCard.style';
+// Icon
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+// styles & constants
+import {littleCardStyles, bigCardStyles} from './AdvertisemetCard.style';
 import COLORS from '../../utils/colors';
 import CONSTANTS from '../../utils/constants';
+
+// Custom components
 import { Button } from '@components';
 
-const LittleCard = ({advertisement, onPress,isOwner,styles}) => {
+// Uygulama genelindeki kullanıcıyı döndüren hook
+import { useUser } from '../../context/UserProvider';
+
+// Kart - büyük versiyon
+const LittleCard = ({advertisement, onPress, isOwner, styles, favoriteUnfavorite}) => {
+
+  const { user } = useUser();
+
+  console.log(isOwner)
+
   const {images, title, price} = advertisement;
   const [liked, setLiked] = useState(false);
   return (
@@ -26,9 +37,12 @@ const LittleCard = ({advertisement, onPress,isOwner,styles}) => {
       activeOpacity={.7}>
       <View>
         <Image source={{uri: images[0]}} style={styles.image} />
-        {!isOwner && (
+        {isOwner !== true && (
           <Pressable
-            onPress={() => setLiked(!liked)}
+            onPress={() => {
+              setLiked(!liked);
+              favoriteUnfavorite(user._id, advertisement._id)
+            }}
             style={styles.addFavoriteButton}>
             <Icon
               name={liked ? 'heart' : 'heart-outline'}
@@ -44,20 +58,26 @@ const LittleCard = ({advertisement, onPress,isOwner,styles}) => {
   );
 };
 
-const BigCard = ({advertisement,onPress,isOwner,styles}) => {
-    
-    const { name, description, images, price } = advertisement
+// Kart - küçük versiyon
+const BigCard = ({advertisement,onPress,isOwner,styles, favoriteUnfavorite}) => {
+
+  const { user } = useUser();
+
+    const { title, description, images, price } = advertisement
     const [liked, setLiked] = useState(false);
 
     return (
         <TouchableOpacity activeOpacity={.7} style={styles.cardContainer}>
           <Image source={{uri: images[0]}} style={styles.image}/>
-          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.name}>{title}</Text>
           <Text style={styles.description}>{description}</Text>
           <Text style={styles.price}>{price} TL</Text>
           {!isOwner && (
           <Pressable
-            onPress={() => setLiked(!liked)}
+            onPress={() => {
+              setLiked(!liked);
+              favoriteUnfavorite(user._id, advertisement._id)
+            }}
             style={styles.likeButton}>
             <Icon
               name={liked ? 'heart' : 'heart-outline'}
@@ -82,18 +102,16 @@ const AdvertisementCard = ({
   onPress,
   isOwner,
   big = false,
+  favoriteUnfavorite
 }) => {
 
     const styles = big ? bigCardStyles : littleCardStyles
-
     if(!big) {
-        return <LittleCard advertisement={advertisement} onPress={onPress} isOwner={isOwner} styles={styles}/>
+        return <LittleCard advertisement={advertisement} onPress={onPress} isOwner={isOwner} styles={styles} favoriteUnfavorite={favoriteUnfavorite}/>
     }
     else {
-        return <BigCard advertisement={advertisement} onPress={onPress} isOwner={isOwner} styles={styles}/>
+        return <BigCard advertisement={advertisement} onPress={onPress} isOwner={isOwner} styles={styles} favoriteUnfavorite={favoriteUnfavorite}/>
     }
-
-
 };
 
 export default AdvertisementCard;

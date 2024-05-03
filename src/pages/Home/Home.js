@@ -8,7 +8,8 @@ import {Button, Input, AdvertisementCard, Animation} from '@components';
 
 import {mockAdvertisements} from '@utils/mockData';
 import {getAllAdvertisementAPI} from '../../services/advertisementServices';
-import { showFlashMessage, showMessage } from 'react-native-flash-message';
+import { showFlashMessage } from 'react-native-flash-message';
+import { favoriteUnFavorite } from '../../services/userServices';
 
 const Home = ({navigation}) => {
   const [search, setSearch] = useState('');
@@ -69,7 +70,8 @@ const Home = ({navigation}) => {
             renderItem={({item}) => (
               <AdvertisementCard
                 advertisement={item}
-                isOwner={user === item.owner}
+                isOwner={user._id === item.owner}
+                favoriteUnfavorite={favoriteUnFavorite}
                 big={false}
                 onPress={() => {
                   navigation.navigate('AdvertisementDetailScreen', {

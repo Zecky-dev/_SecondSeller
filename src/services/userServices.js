@@ -2,9 +2,9 @@ import axios from 'axios';
 
 import {BASE_URL} from '@env';
 
-const sendEmailVerification = async (values, type) => {
-  const {emailAddress, phoneNumber} = values;
-  console.log(emailAddress);
+// E-mail doğrulaması atan servis fonksiyonu
+const sendEmailVerification = async values => {
+  const {emailAddress,phoneNumber} = values;
   try {
     const response = await axios.post(
       `${BASE_URL}/user/sendEmailVerification`,
@@ -37,6 +37,7 @@ const sendEmailVerification = async (values, type) => {
   }
 };
 
+// Kayıt servis fonksiyonu
 const register = async values => {
   const {nameSurname, emailAddress, phoneNumber, password} = values;
 
@@ -74,6 +75,8 @@ const register = async values => {
   }
 };
 
+
+// Giriş servis fonksiyonu
 const login = async values => {
   try {
     const {emailAddress, password} = values;
@@ -108,6 +111,7 @@ const login = async values => {
   }
 };
 
+// ID'ye göre kullanıcı getirme servis fonksiyonu
 const getUser = async (userID, token) => {
   try {
     const response = await axios.get(`${BASE_URL}/user/${userID}`, {
@@ -195,11 +199,21 @@ const changePassword = async (userID, values) => {
   }
 };
 
-export {
-  register,
-  login,
-  sendEmailVerification,
-  getUser,
-  updateUser,
-  changePassword,
-};
+// Favoriye ekleme, çıkarma servis fonksiyonu
+const favoriteUnFavorite = async (userID,postID) => {
+  try {
+    await axios.put(`${BASE_URL}/user/likeDislike`, {
+      userID,
+      postID
+    })
+  }
+  catch(err) {
+    return {
+      status: "error",
+      message: "An error occurred while like/dislike.",
+      error: err.response.data
+    }
+  }
+}
+
+export {register, login, sendEmailVerification,getUser, favoriteUnFavorite};

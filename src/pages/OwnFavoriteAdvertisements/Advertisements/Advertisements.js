@@ -1,24 +1,36 @@
-import React from 'react'
-import {View,Text, FlatList} from  'react-native'
+import React from 'react';
+import {FlatList} from 'react-native';
+import { AdvertisementCard} from '@components';
 
-import styles from './Advertisements.style'
+// Favorite unfavorite servis fonksiyonu
+import { favoriteUnFavorite } from '../../../services/userServices';
 
-import { AdvertisementCard } from '@components'
-
-import { mockAdvertisements } from '@utils/mockData'
+// Uygulama genelindeki kullanıcıyı döndüren hook
+import {useUser} from '../../../context/UserProvider';
 
 const Advertisements = ({advertisements}) => {
-
-    const user = "Zecky"
+    
+    const { user : { _id: id } } = useUser()
 
     return (
-        <View style={styles.container}>
-            <FlatList
-                data={mockAdvertisements}
-                renderItem={({item}) => <AdvertisementCard advertisement={item} isOwner={user === item.owner} onPress={() => console.log("Test")}/>}
+        <FlatList
+          data={advertisements}
+          keyExtractor={(item) => item._id}
+          renderItem={({item}) => (
+            <AdvertisementCard
+              advertisement={item}
+              isOwner={ id === item.owner}
+              favoriteUnfavorite={favoriteUnFavorite}
+              big={true}
+              onPress={() => {
+                navigation.navigate('AdvertisementDetailScreen', {
+                  id: item._id,
+                });
+              }}
             />
-        </View>
-    )
-}
+          )}
+        />
+      );
+};
 
-export default Advertisements
+export default Advertisements;
