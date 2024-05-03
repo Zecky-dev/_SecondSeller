@@ -1,12 +1,12 @@
-import React, {useState } from 'react';
+import React, {useState} from 'react';
 import {View, ScrollView, Image, Text} from 'react-native';
 import {Button, Input, Animation} from '@components';
 
 import styles from './EmailVerification.style';
 
-import {register} from '../../services/userServices';
+import {register, updateUser} from '../../services/userServices';
 import {useUser} from '../../context/UserProvider';
-import { getUserFromToken, showFlashMessage } from '@utils/functions';
+import {getUserFromToken, showFlashMessage} from '@utils/functions';
 import Storage from '@utils/Storage';
 
 const EmailVerification = ({navigation, route}) => {
@@ -14,8 +14,7 @@ const EmailVerification = ({navigation, route}) => {
   const [loading, setLoading] = useState(false);
   const {setUser} = useUser();
 
-  const {verificationCode: code, user} = route.params;
-
+  const {verificationCode: code, user, type} = route.params;
   const checkAndRegister = async () => {
     if (verificationCode === code) {
       setLoading(true);
@@ -23,6 +22,7 @@ const EmailVerification = ({navigation, route}) => {
       if (response.status.toString().startsWith('2')) {
         await Storage.storeData('token', response.data);
         const user = await getUserFromToken();
+        console.log('USER', user);
         setUser(user);
       } else {
         showFlashMessage(response.status, response.message);
@@ -31,8 +31,23 @@ const EmailVerification = ({navigation, route}) => {
     }
   };
 
+  const checkAndUpdate = async () => {
+    if (verificationCode === code) {
+      setLoading(true);
+      const response = await updateUser(user.id, user.values);
+      if (response.status.toString().startsWith('2')) {
+        const user = await getUserFromToken();
+        setUser(user);
+        navigation.replace('ProfileStackScreen');
+      } else {
+        showFlashMessage(response.status, response.message);
+      }
+      setLoading(false);
+    }
+  };
+
   if (loading) {
-    return <Animation animationName={"loading"}/>;
+    return <Animation animationName={'loading'} />;
   } else {
     return (
       <ScrollView contentContainerStyle={styles.container}>
@@ -58,7 +73,12 @@ const EmailVerification = ({navigation, route}) => {
           keyboardType="number-pad"
           maxLength={6}
         />
-        <Button onPress={() => checkAndRegister()} label="Doğrula" />
+        <Button
+          onPress={() =>
+            type == 'register' ? checkAndRegister() : checkAndUpdate()
+          }
+          label="Doğrula"
+        />
       </ScrollView>
     );
   }

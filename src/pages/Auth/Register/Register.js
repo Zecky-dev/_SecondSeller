@@ -56,7 +56,7 @@ const Register = ({navigation}) => {
               setLoading(true)
               const response = await sendEmailVerification(user)
               if(response.status.toString().startsWith('2')) {
-                navigation.navigate('EmailVerificationScreen', { verificationCode: response.data, user } )              
+                navigation.navigate('EmailVerificationScreen', { verificationCode: response.data, user, type: 'register' } )              
               }
               else {
                 showFlashMessage(response.status,response.message)

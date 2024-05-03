@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import {StatusBar, View} from 'react-native';
 
-
 // Constants
 import {COLORS, CONSTANTS} from '@utils';
 
@@ -23,6 +22,8 @@ import {
   Register,
   EmailValidation,
   AdvertisementDetail,
+  ProfileEdit,
+  ChangePassword
 } from '@pages';
 
 // Context
@@ -32,10 +33,7 @@ import UserContextProvider, {useUser} from './context/UserProvider';
 import FlashMessage from 'react-native-flash-message';
 
 // Storage
-import { getUserFromToken } from '@utils/functions';
-
-
-
+import {getUserFromToken} from '@utils/functions';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -43,14 +41,31 @@ const Stack = createNativeStackNavigator();
 // İlanlar sayfası için kullanılan stack
 const HomeStack = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen component={Home} name='AdvertisementsScreen' />
-      <Stack.Screen component={AdvertisementDetail} name='AdvertisementDetailScreen' />
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen component={Home} name="AdvertisementsScreen" />
+      <Stack.Screen
+        component={AdvertisementDetail}
+        name="AdvertisementDetailScreen"
+      />
     </Stack.Navigator>
-  )
-}
+  );
+};
 
-
+// Profile sayfası için kullanılan stack
+const ProfileStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen component={Profile} name="ProfileStackScreen" />
+      <Stack.Screen component={ProfileEdit} name="ProfileEditScreen" />
+      <Stack.Screen
+        component={EmailValidation}
+        key={1}
+        name="ProfileEmailValidationScreen"
+      />
+      <Stack.Screen component={ChangePassword} name="ChangePasswordScreen" />
+    </Stack.Navigator>
+  );
+};
 
 const BottomTabs = () => {
   return (
@@ -108,7 +123,7 @@ const BottomTabs = () => {
 
       <Tab.Screen
         name="ProfileScreen"
-        component={Profile}
+        component={ProfileStack}
         options={{
           title: 'Profil',
           tabBarIcon: ({focused, color, size}) => {
@@ -128,8 +143,7 @@ const AuthStack = () => {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName='LoginScreen'
-      >
+      initialRouteName="LoginScreen">
       <Stack.Screen name="LoginScreen" component={Login} />
       <Stack.Screen name="RegisterScreen" component={Register} />
       <Stack.Screen
@@ -141,24 +155,19 @@ const AuthStack = () => {
 };
 
 const App = () => {
-
-  const {user,setUser} = useUser()
+  const {user, setUser} = useUser();
 
   useEffect(() => {
     const checkToken = async () => {
       const userData = await getUserFromToken();
       setUser(userData);
     };
-    checkToken()
+    checkToken();
   }, []);
 
-  
-
-  
-  
   return (
     <>
-      <View style={{flex: 1}}>  
+      <View style={{flex: 1}}>
         <StatusBar
           backgroundColor={COLORS.primary}
           barStyle={'light-content'}
@@ -167,20 +176,17 @@ const App = () => {
           {user ? <BottomTabs /> : <AuthStack />}
         </NavigationContainer>
       </View>
-      <FlashMessage position={"top"}/>
+      <FlashMessage position={'top'} />
     </>
-    
   );
 };
 
 const AppWithContext = () => {
   return (
     <UserContextProvider>
-      <App/>
+      <App />
     </UserContextProvider>
-  )
-}
-
-
+  );
+};
 
 export default AppWithContext;

@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 // Components
 import {ScrollView, Text, View, PermissionsAndroid} from 'react-native';
 
-import {Button, Slider, Input,Animation} from '@components';
+import {Button, Slider, Input, Animation} from '@components';
 import Dropdown from '../../components/OptionPicker/OptionPicker';
 
 // Constants
@@ -42,19 +42,20 @@ const takeImageFromGallery = async (setImages, setFieldValue) => {
     selectionLimit: 3,
   });
   const images = [];
-
-  for (let asset of result.assets) {
-    try {
-      const resizedImage = await resizeImage(asset, 1280, 720);
-      if (resizeImage !== null) {
-        images.push(resizedImage.uri);
+  if (!result.didCancel) {
+    for (let asset of result.assets) {
+      try {
+        const resizedImage = await resizeImage(asset, 1280, 720);
+        if (resizeImage !== null) {
+          images.push(resizedImage.uri);
+        }
+      } catch (err) {
+        showMessage({
+          message: 'Resim seçilirken hata meydana geldi, tekrar deneyiniz!',
+          type: 'danger',
+        });
+        return;
       }
-    } catch (err) {
-      showMessage({
-        message: 'Resim seçilirken hata meydana geldi, tekrar deneyiniz!',
-        type: 'danger',
-      });
-      return;
     }
   }
   setImages(images);
@@ -76,7 +77,7 @@ const CreateAdvertisement = ({navigation}) => {
       user = await getUserFromToken();
       imageURLs = await uploadImagesAndGetURLs(images);
       // location = await getCurrentLocation();
-      location = { longitude: 37.157, latitude: 12.14578}
+      location = {longitude: 37.157, latitude: 12.14578};
       advertisementData = {
         ...values,
         location,
@@ -87,7 +88,7 @@ const CreateAdvertisement = ({navigation}) => {
         advertisementData,
         User.token,
       );
-      const {status,message} = response.data;
+      const {status, message} = response.data;
       if (status !== 'success') {
         showMessage({
           message,
@@ -95,7 +96,7 @@ const CreateAdvertisement = ({navigation}) => {
         });
         return;
       }
-      navigation.navigate('HomeScreen')
+      navigation.navigate('HomeScreen');
       setLoading(false);
       setImages([]);
     } else {
@@ -108,7 +109,7 @@ const CreateAdvertisement = ({navigation}) => {
   };
 
   if (loading) {
-    return <Animation animationName={"loading"} />
+    return <Animation animationName={'loading'} />;
   } else {
     return (
       <ScrollView contentContainerStyle={styles.container}>
