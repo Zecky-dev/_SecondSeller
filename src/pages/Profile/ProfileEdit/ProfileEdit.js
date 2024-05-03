@@ -18,6 +18,7 @@ import {
   sendEmailVerification,
   updateUser,
 } from '../../../services/userServices';
+import { uploadImagesAndGetURLs } from '../../../services/otherServices';
 
 const takeImageFromGallery = async setFieldValue => {
   const result = await launchImageLibrary({
@@ -60,6 +61,9 @@ const ProfilEdit = ({navigation}) => {
     } else if (user.emailAddress !== newUser.emailAddress) {
       type = 'emailAddressUpdate';
     }
+    const images = [newUser.imageURL]
+    const imageURL = (await uploadImagesAndGetURLs(images))[0]
+    newUser.imageURL = imageURL
 
     if (type) {
       const response = await sendEmailVerification(newUser, type);
