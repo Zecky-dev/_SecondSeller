@@ -4,7 +4,7 @@ const Storage = {
     storeData: async (key,value) => {
         try {
             await AsyncStorage.setItem(key,value)
-            console.log(`Key ${key} is set to value ${value}`)
+            //console.log(`Key ${key} is set to value ${value}`)
         }
         catch(err) {
             console.log("Storage Store Error",err.message)
@@ -13,7 +13,7 @@ const Storage = {
     getData: async (key) => {
         try {
             const value = await AsyncStorage.getItem(key)
-            console.log(`Value of key ${key} is ${value}`)
+            //console.log(`Value of key ${key} is ${value}`)
             return value;
         }
         catch(err) {

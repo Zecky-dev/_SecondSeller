@@ -1,15 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, FlatList} from 'react-native';
+import {useEffect, useState} from 'react';
+import {FlatList, View} from 'react-native';
 
-import {Advertisements, EmailValidation} from '@pages';
-
+import {AdvertisementCard, Animation, Button, Input} from '@components';
 import {useUser} from '../../context/UserProvider';
-import {Button, Input, AdvertisementCard, Animation} from '@components';
 
-import {mockAdvertisements} from '@utils/mockData';
 import {getAllAdvertisementAPI} from '../../services/advertisementServices';
-import { showFlashMessage } from 'react-native-flash-message';
-import { favoriteUnFavorite } from '../../services/userServices';
+import {favoriteUnFavorite} from '../../services/userServices';
 
 const Home = ({navigation}) => {
   const [search, setSearch] = useState('');
@@ -17,6 +13,7 @@ const Home = ({navigation}) => {
   const [advertisements, setAdvertisements] = useState([]);
   const {user} = useUser();
 
+  // Sistemden tüm ilanları getirir
   const getAllAdvertisements = () => {
     setLoading(true);
     getAllAdvertisementAPI(user.token)
@@ -33,11 +30,11 @@ const Home = ({navigation}) => {
     setLoading(false);
   };
 
+  // 'Home' sayfasına her focus olunduğunda sistemdeki ilanları getirir
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      console.log("focused")
       getAllAdvertisements();
-    }) 
+    });
     return unsubscribe;
   }, []);
 

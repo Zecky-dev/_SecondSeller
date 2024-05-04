@@ -15,6 +15,8 @@ const EmailVerification = ({navigation, route}) => {
   const {setUser} = useUser();
 
   const {verificationCode: code, user, type} = route.params;
+
+  // Kullanıcı kayıt işlemi sırasında mail kodunu kontrol eder sonra kullanıcıyı kaydeder
   const checkAndRegister = async () => {
     if (verificationCode === code) {
       setLoading(true);
@@ -31,6 +33,7 @@ const EmailVerification = ({navigation, route}) => {
     }
   };
 
+  // Kullanıcı eposta veya telefon numarasını güncellemek isterse önce mail kodunu kontrol eder sonra bilgileri günceller
   const checkAndUpdate = async () => {
     if (verificationCode === code) {
       setLoading(true);

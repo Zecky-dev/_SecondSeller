@@ -8,7 +8,7 @@ const sendEmailVerification = async values => {
   try {
     const response = await axios.post(
       `${BASE_URL}/user/sendEmailVerification`,
-      {emailAddress, phoneNumber, type},
+      {emailAddress, phoneNumber, type: ''},
     );
     return {
       status: response.status,
@@ -132,6 +132,7 @@ const getUser = async (userID, token) => {
   }
 };
 
+// Kullanıcı güncelleme servis fonksiyonu
 const updateUser = async (userID, values) => {
   try {
     const response = await axios.put(
@@ -165,6 +166,7 @@ const updateUser = async (userID, values) => {
   }
 };
 
+// Şifre güncelleme servis fonksiyonu
 const changePassword = async (userID, values) => {
   try {
     const response = await axios.put(
@@ -201,10 +203,15 @@ const changePassword = async (userID, values) => {
 // Favoriye ekleme, çıkarma servis fonksiyonu
 const favoriteUnFavorite = async (userID, postID) => {
   try {
-    await axios.put(`${BASE_URL}/user/likeDislike`, {
+    const response = await axios.put(`${BASE_URL}/user/likeDislike`, {
       userID,
       postID,
     });
+    return {
+      status: response.status,
+      message: response.data.message,
+      data: response.data.data,
+    };
   } catch (err) {
     return {
       status: 'error',
@@ -221,5 +228,5 @@ export {
   getUser,
   favoriteUnFavorite,
   updateUser,
-  changePassword
+  changePassword,
 };

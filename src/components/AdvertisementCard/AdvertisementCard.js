@@ -1,19 +1,13 @@
-import React, {useState} from 'react';
-import {
-  Image,
-  View,
-  Text,
-  Pressable,
-  TouchableOpacity,
-} from 'react-native';
+import { useEffect, useState } from 'react';
+import { Image, Pressable, Text, TouchableOpacity, View } from 'react-native';
 
 // Icon
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // styles & constants
-import {littleCardStyles, bigCardStyles} from './AdvertisemetCard.style';
 import COLORS from '../../utils/colors';
 import CONSTANTS from '../../utils/constants';
+import { bigCardStyles, littleCardStyles } from './AdvertisemetCard.style';
 
 // Custom components
 import { Button } from '@components';
@@ -22,26 +16,50 @@ import { Button } from '@components';
 import { useUser } from '../../context/UserProvider';
 
 // Kart - büyük versiyon
-const LittleCard = ({advertisement, onPress, isOwner, styles, favoriteUnfavorite}) => {
-
-  const { user } = useUser();
-
-  console.log(isOwner)
+const LittleCard = ({
+  advertisement,
+  onPress,
+  isOwner,
+  styles,
+  favoriteUnfavorite,
+}) => {
+  const {user, setUser} = useUser();
 
   const {images, title, price} = advertisement;
-  const [liked, setLiked] = useState(false);
+  // Kalp icon durum kontrolü
+  const [liked, setLiked] = useState(
+    user?.favorites?.includes(advertisement._id),
+  );
+
+  // Eğer local de bulunan user'ın favorileri güncellenirse kart üzerindeki icon'lar tekrardan düzenlenecek
+  useEffect(() => {
+    setLiked(user.favorites.includes(advertisement._id));
+    console.log("iki")
+  }, [user.favorites]);
+
+  // Kalp icon'una basılınca ilan favorilere eklenecek veya favorilerden kaldırılacak,
+  // local de bulunan user'ın favorites değeri güncellenecek
+  const getLastFavorites = async () => {
+    const updatedFavorites = await favoriteUnfavorite(
+      user._id,
+      advertisement._id,
+    );
+    const newFavorites = updatedFavorites.data;
+    setUser({...user, favorites: newFavorites});
+    setLiked(newFavorites.includes(advertisement._id));
+  };
+
   return (
     <TouchableOpacity
       onPress={onPress}
       style={styles.cardContainer}
-      activeOpacity={.7}>
+      activeOpacity={0.7}>
       <View>
         <Image source={{uri: images[0]}} style={styles.image} />
         {isOwner !== true && (
           <Pressable
             onPress={() => {
-              setLiked(!liked);
-              favoriteUnfavorite(user._id, advertisement._id)
+              getLastFavorites();
             }}
             style={styles.addFavoriteButton}>
             <Icon
@@ -59,59 +77,94 @@ const LittleCard = ({advertisement, onPress, isOwner, styles, favoriteUnfavorite
 };
 
 // Kart - küçük versiyon
-const BigCard = ({advertisement,onPress,isOwner,styles, favoriteUnfavorite}) => {
+const BigCard = ({
+  advertisement,
+  onPress,
+  isOwner,
+  styles,
+  favoriteUnfavorite,
+}) => {
+  const {user, setUser} = useUser();
 
-  const { user } = useUser();
+  const {title, description, images, price} = advertisement;
+  const [liked, setLiked] = useState(
+    user?.favorites.includes(advertisement._id),
+  );
 
-    const { title, description, images, price } = advertisement
-    const [liked, setLiked] = useState(false);
+  const getLastFavorites = async () => {
+    const updatedFavorites = await favoriteUnfavorite(
+      user._id,
+      advertisement._id,
+    );
+    const newFavorites = updatedFavorites.data;
+    setUser({...user, favorites: newFavorites});
+    setLiked(newFavorites.includes(advertisement._id));
+  };
 
-    return (
-        <TouchableOpacity activeOpacity={.7} style={styles.cardContainer}>
-          <Image source={{uri: images[0]}} style={styles.image}/>
-          <Text style={styles.name}>{title}</Text>
-          <Text style={styles.description}>{description}</Text>
-          <Text style={styles.price}>{price} TL</Text>
-          {!isOwner && (
-          <Pressable
-            onPress={() => {
-              setLiked(!liked);
-              favoriteUnfavorite(user._id, advertisement._id)
-            }}
-            style={styles.likeButton}>
-            <Icon
-              name={liked ? 'heart' : 'heart-outline'}
-              color={liked ? COLORS.red : COLORS.blackMuted}
-              size={CONSTANTS.fontSize.L6}
-            />
-          </Pressable>
-        )}
-        {isOwner && (
+  return (
+    <TouchableOpacity activeOpacity={0.7} style={styles.cardContainer}>
+      <Image source={{uri: images[0]}} style={styles.image} />
+      <Text style={styles.name}>{title}</Text>
+      <Text style={styles.description}>{description}</Text>
+      <Text style={styles.price}>{price} TL</Text>
+      {!isOwner && (
+        <Pressable
+          onPress={() => {
+            getLastFavorites();
+          }}
+          style={styles.likeButton}>
+          <Icon
+            name={liked ? 'heart' : 'heart-outline'}
+            color={liked ? COLORS.red : COLORS.blackMuted}
+            size={CONSTANTS.fontSize.L6}
+          />
+        </Pressable>
+      )}
+      {isOwner && (
         <View style={styles.actionButtonsContainer}>
-          <Button label='İlanı Düzenle' onPress={() => console.log("İlanı Düzenle")}/>
-          <Button label='Satıldı İşaretle' onPress={() => console.log("Satıldı İşaretle")}/>
-
+          <Button
+            label="İlanı Düzenle"
+            onPress={() => console.log('İlanı Düzenle')}
+          />
+          <Button
+            label="Satıldı İşaretle"
+            onPress={() => console.log('Satıldı İşaretle')}
+          />
         </View>
       )}
-        </TouchableOpacity>
-    )
-}
+    </TouchableOpacity>
+  );
+};
 
 const AdvertisementCard = ({
   advertisement,
   onPress,
   isOwner,
   big = false,
-  favoriteUnfavorite
+  favoriteUnfavorite,
 }) => {
-
-    const styles = big ? bigCardStyles : littleCardStyles
-    if(!big) {
-        return <LittleCard advertisement={advertisement} onPress={onPress} isOwner={isOwner} styles={styles} favoriteUnfavorite={favoriteUnfavorite}/>
-    }
-    else {
-        return <BigCard advertisement={advertisement} onPress={onPress} isOwner={isOwner} styles={styles} favoriteUnfavorite={favoriteUnfavorite}/>
-    }
+  const styles = big ? bigCardStyles : littleCardStyles;
+  if (!big) {
+    return (
+      <LittleCard
+        advertisement={advertisement}
+        onPress={onPress}
+        isOwner={isOwner}
+        styles={styles}
+        favoriteUnfavorite={favoriteUnfavorite}
+      />
+    );
+  } else {
+    return (
+      <BigCard
+        advertisement={advertisement}
+        onPress={onPress}
+        isOwner={isOwner}
+        styles={styles}
+        favoriteUnfavorite={favoriteUnfavorite}
+      />
+    );
+  }
 };
 
 export default AdvertisementCard;

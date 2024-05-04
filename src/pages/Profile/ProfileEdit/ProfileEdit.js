@@ -18,8 +18,9 @@ import {
   sendEmailVerification,
   updateUser,
 } from '../../../services/userServices';
-import { uploadImagesAndGetURLs } from '../../../services/otherServices';
+import {uploadImagesAndGetURLs} from '../../../services/otherServices';
 
+// Cihazdan resim alma
 const takeImageFromGallery = async setFieldValue => {
   const result = await launchImageLibrary({
     mediaType: 'photo',
@@ -47,10 +48,12 @@ const ProfilEdit = ({navigation}) => {
   const {user, setUser} = useUser();
   const [loading, setLoading] = useState(false);
 
+  // Kullanıcı bilgilerini güncelleme
   const handleUpdate = async newUser => {
     setLoading(true);
     let type = '';
 
+    // phoneNumber veya emailAddress güncellendi mi kontrolü
     if (
       user.emailAddress !== newUser.emailAddress &&
       user.phoneNumber !== newUser.phoneNumber
@@ -61,10 +64,15 @@ const ProfilEdit = ({navigation}) => {
     } else if (user.emailAddress !== newUser.emailAddress) {
       type = 'emailAddressUpdate';
     }
-    const images = [newUser.imageURL]
-    const imageURL = (await uploadImagesAndGetURLs(images))[0]
-    newUser.imageURL = imageURL
 
+    // Kullanıcının profil resminin sistemdeki URL'ini alma
+    if (user.imageURL !== newUser.imageURL) {
+      const images = [newUser.imageURL];
+      const imageURL = (await uploadImagesAndGetURLs(images))[0];
+      newUser.imageURL = imageURL;
+    }
+
+    // Eğer phoneNumber veya emailAddress güncellenmiş ise yeni değerler sistemde var mı kontorlü yap
     if (type) {
       const response = await sendEmailVerification(newUser, type);
       if (response.status.toString().startsWith('2')) {
