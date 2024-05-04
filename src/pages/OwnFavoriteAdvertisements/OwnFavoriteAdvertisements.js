@@ -86,6 +86,4 @@ const renderTabBar = props => {
   );
 };
 
-
-
 export default OwnFavoriteAdvertisements;

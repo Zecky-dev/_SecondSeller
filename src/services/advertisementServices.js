@@ -101,4 +101,39 @@ const getAdvertisementByUserIdAPI = async (id, token) => {
   }
 };
 
-export {createAdvertisementAPI, getAdvertisementAPI, getAllAdvertisementAPI, getAdvertisementByUserIdAPI};
+const updateAdversiment = async (id, values, token) => {
+  if (token) {
+    delete values._id;
+    delete values.createDate;
+    delete values.__v;
+    console.log(values);
+    try {
+      const response = await axios.put(
+        `${BASE_URL}/advertisements/${id}`,
+        values,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+          },
+        },
+      );
+      return {
+        status: response.status,
+        message: response.message,
+        data: response.data,
+      };
+    } catch (err) {
+      console.log('ADVERTISMENET_UPDATE_ERROR', err.response.data);
+      return null;
+    }
+  }
+};
+
+export {
+  createAdvertisementAPI,
+  getAdvertisementAPI,
+  getAllAdvertisementAPI,
+  getAdvertisementByUserIdAPI,
+  updateAdversiment,
+};

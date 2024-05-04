@@ -7,9 +7,10 @@ import {getAllAdvertisementAPI} from '../../services/advertisementServices';
 import {favoriteUnFavorite} from '../../services/userServices';
 
 import FilterModal from './components/FilterModal/FilterModal';
+import {AdvertisementCard, Button, Input} from '@components';
 
 const Home = ({navigation}) => {
-  const [filterModalVisible, setFilterModalVisible] = useState(false)
+  const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [advertisements, setAdvertisements] = useState([]);
   const {user} = useUser();
@@ -35,7 +36,6 @@ const Home = ({navigation}) => {
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getAllAdvertisements();
-    });
     });
     return unsubscribe;
   }, []);
@@ -67,19 +67,22 @@ const Home = ({navigation}) => {
               data={advertisements}
               keyExtractor={(item, index) => item._id}
               numColumns={2}
-              renderItem={({item}) => (
-                <AdvertisementCard
-                  advertisement={item}
-                  isOwner={user._id === item.owner}
-                  favoriteUnfavorite={favoriteUnFavorite}
-                  big={false}
-                  onPress={() => {
-                    navigation.navigate('AdvertisementDetailScreen', {
-                      id: item._id,
-                    });
-                  }}
-                />
-              )}
+              renderItem={({item}) => {
+                if (!item.soldStatus)
+                  return (
+                    <AdvertisementCard
+                      advertisement={item}
+                      isOwner={user._id === item.owner}
+                      favoriteUnfavorite={favoriteUnFavorite}
+                      big={false}
+                      onPress={() => {
+                        navigation.navigate('AdvertisementDetailScreen', {
+                          id: item._id,
+                        });
+                      }}
+                    />
+                  );
+              }}
             />
             <FilterModal isVisible={filterModalVisible} />
           </>

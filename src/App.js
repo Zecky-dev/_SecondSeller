@@ -23,7 +23,7 @@ import {
   EmailValidation,
   AdvertisementDetail,
   ProfileEdit,
-  ChangePassword
+  ChangePassword,
 } from '@pages';
 
 // Context
@@ -63,6 +63,18 @@ const ProfileStack = () => {
         name="ProfileEmailValidationScreen"
       />
       <Stack.Screen component={ChangePassword} name="ChangePasswordScreen" />
+    </Stack.Navigator>
+  );
+};
+
+const AdvertisementStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen component={Advertisements} name="Advertisements" />
+      <Stack.Screen
+        component={AdvertisementDetail}
+        name="OwnAdvertisementDetailScreen"
+      />
     </Stack.Navigator>
   );
 };
@@ -110,7 +122,7 @@ const BottomTabs = () => {
       />
       <Tab.Screen
         name="AdvertisementsScreen"
-        component={Advertisements}
+        component={AdvertisementStack}
         options={{
           title: 'İlanlar',
           tabBarIcon: ({focused, color, size}) => {
