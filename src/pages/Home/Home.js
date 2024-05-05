@@ -64,24 +64,25 @@ const Home = ({navigation}) => {
         ) : (
           <>
             <FlatList
-              data={advertisements}
+              data={advertisements.filter(
+                advertisement => advertisement.soldStatus == false,
+              )}
               keyExtractor={(item, index) => item._id}
               numColumns={2}
               renderItem={({item}) => {
-                if (!item.soldStatus)
-                  return (
-                    <AdvertisementCard
-                      advertisement={item}
-                      isOwner={user._id === item.owner}
-                      favoriteUnfavorite={favoriteUnFavorite}
-                      big={false}
-                      onPress={() => {
-                        navigation.navigate('AdvertisementDetailScreen', {
-                          id: item._id,
-                        });
-                      }}
-                    />
-                  );
+                return (
+                  <AdvertisementCard
+                    advertisement={item}
+                    isOwner={user._id === item.owner}
+                    favoriteUnfavorite={favoriteUnFavorite}
+                    big={false}
+                    onPress={() => {
+                      navigation.navigate('AdvertisementDetailScreen', {
+                        id: item._id,
+                      });
+                    }}
+                  />
+                );
               }}
             />
             <FilterModal isVisible={filterModalVisible} />

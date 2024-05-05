@@ -69,7 +69,9 @@ const LittleCard = ({
           </Pressable>
         )}
       </View>
-      <Text style={styles.name}>{title}</Text>
+      <Text style={styles.name} numberOfLines={1}>
+        {title}
+      </Text>
       <Text style={styles.price}>{price} TL</Text>
     </TouchableOpacity>
   );
@@ -82,7 +84,8 @@ const BigCard = ({
   isOwner,
   styles,
   favoriteUnfavorite,
-  handleUpdate,
+  handleSoldStatus,
+  handleUpdateButton,
 }) => {
   const {user, setUser} = useUser();
 
@@ -133,15 +136,12 @@ const BigCard = ({
       )}
       {isOwner && (
         <View style={styles.actionButtonsContainer}>
-          <Button
-            label="İlanı Düzenle"
-            onPress={() => console.log('İlanı Düzenle')}
-          />
+          <Button label="İlanı Düzenle" onPress={handleUpdateButton} />
           <Button
             label={isSold ? 'İlanı Aktifleştir' : 'Satıldı İşaretle'}
             onPress={async () => {
               const soldStatus = !isSold;
-              handleUpdate(id, {...advertisement, soldStatus});
+              handleSoldStatus(id, {...advertisement, soldStatus});
               setIsSold(soldStatus);
             }}
           />
@@ -157,7 +157,8 @@ const AdvertisementCard = ({
   isOwner,
   big = false,
   favoriteUnfavorite,
-  handleUpdate,
+  handleSoldStatus,
+  handleUpdateButton,
 }) => {
   const styles = big ? bigCardStyles : littleCardStyles;
   if (!big) {
@@ -178,7 +179,8 @@ const AdvertisementCard = ({
         isOwner={isOwner}
         styles={styles}
         favoriteUnfavorite={favoriteUnfavorite}
-        handleUpdate={handleUpdate}
+        handleSoldStatus={handleSoldStatus}
+        handleUpdateButton={handleUpdateButton}
       />
     );
   }

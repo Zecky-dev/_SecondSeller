@@ -34,7 +34,6 @@ const OwnFavoriteAdvertisements = ({navigation}) => {
           setFavoriteAdvertisements(favoriteAdvertisements);
         })
         .catch(err => {
-          console.log(err);
           showMessage({
             message: 'İlanlar getirilirken bir hata meydana geldi!',
             type: 'danger',

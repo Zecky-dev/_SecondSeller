@@ -17,7 +17,7 @@ import {
   Profile,
   Home,
   Advertisements,
-  CreateAdvertisement,
+  CreateAndUpdateAdvertisement,
   Login,
   Register,
   EmailValidation,
@@ -75,6 +75,10 @@ const AdvertisementStack = () => {
         component={AdvertisementDetail}
         name="OwnAdvertisementDetailScreen"
       />
+      <Stack.Screen
+        component={CreateAndUpdateAdvertisement}
+        name="UpdateAdvertisementScreen"
+      />
     </Stack.Navigator>
   );
 };
@@ -110,7 +114,10 @@ const BottomTabs = () => {
       />
       <Tab.Screen
         name="CreateAdvertisementScreen"
-        component={CreateAdvertisement}
+        component={CreateAndUpdateAdvertisement}
+        initialParams={{
+          advertisement: null,
+        }}
         options={{
           title: 'İlan Oluştur',
           tabBarIcon: ({focused, size}) => {

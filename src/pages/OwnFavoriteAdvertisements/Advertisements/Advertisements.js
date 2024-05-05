@@ -4,7 +4,7 @@ import {AdvertisementCard} from '@components';
 
 // Favorite unfavorite servis fonksiyonu
 import {favoriteUnFavorite} from '../../../services/userServices';
-import {updateAdversiment} from '../../../services/advertisementServices';
+import {updateAdvertisementAPI} from '../../../services/advertisementServices';
 
 // Uygulama genelindeki kullanıcıyı döndüren hook
 import {useUser} from '../../../context/UserProvider';
@@ -18,8 +18,8 @@ const Advertisements = ({advertisements}) => {
 
   const navigation = useNavigation();
 
-  const handleUpdate = async (id, values) => {
-    const response = await updateAdversiment(id, values, token);
+  const handleSoldStatus = async (id, values) => {
+    const response = await updateAdvertisementAPI(id, values, token);
     showFlashMessage(response.status, response.data.message);
   };
 
@@ -36,7 +36,12 @@ const Advertisements = ({advertisements}) => {
           onPress={() => {
             navigation.navigate('OwnAdvertisementDetailScreen', {id: item._id});
           }}
-          handleUpdate={handleUpdate}
+          handleSoldStatus={handleSoldStatus}
+          handleUpdateButton={() => {
+            navigation.navigate('UpdateAdvertisementScreen', {
+              advertisement: item,
+            });
+          }}
         />
       )}
     />

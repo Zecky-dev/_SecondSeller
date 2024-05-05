@@ -101,12 +101,11 @@ const getAdvertisementByUserIdAPI = async (id, token) => {
   }
 };
 
-const updateAdversiment = async (id, values, token) => {
+const updateAdvertisementAPI = async (id, values, token) => {
   if (token) {
     delete values._id;
     delete values.createDate;
     delete values.__v;
-    console.log(values);
     try {
       const response = await axios.put(
         `${BASE_URL}/advertisements/${id}`,
@@ -135,5 +134,5 @@ export {
   getAdvertisementAPI,
   getAllAdvertisementAPI,
   getAdvertisementByUserIdAPI,
-  updateAdversiment,
+  updateAdvertisementAPI,
 };
