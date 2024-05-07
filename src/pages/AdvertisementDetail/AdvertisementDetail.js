@@ -12,7 +12,7 @@ import {getAdvertisementAPI} from '../../services/advertisementServices';
 import {useUser} from '../../context/UserProvider';
 import {showMessage} from 'react-native-flash-message';
 
-const AdvertisementDetail = ({route}) => {
+const AdvertisementDetail = ({route,navigation}) => {
   const {id: advertisementID} = route.params;
   const {user : { token } } = useUser();
 
@@ -115,7 +115,7 @@ const AdvertisementDetail = ({route}) => {
                   flex: 1,
                 },
               }}
-              onPress={() => console.log('Chat ekranına git')}
+              onPress={() => navigation.navigate('ChatScreen')}
             />
             <Button
               icon={{

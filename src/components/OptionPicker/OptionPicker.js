@@ -7,12 +7,13 @@ import styles2 from './OptionPicker.style'
 import {CONSTANTS} from '@utils'
 
 
-const OptionPicker = ({label,items,setSelectedItem,errors}) => {
+const OptionPicker = ({label,items,setSelectedItem,errors, value}) => {
   return (
     <View style={{margin: CONSTANTS.margin.L2}}>
       <Text style={styles.label}>{label}</Text>
       <RNPickerSelect
         onValueChange={(value) => setSelectedItem(value)}
+        value={value}
         items={items}
         placeholder={{key: 4, label: "Lütfen Seçiniz...", value: "default"}}
         style={{

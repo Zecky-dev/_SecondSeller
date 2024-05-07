@@ -3,16 +3,26 @@ import {View, FlatList} from 'react-native';
 
 import {useUser} from '../../context/UserProvider';
 
-import {getAllAdvertisementAPI} from '../../services/advertisementServices';
+import {getAllAdvertisementAPI, getFilteredAdvertisement} from '../../services/advertisementServices';
 import {favoriteUnFavorite} from '../../services/userServices';
 
 import FilterModal from './components/FilterModal/FilterModal';
+import {Input, Button, AdvertisementCard} from '@components';
+
+
 
 const Home = ({navigation}) => {
-  const [filterModalVisible, setFilterModalVisible] = useState(false)
+  const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [advertisements, setAdvertisements] = useState([]);
   const {user} = useUser();
+
+  
+  const filter = async (values) => {
+    const filteredAdvertisements = await getFilteredAdvertisement(values,user.token)
+    setAdvertisements(filteredAdvertisements)
+    setFilterModalVisible(false)
+  }
 
   // Sistemden tüm ilanları getirir
   const getAllAdvertisements = () => {
@@ -35,7 +45,6 @@ const Home = ({navigation}) => {
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getAllAdvertisements();
-    });
     });
     return unsubscribe;
   }, []);
@@ -74,14 +83,16 @@ const Home = ({navigation}) => {
                   favoriteUnfavorite={favoriteUnFavorite}
                   big={false}
                   onPress={() => {
-                    navigation.navigate('AdvertisementDetailScreen', {
-                      id: item._id,
-                    });
+                    navigation.navigate('AdvertisementDetailStack', {
+                      screen: 'AdvertisementDetailScreen', params: {
+                          id: item._id
+                      }
+                  });
                   }}
                 />
               )}
             />
-            <FilterModal isVisible={filterModalVisible} />
+            <FilterModal isVisible={filterModalVisible} setVisible={setFilterModalVisible} filter={filter} />
           </>
         )}
       </View>

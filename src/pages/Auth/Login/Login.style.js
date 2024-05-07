@@ -2,7 +2,6 @@ import { StyleSheet } from "react-native";
 
 import { CONSTANTS, COLORS } from "@utils";
 
-
 export default StyleSheet.create({
     appName: {
         fontSize: CONSTANTS.fontSize.L7,

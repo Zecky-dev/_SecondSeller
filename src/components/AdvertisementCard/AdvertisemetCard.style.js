@@ -1,5 +1,4 @@
 import {StyleSheet} from 'react-native';
-
 import {COLORS, CONSTANTS} from '@utils';
 
 const littleCardStyles = StyleSheet.create({

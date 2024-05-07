@@ -101,4 +101,37 @@ const getAdvertisementByUserIdAPI = async (id, token) => {
   }
 };
 
-export {createAdvertisementAPI, getAdvertisementAPI, getAllAdvertisementAPI, getAdvertisementByUserIdAPI};
+const getFilteredAdvertisement = async (values, token) => {
+  if (token) {
+    let queryString = '';
+    for (let value in values) {
+      if (value !== 'default' && value !== null) {
+        queryString += `&${value}=${values[value]}`;
+      }
+    }
+    try {
+      const advertisements = await axios.get(
+        `${BASE_URL}/advertisements/filter?${queryString}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+          },
+        },
+      );
+      return advertisements.data.data;
+    } catch (err) {
+      console.log('ADVERTISEMENT_GET_ERROR', err);
+      return null;
+    }
+  }
+
+};
+
+export {
+  createAdvertisementAPI,
+  getAdvertisementAPI,
+  getAllAdvertisementAPI,
+  getAdvertisementByUserIdAPI,
+  getFilteredAdvertisement,
+};

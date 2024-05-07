@@ -50,6 +50,17 @@ const Profile = ({navigation}) => {
       />
 
       <Button
+        onPress={() => navigation.navigate('MessagesScreen')}
+        icon={{
+          name: 'email-fast',
+          color: COLORS.black,
+          size: CONSTANTS.fontSize.L5,
+        }}
+        label="Mesajlarım"
+        additionalStyles={profileButtonStyle}
+      />
+
+      <Button
         onPress={() => console.log('Profil düzenle')}
         icon={{
           name: 'theme-light-dark',

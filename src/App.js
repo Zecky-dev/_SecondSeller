@@ -1,8 +1,9 @@
 import React, {useEffect} from 'react';
-import {StatusBar, View} from 'react-native';
+import {StatusBar, View, Text} from 'react-native';
+import {useIsFocused, CommonActions} from '@react-navigation/native';
 
 // Constants
-import {COLORS, CONSTANTS} from '@utils';
+import {CONSTANTS, COLORS} from '@utils';
 
 // React Navigation
 import {NavigationContainer} from '@react-navigation/native';
@@ -23,11 +24,14 @@ import {
   EmailValidation,
   AdvertisementDetail,
   ProfileEdit,
-  ChangePassword
+  ChangePassword,
+  Messages,
+  Chat,
 } from '@pages';
 
 // Context
 import UserContextProvider, {useUser} from './context/UserProvider';
+import ThemeContextProvider, {useTheme} from './context/ThemeContext';
 
 // FlashMessage
 import FlashMessage from 'react-native-flash-message';
@@ -44,15 +48,54 @@ const HomeStack = () => {
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen component={Home} name="AdvertisementsScreen" />
       <Stack.Screen
-        component={AdvertisementDetail}
-        name="AdvertisementDetailScreen"
+        component={AdvertisementDetailStack}
+        name="AdvertisementDetailStack"
       />
     </Stack.Navigator>
   );
 };
 
+const ProfileMessagesStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen component={Messages} name="MessageListScreen" />
+      <Stack.Screen component={Chat} name="ChatScreen" />
+    </Stack.Navigator>
+  );
+};
+
+const AdvertisementDetailStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen
+        component={AdvertisementDetail}
+        name="AdvertisementDetailScreen"
+      />
+      <Stack.Screen component={Chat} name="ChatScreen" />
+    </Stack.Navigator>
+  );
+};
+
 // Profile sayfası için kullanılan stack
-const ProfileStack = () => {
+const ProfileStack = ({navigation}) => {
+  const isProfileFocused = useIsFocused();
+
+  useEffect(() => {
+    if (!isProfileFocused) {
+      // Eğer Profil ekranı odaklanmamışsa, ProfileStack'i sıfırla
+      resetProfileStack();
+    }
+  }, [isProfileFocused]);
+
+  const resetProfileStack = () => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{name: 'ProfileStackScreen'}],
+      }),
+    );
+  };
+
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen component={Profile} name="ProfileStackScreen" />
@@ -63,6 +106,7 @@ const ProfileStack = () => {
         name="ProfileEmailValidationScreen"
       />
       <Stack.Screen component={ChangePassword} name="ChangePasswordScreen" />
+      <Stack.Screen component={ProfileMessagesStack} name="MessagesScreen" />
     </Stack.Navigator>
   );
 };
@@ -157,6 +201,7 @@ const AuthStack = () => {
 const App = () => {
   const {user, setUser} = useUser();
 
+
   useEffect(() => {
     const checkToken = async () => {
       const userData = await getUserFromToken();
@@ -179,13 +224,16 @@ const App = () => {
       <FlashMessage position={'top'} />
     </>
   );
+ 
 };
 
 const AppWithContext = () => {
   return (
-    <UserContextProvider>
-      <App />
-    </UserContextProvider>
+    <ThemeContextProvider>
+      <UserContextProvider>
+        <App />
+      </UserContextProvider>
+    </ThemeContextProvider>
   );
 };
 
