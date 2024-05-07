@@ -1,13 +1,13 @@
-import { CONSTANTS } from '@utils';
+import {CONSTANTS} from '@utils';
 import {StyleSheet} from 'react-native';
-import THEMECOLORS from '@utils/colors'
+import THEMECOLORS from '@utils/colors';
 
 export const getStyles = theme => {
-  const COLORS = theme === "dark" ? THEMECOLORS.DARK: THEMECOLORS.LIGHT;
+  const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
   return StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: COLORS.pageBackground
+      backgroundColor: COLORS.pageBackground,
     },
     imageBox: {
       alignSelf: 'center',
@@ -18,7 +18,7 @@ export const getStyles = theme => {
       padding: CONSTANTS.padding.L1,
       borderWidth: 5,
       borderColor: COLORS.textColor,
-      borderStyle: 'dashed'
+      borderStyle: 'dashed',
     },
     image: {
       width: '100%',
@@ -32,8 +32,19 @@ export const getStyles = theme => {
       marginHorizontal: CONSTANTS.margin.L2,
       marginVertical: CONSTANTS.margin.L1,
       padding: CONSTANTS.padding.L1,
-      textDecorationLine: 'underline'
-    }
+      textDecorationLine: 'underline',
+    },
+    profileButtonStyle: {
+      container: {
+        backgroundColor: 'transparent',
+        borderWidth: CONSTANTS.borderWidth.thin,
+        borderColor: COLORS.borderColor,
+      },
+      label: {
+        marginLeft: CONSTANTS.margin.L1,
+        color: COLORS.textColor,
+        fontSize: CONSTANTS.fontSize.L4,
+      },
+    },
   });
-  
-}
+};

@@ -36,7 +36,7 @@ const FilterModal = ({isVisible, setVisible, filter}) => {
               max: null,
             }}
             onSubmit={values => {
-              filter(values)
+              filter(values);
             }}>
             {({
               handleChange,
@@ -79,9 +79,9 @@ const FilterModal = ({isVisible, setVisible, filter}) => {
                   }}>
                   <Input
                     label={'Minimum Fiyat'}
-                    keyboardType='number-pad'
+                    keyboardType="number-pad"
                     value={values.min}
-                    onChangeText={handleChange("min")}
+                    onChangeText={handleChange('min')}
                     placeholder="0 TL"
                     additionalStyles={{
                       outerContainer: {
@@ -91,10 +91,10 @@ const FilterModal = ({isVisible, setVisible, filter}) => {
                   />
                   <Input
                     label={'Maksimum Fiyat'}
-                    keyboardType='number-pad'
+                    keyboardType="number-pad"
                     placeholder="999 TL"
                     value={values.max}
-                    onChangeText={handleChange("max")}
+                    onChangeText={handleChange('max')}
                     additionalStyles={{
                       outerContainer: {
                         flex: 1,
@@ -106,12 +106,10 @@ const FilterModal = ({isVisible, setVisible, filter}) => {
                 <View
                   style={{
                     flexDirection: 'row',
+                    justifyContent: 'space-evenly',
                   }}>
                   <Button onPress={handleSubmit} label="Filtreleri Uygula" />
-                  <Button
-                    onPress={resetForm}
-                    label="Filtreleri Sıfırla"
-                  />
+                  <Button onPress={resetForm} label="Filtreleri Sıfırla" />
                 </View>
               </>
             )}
