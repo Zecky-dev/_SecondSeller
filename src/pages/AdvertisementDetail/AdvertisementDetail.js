@@ -3,7 +3,7 @@ import {View, Text, Dimensions, ScrollView} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 const {height, width} = Dimensions.get('window');
 
-import {Slider, Button,Animation} from '@components';
+import {Slider, Button, Animation} from '@components';
 import {COLORS} from '@utils';
 
 import styles from './AdvertisementDetail.style';
@@ -14,7 +14,9 @@ import {showMessage} from 'react-native-flash-message';
 
 const AdvertisementDetail = ({route,navigation}) => {
   const {id: advertisementID} = route.params;
-  const {user : { token } } = useUser();
+  const {
+    user: {token},
+  } = useUser();
 
   const [loading, setLoading] = useState(false);
   const [advertisement, setAdvertisement] = useState(null);
@@ -58,7 +60,8 @@ const AdvertisementDetail = ({route,navigation}) => {
 
     return (
       <View style={styles.outerContainer}>
-        <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
+        <ScrollView
+          contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
           {/* Slider */}
           <Slider images={images} />
 
@@ -135,10 +138,8 @@ const AdvertisementDetail = ({route,navigation}) => {
         </ScrollView>
       </View>
     );
-  }
-
-  else {
-    return <Animation animationName={"loading"} />
+  } else {
+    return <Animation animationName={'loading'} />;
   }
 };
 

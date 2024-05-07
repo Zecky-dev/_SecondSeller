@@ -18,15 +18,18 @@ import {
   Profile,
   Home,
   Advertisements,
-  CreateAdvertisement,
+  CreateAndUpdateAdvertisement,
   Login,
   Register,
   EmailValidation,
   AdvertisementDetail,
   ProfileEdit,
   ChangePassword,
+<<<<<<< HEAD
   Messages,
   Chat,
+=======
+>>>>>>> 674d93c01543cd9b8d868d8afc4cec4da31cb892
 } from '@pages';
 
 // Context
@@ -111,6 +114,22 @@ const ProfileStack = ({navigation}) => {
   );
 };
 
+const AdvertisementStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen component={Advertisements} name="Advertisements" />
+      <Stack.Screen
+        component={AdvertisementDetail}
+        name="OwnAdvertisementDetailScreen"
+      />
+      <Stack.Screen
+        component={CreateAndUpdateAdvertisement}
+        name="UpdateAdvertisementScreen"
+      />
+    </Stack.Navigator>
+  );
+};
+
 const BottomTabs = () => {
   return (
     <Tab.Navigator
@@ -142,7 +161,10 @@ const BottomTabs = () => {
       />
       <Tab.Screen
         name="CreateAdvertisementScreen"
-        component={CreateAdvertisement}
+        component={CreateAndUpdateAdvertisement}
+        initialParams={{
+          advertisement: null,
+        }}
         options={{
           title: 'İlan Oluştur',
           tabBarIcon: ({focused, size}) => {
@@ -154,7 +176,7 @@ const BottomTabs = () => {
       />
       <Tab.Screen
         name="AdvertisementsScreen"
-        component={Advertisements}
+        component={AdvertisementStack}
         options={{
           title: 'İlanlar',
           tabBarIcon: ({focused, color, size}) => {

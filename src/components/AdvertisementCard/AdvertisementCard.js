@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Image, Pressable, Text, TouchableOpacity, View } from 'react-native';
+import {useEffect, useState} from 'react';
+import {Image, Pressable, Text, TouchableOpacity, View} from 'react-native';
 
 // Icon
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -7,13 +7,13 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 // styles & constants
 import COLORS from '../../utils/colors';
 import CONSTANTS from '../../utils/constants';
-import { bigCardStyles, littleCardStyles } from './AdvertisemetCard.style';
+import {bigCardStyles, littleCardStyles} from './AdvertisemetCard.style';
 
 // Custom components
-import { Button } from '@components';
+import {Button} from '@components';
 
 // Uygulama genelindeki kullanıcıyı döndüren hook
-import { useUser } from '../../context/UserProvider';
+import {useUser} from '../../context/UserProvider';
 
 // Kart - büyük versiyon
 const LittleCard = ({
@@ -34,7 +34,6 @@ const LittleCard = ({
   // Eğer local de bulunan user'ın favorileri güncellenirse kart üzerindeki icon'lar tekrardan düzenlenecek
   useEffect(() => {
     setLiked(user.favorites.includes(advertisement._id));
-    console.log("iki")
   }, [user.favorites]);
 
   // Kalp icon'una basılınca ilan favorilere eklenecek veya favorilerden kaldırılacak,
@@ -70,7 +69,9 @@ const LittleCard = ({
           </Pressable>
         )}
       </View>
-      <Text style={styles.name}>{title}</Text>
+      <Text style={styles.name} numberOfLines={1}>
+        {title}
+      </Text>
       <Text style={styles.price}>{price} TL</Text>
     </TouchableOpacity>
   );
@@ -83,13 +84,23 @@ const BigCard = ({
   isOwner,
   styles,
   favoriteUnfavorite,
+  handleSoldStatus,
+  handleUpdateButton,
 }) => {
   const {user, setUser} = useUser();
 
-  const {title, description, images, price} = advertisement;
+  const {
+    title,
+    description,
+    images,
+    price,
+    soldStatus,
+    _id: id,
+  } = advertisement;
   const [liked, setLiked] = useState(
     user?.favorites.includes(advertisement._id),
   );
+  const [isSold, setIsSold] = useState(soldStatus);
 
   const getLastFavorites = async () => {
     const updatedFavorites = await favoriteUnfavorite(
@@ -102,7 +113,10 @@ const BigCard = ({
   };
 
   return (
-    <TouchableOpacity activeOpacity={0.7} style={styles.cardContainer}>
+    <TouchableOpacity
+      activeOpacity={0.7}
+      style={styles.cardContainer}
+      onPress={onPress}>
       <Image source={{uri: images[0]}} style={styles.image} />
       <Text style={styles.name}>{title}</Text>
       <Text style={styles.description}>{description}</Text>
@@ -122,13 +136,14 @@ const BigCard = ({
       )}
       {isOwner && (
         <View style={styles.actionButtonsContainer}>
+          <Button label="İlanı Düzenle" onPress={handleUpdateButton} />
           <Button
-            label="İlanı Düzenle"
-            onPress={() => console.log('İlanı Düzenle')}
-          />
-          <Button
-            label="Satıldı İşaretle"
-            onPress={() => console.log('Satıldı İşaretle')}
+            label={isSold ? 'İlanı Aktifleştir' : 'Satıldı İşaretle'}
+            onPress={async () => {
+              const soldStatus = !isSold;
+              handleSoldStatus(id, {...advertisement, soldStatus});
+              setIsSold(soldStatus);
+            }}
           />
         </View>
       )}
@@ -142,6 +157,8 @@ const AdvertisementCard = ({
   isOwner,
   big = false,
   favoriteUnfavorite,
+  handleSoldStatus,
+  handleUpdateButton,
 }) => {
   const styles = big ? bigCardStyles : littleCardStyles;
   if (!big) {
@@ -162,6 +179,8 @@ const AdvertisementCard = ({
         isOwner={isOwner}
         styles={styles}
         favoriteUnfavorite={favoriteUnfavorite}
+        handleSoldStatus={handleSoldStatus}
+        handleUpdateButton={handleUpdateButton}
       />
     );
   }

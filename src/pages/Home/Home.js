@@ -7,9 +7,7 @@ import {getAllAdvertisementAPI, getFilteredAdvertisement} from '../../services/a
 import {favoriteUnFavorite} from '../../services/userServices';
 
 import FilterModal from './components/FilterModal/FilterModal';
-import {Input, Button, AdvertisementCard} from '@components';
-
-
+import {AdvertisementCard, Button, Input} from '@components';
 
 const Home = ({navigation}) => {
   const [filterModalVisible, setFilterModalVisible] = useState(false);
@@ -73,7 +71,9 @@ const Home = ({navigation}) => {
         ) : (
           <>
             <FlatList
-              data={advertisements}
+              data={advertisements.filter(
+                advertisement => advertisement.soldStatus == false,
+              )}
               keyExtractor={(item, index) => item._id}
               numColumns={2}
               renderItem={({item}) => (

@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import {StyleSheet} from 'react-native';
+=======
+import {Dimensions, StyleSheet} from 'react-native';
+
+>>>>>>> 674d93c01543cd9b8d868d8afc4cec4da31cb892
 import {COLORS, CONSTANTS} from '@utils';
 
 const littleCardStyles = StyleSheet.create({
@@ -14,7 +19,7 @@ const littleCardStyles = StyleSheet.create({
   },
   imageContainer: {},
   image: {
-    width: 180,
+    width: Dimensions.get('window').width / 2 - 4 * CONSTANTS.margin.L2,
     height: 180,
   },
   infoContainer: {
@@ -77,9 +82,9 @@ const bigCardStyles = StyleSheet.create({
     top: CONSTANTS.margin.L2,
   },
   actionButtonsContainer: {
-    flexDirection : 'row',
-    marginTop: CONSTANTS.margin.L2
-  }
+    flexDirection: 'row',
+    marginTop: CONSTANTS.margin.L2,
+  },
 });
 
 export {littleCardStyles, bigCardStyles};

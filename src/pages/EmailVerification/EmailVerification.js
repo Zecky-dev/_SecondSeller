@@ -24,7 +24,6 @@ const EmailVerification = ({navigation, route}) => {
       if (response.status.toString().startsWith('2')) {
         await Storage.storeData('token', response.data);
         const user = await getUserFromToken();
-        console.log('USER', user);
         setUser(user);
       } else {
         showFlashMessage(response.status, response.message);
