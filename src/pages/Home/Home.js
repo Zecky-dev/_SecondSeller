@@ -3,7 +3,10 @@ import {View, FlatList} from 'react-native';
 
 import {useUser} from '../../context/UserProvider';
 
-import {getAllAdvertisementAPI, getFilteredAdvertisement} from '../../services/advertisementServices';
+import {
+  getAllAdvertisementAPI,
+  getFilteredAdvertisement,
+} from '../../services/advertisementServices';
 import {favoriteUnFavorite} from '../../services/userServices';
 
 import FilterModal from './components/FilterModal/FilterModal';
@@ -15,12 +18,14 @@ const Home = ({navigation}) => {
   const [advertisements, setAdvertisements] = useState([]);
   const {user} = useUser();
 
-  
-  const filter = async (values) => {
-    const filteredAdvertisements = await getFilteredAdvertisement(values,user.token)
-    setAdvertisements(filteredAdvertisements)
-    setFilterModalVisible(false)
-  }
+  const filter = async values => {
+    const filteredAdvertisements = await getFilteredAdvertisement(
+      values,
+      user.token,
+    );
+    setAdvertisements(filteredAdvertisements);
+    setFilterModalVisible(false);
+  };
 
   // Sistemden tüm ilanları getirir
   const getAllAdvertisements = () => {
@@ -84,15 +89,20 @@ const Home = ({navigation}) => {
                   big={false}
                   onPress={() => {
                     navigation.navigate('AdvertisementDetailStack', {
-                      screen: 'AdvertisementDetailScreen', params: {
-                          id: item._id
-                      }
-                  });
+                      screen: 'AdvertisementDetailScreen',
+                      params: {
+                        id: item._id,
+                      },
+                    });
                   }}
                 />
               )}
             />
-            <FilterModal isVisible={filterModalVisible} setVisible={setFilterModalVisible} filter={filter} />
+            <FilterModal
+              isVisible={filterModalVisible}
+              setVisible={setFilterModalVisible}
+              filter={filter}
+            />
           </>
         )}
       </View>

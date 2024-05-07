@@ -3,7 +3,8 @@ import {StatusBar, View, Text} from 'react-native';
 import {useIsFocused, CommonActions} from '@react-navigation/native';
 
 // Constants
-import {CONSTANTS, COLORS} from '@utils';
+import { CONSTANTS } from '@utils';
+import THEMECOLORS from '@utils/colors'
 
 // React Navigation
 import {NavigationContainer} from '@react-navigation/native';
@@ -128,6 +129,10 @@ const AdvertisementStack = () => {
 };
 
 const BottomTabs = () => {
+
+  const { theme } = useTheme()
+  const COLORS = theme === "dark" ? THEMECOLORS.DARK : THEMECOLORS.LIGHT
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -219,7 +224,8 @@ const AuthStack = () => {
 
 const App = () => {
   const {user, setUser} = useUser();
-
+  const { theme } = useTheme()
+  const COLORS = theme === "dark" ? THEMECOLORS.DARK : THEMECOLORS.LIGHT
 
   useEffect(() => {
     const checkToken = async () => {

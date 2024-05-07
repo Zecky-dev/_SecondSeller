@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import {View, Text, Image, Pressable, ScrollView} from 'react-native';
 
 // Style
-import styles from './Login.style';
+import { getStyles } from './Login.style';
 
 // Utils
 import {CONSTANTS} from '@utils';
 
 // Components
-import {Input, Button, Animation} from '@components';
+import {Input, Button } from '@components';
 
 // Assets
 import LoginVector from '@assets/images/login_vector.png';
@@ -26,11 +26,14 @@ import { getUserFromToken, showFlashMessage } from '@utils/functions';
 // Storage
 import Storage from '@utils/Storage';
 import { useUser } from '../../../context/UserProvider';
+import { useTheme } from '../../../context/ThemeContext';
 
 const Login = ({navigation}) => {
 
   const [loading,setLoading] = useState(false)
   const { setUser } = useUser()
+  const { theme } = useTheme();
+  const styles = getStyles(theme)
 
   const handleLogin = async (values) => {
     setLoading(true)
