@@ -8,6 +8,7 @@ export {default as DropdownPicker} from './OptionPicker'
 export {default as Animation} from './Animation'
 export {default as OptionPicker} from './OptionPicker'
 export {default as MessageCard} from './MessageCard'
+export {default as EmptyList} from './EmptyList'
 
 // Page components
 export {default as ChatInput } from '../pages/Chat/ChatInput'

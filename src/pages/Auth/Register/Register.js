@@ -39,13 +39,13 @@ const Register = ({navigation}) => {
 
   if(!loading) {
     return (
-      <>
+      <View style={{backgroundColor: COLORS.pageBackground}}>
         <Button
           onPress={() => navigation.goBack()}
           icon={{
             name: 'chevron-left',
             size: CONSTANTS.fontSize.L7,
-            color: COLORS.black,
+            color: COLORS.textColor,
           }}
           additionalStyles={{
             container: styles.additionalStylesContainer
@@ -126,7 +126,7 @@ const Register = ({navigation}) => {
             )}
           </Formik>
         </ScrollView>
-      </>
+      </View>
     );
   }
 

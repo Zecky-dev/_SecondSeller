@@ -1,7 +1,8 @@
 import {View, Text} from 'react-native';
 import Modal from 'react-native-modal';
 
-import styles from './FilterModal.style';
+import { getStyles} from './FilterModal.style';
+import { useTheme } from '../../../../context/ThemeContext'
 
 import {OptionPicker as Dropdown, Button, Input} from '@components';
 import CONSTANTS from '@utils/constants';
@@ -14,6 +15,10 @@ import {Formik} from 'formik';
 // Kategori
 
 const FilterModal = ({isVisible, setVisible, filter}) => {
+
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
+
   return (
     <View>
       <Modal
@@ -21,7 +26,7 @@ const FilterModal = ({isVisible, setVisible, filter}) => {
         isVisible={isVisible}
         onBackButtonPress={() => setVisible(!isVisible)}
         onBackdropPress={() => setVisible(!isVisible)}>
-        <View style={{backgroundColor: 'white', borderRadius: 4}}>
+        <View style={styles.modalContainer}>
           <Formik
             initialValues={{
               price: 'default',

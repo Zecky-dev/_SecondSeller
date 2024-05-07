@@ -8,19 +8,20 @@ export const getStyles = theme => {
     return StyleSheet.create({
         appName: {
             fontSize: CONSTANTS.fontSize.L7,
-            color: COLORS.black,
+            color: COLORS.textColor,
             fontFamily: CONSTANTS.APP_FONT,
             textAlign: 'center',
         },
         appSlogan: {
             fontSize: CONSTANTS.fontSize.L4,
-            color: COLORS.black,
+            color: COLORS.textColor,
             fontFamily: CONSTANTS.APP_FONT,
             textAlign: 'center',
         },
         container: {
             flexGrow: 1,
             justifyContent: 'center',
+            backgroundColor: COLORS.pageBackground
         },
         createAccountLabelContainer: {
           flexDirection: 'row',
@@ -28,7 +29,7 @@ export const getStyles = theme => {
           marginTop: CONSTANTS.margin.L3
         },
         createAccountLabel:{
-            color: COLORS.black,
+            color: COLORS.textColor,
             fontSize: CONSTANTS.fontSize.L3
         },
         createAccountLabelButton:{

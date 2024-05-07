@@ -10,25 +10,27 @@ import {
 import {favoriteUnFavorite} from '../../services/userServices';
 
 import FilterModal from './components/FilterModal/FilterModal';
-import {AdvertisementCard, Button, Input} from '@components';
+import {AdvertisementCard, Button, Input, EmptyList} from '@components';
 
-import THEMECOLORS from '@utils/colors'
-import { useTheme } from '../../context/ThemeContext';
+import THEMECOLORS from '@utils/colors';
+import {useTheme} from '../../context/ThemeContext';
 
 const Home = ({navigation}) => {
   const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [advertisements, setAdvertisements] = useState([]);
-  
+  const [search, setSearch] = useState('');
+
   const {user} = useUser();
   const {theme} = useTheme();
-  const COLORS = theme === "dark" ? THEMECOLORS.DARK : THEMECOLORS.LIGHT
+  const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
 
   const filter = async values => {
     const filteredAdvertisements = await getFilteredAdvertisement(
       values,
       user.token,
     );
+    console.log(filteredAdvertisements);
     setAdvertisements(filteredAdvertisements);
     setFilterModalVisible(false);
   };
@@ -63,12 +65,22 @@ const Home = ({navigation}) => {
   } else {
     return (
       <View style={{flex: 1}}>
-        <View style={{flexDirection: 'row', backgroundColor: COLORS.pageBackground}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            backgroundColor: COLORS.pageBackground,
+          }}>
           <Input
             placeholder="İlan ara.."
-            onChangeText={value => setSearch(value)}
+            onChangeText={value => {
+              if (value === '') {
+                getAllAdvertisements();
+              } else {
+                setSearch(value);
+              }
+            }}
             additionalStyles={{outerContainer: {flex: 1}}}
-            onSubmitEditing={() => console.log('Edit finished!')}
+            onSubmitEditing={() => filter({title: search})}
           />
 
           <Button
@@ -79,6 +91,8 @@ const Home = ({navigation}) => {
 
         {loading ? (
           <Animation animationName={'loading'} />
+        ) : advertisements.length === 0 ? (
+          <EmptyList label={'İlan listesi boş!'} />
         ) : (
           <>
             <FlatList

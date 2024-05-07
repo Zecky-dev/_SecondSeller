@@ -63,7 +63,7 @@ const Input = ({
                             name={
                                 inputVisible ? "eye-off" : "eye"
                             }
-                            color={COLORS.blackMuted}
+                            color={COLORS.textColor}
                             size={CONSTANTS.fontSize.L5}/>
                         </Pressable>
                         

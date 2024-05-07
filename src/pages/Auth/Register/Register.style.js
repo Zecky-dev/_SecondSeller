@@ -16,7 +16,7 @@ export const getStyles = theme => {
     appName: {
       fontFamily: 'Galada-Regular',
       fontSize: CONSTANTS.fontSize.L7,
-      color: COLORS.black,
+      color: COLORS.textColor,
       textAlign: 'center',
     },
     title: {
@@ -33,6 +33,7 @@ export const getStyles = theme => {
       height: 50,
       borderRadius: 50,
       borderWidth: CONSTANTS.borderWidth.thin,
+      borderColor: COLORS.borderColor,
       backgroundColor: COLORS.transparent,
       paddingHorizontal: 0,
       paddingVertical: 0,

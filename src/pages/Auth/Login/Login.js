@@ -11,7 +11,8 @@ import {CONSTANTS} from '@utils';
 import {Input, Button } from '@components';
 
 // Assets
-import LoginVector from '@assets/images/login_vector.png';
+import LoginVectorDark from '@assets/images/login_vector_dark.png';
+import LoginVectorLight from '@assets/images/login_vector_light.png'
 
 // Formik & Validations
 import { Formik } from 'formik';
@@ -30,10 +31,14 @@ import { useTheme } from '../../../context/ThemeContext';
 
 const Login = ({navigation}) => {
 
+
   const [loading,setLoading] = useState(false)
   const { setUser } = useUser()
   const { theme } = useTheme();
   const styles = getStyles(theme)
+
+  const LoginVector = theme === "dark" ? LoginVectorDark : LoginVectorLight 
+
 
   const handleLogin = async (values) => {
     setLoading(true)

@@ -29,7 +29,7 @@ const OptionPicker = ({label, items, setSelectedItem, errors, value}) => {
           viewContainer: styles2.container,
           inputAndroid: {
             color: COLORS.textColor
-          }
+          },
         }}
       />
       {errors && <Text style={styles.errorMessage}>{errors}</Text>}
