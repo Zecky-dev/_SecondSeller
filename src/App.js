@@ -25,11 +25,8 @@ import {
   AdvertisementDetail,
   ProfileEdit,
   ChangePassword,
-<<<<<<< HEAD
   Messages,
   Chat,
-=======
->>>>>>> 674d93c01543cd9b8d868d8afc4cec4da31cb892
 } from '@pages';
 
 // Context
