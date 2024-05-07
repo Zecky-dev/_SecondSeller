@@ -1,4 +1,4 @@
-import { COLORS, CONSTANTS } from '@utils';
+import {COLORS, CONSTANTS} from '@utils';
 import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
@@ -14,7 +14,7 @@ export default StyleSheet.create({
     padding: CONSTANTS.padding.L1,
     borderWidth: 5,
     borderColor: COLORS.black,
-    borderStyle: 'dashed'
+    borderStyle: 'dashed',
   },
   image: {
     width: '100%',
@@ -28,6 +28,18 @@ export default StyleSheet.create({
     marginHorizontal: CONSTANTS.margin.L2,
     marginVertical: CONSTANTS.margin.L1,
     padding: CONSTANTS.padding.L1,
-    textDecorationLine: 'underline'
-  }
+    textDecorationLine: 'underline',
+  },
+  profileButtonStyle: {
+    container: {
+      backgroundColor: 'transparent',
+      borderWidth: CONSTANTS.borderWidth.thin,
+      borderColor: COLORS.black,
+    },
+    label: {
+      marginLeft: CONSTANTS.margin.L1,
+      color: COLORS.black,
+      fontSize: CONSTANTS.fontSize.L4,
+    },
+  },
 });
