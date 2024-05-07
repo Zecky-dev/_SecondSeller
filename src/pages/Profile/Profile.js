@@ -3,28 +3,22 @@ import {View, Text, Image} from 'react-native';
 
 import {Button} from '@components';
 
-import styles from './Profile.style.js';
-import {COLORS, CONSTANTS} from '@utils';
+import { getStyles } from './Profile.style.js';
+import {CONSTANTS} from '@utils';
+import THEMECOLORS from '@utils/colors.js'
 
 import Storage from '@utils/Storage.js';
 import {useUser} from '../../context/UserProvider.js';
+import {useTheme} from '../../context/ThemeContext.js'
 
-const profileButtonStyle = {
-  container: {
-    width: '90%',
-    backgroundColor: 'transparent',
-    borderWidth: CONSTANTS.borderWidth.thin,
-    borderColor: COLORS.black,
-  },
-  label: {
-    marginLeft: CONSTANTS.margin.L1,
-    color: COLORS.black,
-    fontSize: CONSTANTS.fontSize.L4,
-  },
-};
+
 
 const Profile = ({navigation}) => {
   const {user, setUser} = useUser();
+  const { theme, setTheme } = useTheme()
+  const styles = getStyles(theme)
+  const COLORS = theme === "dark" ? THEMECOLORS.DARK : THEMECOLORS.LIGHT
+
 
   return (
     <View style={styles.container}>
@@ -42,33 +36,37 @@ const Profile = ({navigation}) => {
         onPress={() => navigation.navigate('ProfileEditScreen')}
         icon={{
           name: 'pencil',
-          color: COLORS.black,
+          color: COLORS.textColor,
           size: CONSTANTS.fontSize.L5,
         }}
         label="Profil Düzenle"
-        additionalStyles={profileButtonStyle}
+        additionalStyles={styles.profileButtonStyle}
       />
 
       <Button
         onPress={() => navigation.navigate('MessagesScreen')}
         icon={{
           name: 'email-fast',
-          color: COLORS.black,
+          color: COLORS.textColor,
           size: CONSTANTS.fontSize.L5,
         }}
         label="Mesajlarım"
-        additionalStyles={profileButtonStyle}
+        additionalStyles={styles.profileButtonStyle}
       />
 
       <Button
-        onPress={() => console.log('Profil düzenle')}
+        onPress={() => {
+          const newTheme = theme === "dark" ? "light" : "dark";
+          Storage.storeData('theme',newTheme);
+          setTheme(newTheme)
+        }}
         icon={{
           name: 'theme-light-dark',
-          color: COLORS.black,
+          color: COLORS.textColor,
           size: CONSTANTS.fontSize.L5,
         }}
-        label="Tema Değiştir"
-        additionalStyles={profileButtonStyle}
+        label={`Tema: ${theme === "dark" ? "Karanlık" : "Aydınlık"}`}
+        additionalStyles={styles.profileButtonStyle}
       />
 
       <Button
@@ -78,11 +76,11 @@ const Profile = ({navigation}) => {
         }}
         icon={{
           name: 'logout',
-          color: COLORS.black,
+          color: COLORS.textColor,
           size: CONSTANTS.fontSize.L5,
         }}
         label="Çıkış Yap"
-        additionalStyles={profileButtonStyle}
+        additionalStyles={styles.profileButtonStyle}
       />
     </View>
   );

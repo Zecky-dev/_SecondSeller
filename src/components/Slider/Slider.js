@@ -2,11 +2,15 @@ import React from 'react';
 import {Dimensions, View, Image, Text} from 'react-native';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 
-import styles from '../Input/Input.style';
+import { getStyles } from '../Input/Input.style';
+import { useTheme } from '../../context/ThemeContext'
 import ownStyles from './Slider.style';
-import {CONSTANTS} from '@utils';
 
 const Slider = ({images, errors}) => {
+
+  const {theme} = useTheme()
+  const styles = getStyles(theme)
+  
   if (images.length === 0) {
     return (
       <>

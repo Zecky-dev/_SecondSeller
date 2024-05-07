@@ -5,15 +5,16 @@ import {Image, Pressable, Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // styles & constants
-import COLORS from '../../utils/colors';
+import THEMECOLORS from '../../utils/colors';
 import CONSTANTS from '../../utils/constants';
-import {bigCardStyles, littleCardStyles} from './AdvertisemetCard.style';
+import { getStyles } from './AdvertisemetCard.style';
 
 // Custom components
 import {Button} from '@components';
 
 // Uygulama genelindeki kullanıcıyı döndüren hook
 import {useUser} from '../../context/UserProvider';
+import { useTheme } from '../../context/ThemeContext';
 
 // Kart - büyük versiyon
 const LittleCard = ({
@@ -24,8 +25,11 @@ const LittleCard = ({
   favoriteUnfavorite,
 }) => {
   const {user, setUser} = useUser();
-
   const {images, title, price} = advertisement;
+  const { theme } = useTheme();
+  const COLORS = theme === "dark" ? THEMECOLORS.DARK : THEMECOLORS.LIGHT
+
+
   // Kalp icon durum kontrolü
   const [liked, setLiked] = useState(
     user?.favorites?.includes(advertisement._id),
@@ -88,6 +92,8 @@ const BigCard = ({
   handleUpdateButton,
 }) => {
   const {user, setUser} = useUser();
+  const { theme } = useTheme();
+  const COLORS = theme === "dark" ? THEMECOLORS.DARK : THEMECOLORS.LIGHT
 
   const {
     title,
@@ -160,7 +166,12 @@ const AdvertisementCard = ({
   handleSoldStatus,
   handleUpdateButton,
 }) => {
+
+  const { theme } = useTheme();
+  const bigCardStyles = getStyles(theme).bigCardStyles
+  const littleCardStyles = getStyles(theme).littleCardStyles
   const styles = big ? bigCardStyles : littleCardStyles;
+  
   if (!big) {
     return (
       <LittleCard

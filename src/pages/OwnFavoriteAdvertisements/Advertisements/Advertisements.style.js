@@ -1,9 +1,14 @@
 import {StyleSheet} from 'react-native'
-import {COLORS} from '@utils'
+import THEMECOLORS from '@utils/colors'
 
-export default StyleSheet.create({
-    container: {
-        backgroundColor: COLORS.white,
-        flex: 1,
-    }
-})
+export const getStyles = theme => {
+    const COLORS = theme === "dark" ? THEMECOLORS.DARK : THEMECOLORS.LIGHT
+    return StyleSheet.create({
+        container: {
+            backgroundColor: COLORS.white,
+            flex: 1,
+        }
+    })
+}
+
+

@@ -4,8 +4,9 @@ import {ScrollView, Text, View} from 'react-native';
 import {Button, Input,Animation} from '@components';
 
 // Styles & Colors
-import {COLORS, CONSTANTS} from '@utils';
-import styles from './Register.style';
+import { CONSTANTS} from '@utils';
+import THEMECOLORS from '@utils/colors'
+import { getStyles } from './Register.style';
 
 // Forms and Validations
 import {Formik} from 'formik';
@@ -14,6 +15,7 @@ import {RegisterSchema} from '@utils/validationSchemas';
 // Register
 import {sendEmailVerification } from '../../../services/userServices';
 import { showFlashMessage } from '@utils/functions';
+import { useTheme } from '../../../context/ThemeContext';
 
 const initialValues = {
   nameSurname: '',
@@ -30,6 +32,10 @@ const initialValues = {
 const Register = ({navigation}) => {
 
   const [loading,setLoading] = useState(false)
+  
+  const { theme } = useTheme()
+  const COLORS = theme === "dark" ? THEMECOLORS.DARK : THEMECOLORS.LIGHT
+  const styles= getStyles(theme)
 
   if(!loading) {
     return (

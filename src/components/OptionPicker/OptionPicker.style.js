@@ -1,10 +1,14 @@
 import { StyleSheet } from "react-native";
-import {COLORS,CONSTANTS} from '@utils'
+import { CONSTANTS } from "@utils";
+import THEMECOLORS from '@utils/colors'
 
-export default StyleSheet.create({
-    container: {
-        borderColor: COLORS.blackMuted,
-        borderWidth: CONSTANTS.borderWidth.thin,
-        borderRadius: CONSTANTS.borderRadius.L1,
-    }
-})
+export const getStyles2 = theme => {
+    const COLORS = theme === "dark" ? THEMECOLORS.DARK : THEMECOLORS.LIGHT
+    return StyleSheet.create({
+        container: {
+            borderColor: COLORS.borderColor,
+            borderWidth: CONSTANTS.borderWidth.thin,
+            borderRadius: CONSTANTS.borderRadius.L1,
+        }
+    })
+}

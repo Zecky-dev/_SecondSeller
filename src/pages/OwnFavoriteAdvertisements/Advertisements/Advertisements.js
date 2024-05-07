@@ -11,10 +11,15 @@ import {useUser} from '../../../context/UserProvider';
 import {useNavigation} from '@react-navigation/native';
 import {showFlashMessage} from '@utils/functions';
 
+import THEMECOLORS from '@utils/colors'
+import { useTheme } from '../../../context/ThemeContext';
+
 const Advertisements = ({advertisements}) => {
   const {
     user: {_id: id, token},
   } = useUser();
+  const {theme} = useTheme();
+  const COLORS = theme === "dark" ? THEMECOLORS.DARK : THEMECOLORS.LIGHT
 
   const navigation = useNavigation();
 
@@ -26,6 +31,7 @@ const Advertisements = ({advertisements}) => {
   return (
     <FlatList
       data={advertisements}
+      style={{backgroundColor: COLORS.pageBackground}}
       keyExtractor={item => item._id}
       renderItem={({item}) => (
         <AdvertisementCard
