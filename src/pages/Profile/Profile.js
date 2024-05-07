@@ -19,19 +19,6 @@ const Profile = ({navigation}) => {
   const styles = getStyles(theme)
   const COLORS = theme === "dark" ? THEMECOLORS.DARK : THEMECOLORS.LIGHT
 
-  const profileButtonStyle = {
-    container: {
-      width: '90%',
-      backgroundColor: 'transparent',
-      borderWidth: CONSTANTS.borderWidth.thin,
-      borderColor: COLORS.black,
-    },
-    label: {
-      marginLeft: CONSTANTS.margin.L1,
-      color: COLORS.black,
-      fontSize: CONSTANTS.fontSize.L4,
-    },
-  };
 
   return (
     <View style={styles.container}>
@@ -49,35 +36,37 @@ const Profile = ({navigation}) => {
         onPress={() => navigation.navigate('ProfileEditScreen')}
         icon={{
           name: 'pencil',
-          color: COLORS.black,
+          color: COLORS.textColor,
           size: CONSTANTS.fontSize.L5,
         }}
         label="Profil Düzenle"
-        additionalStyles={profileButtonStyle}
+        additionalStyles={styles.profileButtonStyle}
       />
 
       <Button
         onPress={() => navigation.navigate('MessagesScreen')}
         icon={{
           name: 'email-fast',
-          color: COLORS.black,
+          color: COLORS.textColor,
           size: CONSTANTS.fontSize.L5,
         }}
         label="Mesajlarım"
-        additionalStyles={profileButtonStyle}
+        additionalStyles={styles.profileButtonStyle}
       />
 
       <Button
         onPress={() => {
-          setTheme(theme === "dark" ? "light" : "dark")
+          const newTheme = theme === "dark" ? "light" : "dark";
+          Storage.storeData('theme',newTheme);
+          setTheme(newTheme)
         }}
         icon={{
           name: 'theme-light-dark',
-          color: COLORS.black,
+          color: COLORS.textColor,
           size: CONSTANTS.fontSize.L5,
         }}
-        label="Tema Değiştir"
-        additionalStyles={profileButtonStyle}
+        label={`Tema: ${theme === "dark" ? "Karanlık" : "Aydınlık"}`}
+        additionalStyles={styles.profileButtonStyle}
       />
 
       <Button
@@ -87,11 +76,11 @@ const Profile = ({navigation}) => {
         }}
         icon={{
           name: 'logout',
-          color: COLORS.black,
+          color: COLORS.textColor,
           size: CONSTANTS.fontSize.L5,
         }}
         label="Çıkış Yap"
-        additionalStyles={profileButtonStyle}
+        additionalStyles={styles.profileButtonStyle}
       />
     </View>
   );

@@ -8,7 +8,8 @@ export const getStyles = theme => {
         container: {
             flex: 1,
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            backgroundColor: COLORS.pageBackground,
         },
         image: {
             width: 200,
@@ -16,9 +17,22 @@ export const getStyles = theme => {
             borderRadius: 100
         },
         name: {
-            color: COLORS.black,
+            color: COLORS.textColor,
             fontSize: CONSTANTS.fontSize.L6,
             marginVertical: CONSTANTS.margin.L3
+        },
+        profileButtonStyle : {
+            container: {
+              width: '90%',
+              backgroundColor: 'transparent',
+              borderWidth: CONSTANTS.borderWidth.thin,
+              borderColor: COLORS.borderColor,
+            },
+            label: {
+              marginLeft: CONSTANTS.margin.L1,
+              color: COLORS.textColor,
+              fontSize: CONSTANTS.fontSize.L4,
+            },
         }
     })
 }

@@ -114,7 +114,7 @@ const AdvertisementDetail = ({route,navigation}) => {
             <Button
               icon={{
                 name: 'chat',
-                color: COLORS.white,
+                color: COLORS.titleColor,
                 size: 24,
               }}
               label="Sohbet Başlat"
@@ -128,7 +128,7 @@ const AdvertisementDetail = ({route,navigation}) => {
             <Button
               icon={{
                 name: 'offer',
-                color: COLORS.white,
+                color: COLORS.titleColor,
                 size: 24,
               }}
               additionalStyles={{

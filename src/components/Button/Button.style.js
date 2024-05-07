@@ -19,7 +19,7 @@ export const getStyles = theme => {
             //minWidth: 120,
         },
         label: {
-            color: COLORS.white,
+            color: COLORS.titleColor,
             fontSize: CONSTANTS.fontSize.L4
         },
         icon: {

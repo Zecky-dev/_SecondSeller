@@ -7,7 +7,7 @@ export const getStyles = theme => {
   const COLORS = theme === "dark" ? THEMECOLORS.DARK : THEMECOLORS.LIGHT
   return StyleSheet.create({
     name: {
-      color: COLORS.black,
+      color: COLORS.textColor,
       fontSize: CONSTANTS.fontSize.L5,
       flex: 1,
     },
@@ -28,18 +28,19 @@ export const getStyles = theme => {
     },
   
     outerContainer: {
-      margin: CONSTANTS.margin.L2,
+      backgroundColor: COLORS.pageBackground,
+      padding: CONSTANTS.padding.L2,
       flex: 1,
     },
   
     descriptionTitle: {
       fontSize: CONSTANTS.fontSize.L4,
-      color: COLORS.black,
+      color: COLORS.textColor,
       fontWeight: 'bold',
     },
   
     description: {
-      color: COLORS.black,
+      color: COLORS.textMutedColor,
     },
   });  
 }

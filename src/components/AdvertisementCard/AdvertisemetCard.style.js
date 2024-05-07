@@ -11,11 +11,13 @@ export const getStyles = theme => {
         flex: 1,
         margin: CONSTANTS.margin.L1,
         alignItems: 'center',
-        borderColor: COLORS.black,
+        borderColor: COLORS.borderColor,
+        backgroundColor: COLORS.cardBackground,
         padding: CONSTANTS.padding.L1,
         borderWidth: CONSTANTS.borderWidth.thin,
         alignSelf: 'flex-start',
         borderRadius: CONSTANTS.borderRadius.L1,
+        borderColor: COLORS.borderColor,
       },
       imageContainer: {},
       image: {
@@ -29,10 +31,10 @@ export const getStyles = theme => {
       },
       price: {
         fontSize: CONSTANTS.fontSize.L3,
-        color: COLORS.blackMuted,
+        color: COLORS.green,
       },
       name: {
-        color: COLORS.black,
+        color: COLORS.cardTitle,
         fontSize: CONSTANTS.fontSize.L4,
         fontWeight: 'bold',
         marginTop: CONSTANTS.margin.L2,
@@ -50,8 +52,10 @@ export const getStyles = theme => {
       cardContainer: {
         margin: CONSTANTS.margin.L2,
         borderWidth: 0.5,
+        backgroundColor: COLORS.cardBackground,
         padding: CONSTANTS.padding.L3,
         borderRadius: CONSTANTS.borderRadius.L3,
+        borderColor: COLORS.borderColor,
       },
       image: {
         width: '100%',
@@ -60,14 +64,14 @@ export const getStyles = theme => {
       },
       name: {
         textAlign: 'center',
-        color: COLORS.black,
+        color: COLORS.cardTitle,
         fontSize: CONSTANTS.fontSize.L5,
         marginVertical: CONSTANTS.margin.L2,
         fontWeight: 'bold',
       },
       description: {
         fontSize: CONSTANTS.fontSize.L3,
-        color: COLORS.black,
+        color: COLORS.cardDescription,
       },
       price: {
         color: COLORS.green,

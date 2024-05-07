@@ -2,7 +2,8 @@ import {useUser} from '../../../context/UserProvider';
 import React, {useState} from 'react';
 import {Image, ScrollView, Pressable, Text} from 'react-native';
 
-import styles from './ProfileEdit.style';
+import { getStyles } from './ProfileEdit.style';
+import { useTheme } from '../../../context/ThemeContext'
 
 import {UpdateProfileSchema} from '@utils/validationSchemas';
 import {Formik} from 'formik';
@@ -19,6 +20,7 @@ import {
   updateUser,
 } from '../../../services/userServices';
 import {uploadImagesAndGetURLs} from '../../../services/otherServices';
+
 
 // Cihazdan resim alma
 const takeImageFromGallery = async setFieldValue => {
@@ -47,6 +49,8 @@ const takeImageFromGallery = async setFieldValue => {
 const ProfilEdit = ({navigation}) => {
   const {user, setUser} = useUser();
   const [loading, setLoading] = useState(false);
+  const { theme } = useTheme();
+  const styles = getStyles(theme)
 
   // Kullanıcı bilgilerini güncelleme
   const handleUpdate = async newUser => {

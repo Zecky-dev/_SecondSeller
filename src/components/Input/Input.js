@@ -47,6 +47,7 @@ const Input = ({
                     onChangeText={onChangeText}
                     keyboardType={keyboardType}
                     secureTextEntry={inputVisible}
+                    placeholderTextColor={COLORS.textMutedColor}
                     style={styles.input}
                     multiline = {multiline}
                     value={value}
