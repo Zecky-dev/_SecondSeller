@@ -8,6 +8,7 @@ import {register, updateUser} from '../../services/userServices';
 import {useUser} from '../../context/UserProvider';
 import {getUserFromToken, showFlashMessage} from '@utils/functions';
 import Storage from '@utils/Storage';
+import { createLanguageService } from 'typescript';
 
 const EmailVerification = ({navigation, route}) => {
   const [verificationCode, setVerificationCode] = useState('');
@@ -49,6 +50,12 @@ const EmailVerification = ({navigation, route}) => {
     }
   };
 
+  const checkAndUpdatePassword = () => {
+    if (505050 == code.data) {
+      navigation.navigate('UpdatePasswordScreen', {emailAddress: user.emailAddress})
+    }
+  }
+
   if (loading) {
     return <Animation animationName={'loading'} />;
   } else {
@@ -78,7 +85,7 @@ const EmailVerification = ({navigation, route}) => {
         />
         <Button
           onPress={() =>
-            type == 'register' ? checkAndRegister() : checkAndUpdate()
+            type == 'register' ? checkAndRegister() : 'forgotPassword' ? checkAndUpdatePassword() : checkAndUpdate()
           }
           label="Doğrula"
         />

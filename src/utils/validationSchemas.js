@@ -16,6 +16,14 @@ const ERRORS = {
 const phoneNumberRegex =
   /(^[0\s]?[\s]?)([(]?)([5])([0-9]{2})([)]?)([\s]?)([0-9]{3})([\s]?)([0-9]{2})([\s]?)([0-9]{2})$/g;
 
+
+const EmailSchema = yup.object().shape({
+  emailAddress: yup
+    .string(ERRORS.string)
+    .email(ERRORS.email)
+    .required(ERRORS.required),
+})
+
 const LoginSchema = yup.object().shape({
   emailAddress: yup
     .string(ERRORS.string)
@@ -24,16 +32,17 @@ const LoginSchema = yup.object().shape({
   password: yup
     .string(ERRORS.string)
     .required(ERRORS.required)
-    .min(6, ({min}) => ERRORS.min(min))
-    .max(24, ({max}) => ERRORS.max(max)),
+    .min(6, ({ min }) => ERRORS.min(min))
+    .max(24, ({ max }) => ERRORS.max(max)),
 });
+
 
 const BasicsSchema = {
   nameSurname: yup
     .string(ERRORS.string)
     .required(ERRORS.required)
-    .min(3, ({min}) => ERRORS.min(min))
-    .max(24, ({max}) => ERRORS.max(max)),
+    .min(3, ({ min }) => ERRORS.min(min))
+    .max(24, ({ max }) => ERRORS.max(max)),
   emailAddress: yup
     .string(ERRORS.string)
     .email(ERRORS.email)
@@ -51,8 +60,8 @@ const RegisterSchema = yup.object().shape({
   password: yup
     .string(ERRORS.string)
     .required(ERRORS.required)
-    .min(6, ({min}) => ERRORS.min(min))
-    .max(24, ({max}) => ERRORS.max(max)),
+    .min(6, ({ min }) => ERRORS.min(min))
+    .max(24, ({ max }) => ERRORS.max(max)),
   passwordConfirm: yup
     .string(ERRORS.string)
     .required(ERRORS.required)
@@ -64,14 +73,14 @@ const CreateAdvertisementSchema = yup.object().shape({
     .string(ERRORS.string)
     .trim()
     .required(ERRORS.required)
-    .min(3, ({min}) => ERRORS.min(min))
-    .max(64, ({max}) => ERRORS.max(max)),
+    .min(3, ({ min }) => ERRORS.min(min))
+    .max(64, ({ max }) => ERRORS.max(max)),
   description: yup
     .string(ERRORS.string)
     .trim()
     .required(ERRORS.required)
-    .min(12, ({min}) => ERRORS.min(min))
-    .max(240, ({max}) => ERRORS.max(max)),
+    .min(12, ({ min }) => ERRORS.min(min))
+    .max(240, ({ max }) => ERRORS.max(max)),
   price: yup
     .number(ERRORS.number)
     .positive(ERRORS.positive)
@@ -90,14 +99,26 @@ const ChangePasswordSchema = yup.object().shape({
   oldPassword: yup
     .string(ERRORS.string)
     .required(ERRORS.required)
-    .min(6, ({min}) => ERRORS.min(min))
-    .max(24, ({max}) => ERRORS.max(max)),
+    .min(6, ({ min }) => ERRORS.min(min))
+    .max(24, ({ max }) => ERRORS.max(max)),
   newPassword: yup
     .string(ERRORS.string)
     .required(ERRORS.required)
-    .min(6, ({min}) => ERRORS.min(min))
-    .max(24, ({max}) => ERRORS.max(max)),
-    newPasswordConfirm: yup
+    .min(6, ({ min }) => ERRORS.min(min))
+    .max(24, ({ max }) => ERRORS.max(max)),
+  newPasswordConfirm: yup
+    .string(ERRORS.string)
+    .required(ERRORS.required)
+    .oneOf([yup.ref('newPassword'), null], ERRORS.passwordConfirm),
+});
+
+const UpdatePasswordSchema = yup.object().shape({
+  newPassword: yup
+    .string(ERRORS.string)
+    .required(ERRORS.required)
+    .min(6, ({ min }) => ERRORS.min(min))
+    .max(24, ({ max }) => ERRORS.max(max)),
+  newPasswordConfirm: yup
     .string(ERRORS.string)
     .required(ERRORS.required)
     .oneOf([yup.ref('newPassword'), null], ERRORS.passwordConfirm),
@@ -109,4 +130,6 @@ export {
   CreateAdvertisementSchema,
   UpdateProfileSchema,
   ChangePasswordSchema,
+  EmailSchema,
+  UpdatePasswordSchema
 };
