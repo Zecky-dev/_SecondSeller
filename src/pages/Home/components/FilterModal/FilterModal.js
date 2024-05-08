@@ -103,8 +103,16 @@ const FilterModal = ({isVisible, setVisible, filter}) => {
                     flexDirection: 'row',
                     justifyContent: 'space-evenly',
                   }}>
-                  <Button onPress={handleSubmit} label="Filtreleri Uygula" />
-                  <Button onPress={resetForm} label="Filtreleri Sıfırla" />
+                  <Button
+                    onPress={handleSubmit}
+                    label="Filtreleri Uygula"
+                    additionalStyles={{container: {flex: 1}}}
+                  />
+                  <Button
+                    onPress={resetForm}
+                    label="Filtreleri Sıfırla"
+                    additionalStyles={{container: {flex: 1}}}
+                  />
                 </View>
               </>
             )}

@@ -1,10 +1,10 @@
 import {Dimensions, StyleSheet} from 'react-native';
 
-import { CONSTANTS} from '@utils';
-import THEMECOLORS from '@utils/colors'
+import {CONSTANTS} from '@utils';
+import THEMECOLORS from '@utils/colors';
 
 export const getStyles = theme => {
-  const COLORS = theme === "dark" ? THEMECOLORS.DARK : THEMECOLORS.LIGHT
+  const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
   return {
     littleCardStyles: StyleSheet.create({
       cardContainer: {
@@ -43,7 +43,7 @@ export const getStyles = theme => {
         position: 'absolute',
         right: CONSTANTS.margin.L3,
         top: CONSTANTS.margin.L3,
-        backgroundColor: COLORS.white,
+        backgroundColor: COLORS.titleColor,
         borderRadius: CONSTANTS.borderRadius.L4,
         padding: CONSTANTS.padding.L1,
       },
@@ -54,13 +54,13 @@ export const getStyles = theme => {
         borderWidth: 0.5,
         backgroundColor: COLORS.cardBackground,
         padding: CONSTANTS.padding.L3,
-        borderRadius: CONSTANTS.borderRadius.L3,
+        borderRadius: CONSTANTS.borderRadius.L2,
         borderColor: COLORS.borderColor,
       },
       image: {
         width: '100%',
         height: 150,
-        resizeMode: 'contain',
+        resizeMode: 'cover',
       },
       name: {
         textAlign: 'center',
@@ -81,13 +81,16 @@ export const getStyles = theme => {
       },
       likeButton: {
         position: 'absolute',
-        right: CONSTANTS.margin.L2,
-        top: CONSTANTS.margin.L2,
+        backgroundColor: COLORS.titleColor,
+        borderRadius: CONSTANTS.borderRadius.L5,
+        right: CONSTANTS.margin.L4,
+        top: CONSTANTS.margin.L4,
+        padding: CONSTANTS.padding.L1,
       },
       actionButtonsContainer: {
         flexDirection: 'row',
         marginTop: CONSTANTS.margin.L2,
       },
-    })
-  }
-}
+    }),
+  };
+};

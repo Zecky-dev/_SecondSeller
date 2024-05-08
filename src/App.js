@@ -3,8 +3,8 @@ import {StatusBar, View, Text} from 'react-native';
 import {useIsFocused, CommonActions} from '@react-navigation/native';
 
 // Constants
-import { CONSTANTS } from '@utils';
-import THEMECOLORS from '@utils/colors'
+import {CONSTANTS} from '@utils';
+import THEMECOLORS from '@utils/colors';
 
 // React Navigation
 import {NavigationContainer} from '@react-navigation/native';
@@ -45,7 +45,6 @@ const Stack = createNativeStackNavigator();
 
 // İlanlar sayfası için kullanılan stack
 const HomeStack = () => {
-
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen component={Home} name="AdvertisementsScreen" />
@@ -114,8 +113,6 @@ const ProfileStack = ({navigation}) => {
 };
 
 const AdvertisementStack = () => {
-
-
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen component={Advertisements} name="Advertisements" />
@@ -132,9 +129,8 @@ const AdvertisementStack = () => {
 };
 
 const BottomTabs = () => {
-
-  const { theme } = useTheme()
-  const COLORS = theme === "dark" ? THEMECOLORS.DARK : THEMECOLORS.LIGHT
+  const {theme} = useTheme();
+  const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
 
   return (
     <Tab.Navigator
@@ -162,7 +158,9 @@ const BottomTabs = () => {
           title: 'Anasayfa',
           tabBarIcon: ({focused, color, size}) => {
             const iconName = focused ? 'home' : 'home-outline';
-            const iconColor = focused ? COLORS.titleColor : COLORS.titleMutedColor;
+            const iconColor = focused
+              ? COLORS.titleColor
+              : COLORS.titleMutedColor;
             return <Icon name={iconName} color={iconColor} size={size} />;
           },
         }}
@@ -177,7 +175,9 @@ const BottomTabs = () => {
           title: 'İlan Oluştur',
           tabBarIcon: ({focused, size}) => {
             const iconName = focused ? 'plus-circle' : 'plus-circle-outline';
-            const iconColor = focused ? COLORS.titleColor : COLORS.titleMutedColor;
+            const iconColor = focused
+              ? COLORS.titleColor
+              : COLORS.titleMutedColor;
             return <Icon name={iconName} color={iconColor} size={size} />;
           },
         }}
@@ -189,7 +189,9 @@ const BottomTabs = () => {
           title: 'İlanlar',
           tabBarIcon: ({focused, color, size}) => {
             const iconName = focused ? 'heart' : 'heart-outline';
-            const iconColor = focused ? COLORS.titleColor : COLORS.titleMutedColor;;
+            const iconColor = focused
+              ? COLORS.titleColor
+              : COLORS.titleMutedColor;
             return <Icon name={iconName} color={iconColor} size={size} />;
           },
         }}
@@ -202,7 +204,9 @@ const BottomTabs = () => {
           title: 'Profil',
           tabBarIcon: ({focused, color, size}) => {
             const iconName = focused ? 'account' : 'account-outline';
-            const iconColor = focused ? COLORS.titleColor : COLORS.titleMutedColor;
+            const iconColor = focused
+              ? COLORS.titleColor
+              : COLORS.titleMutedColor;
             return <Icon name={iconName} color={iconColor} size={size} />;
           },
         }}
@@ -230,8 +234,8 @@ const AuthStack = () => {
 
 const App = () => {
   const {user, setUser} = useUser();
-  const { theme } = useTheme()
-  const COLORS = theme === "dark" ? THEMECOLORS.DARK : THEMECOLORS.LIGHT
+  const {theme} = useTheme();
+  const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
 
   useEffect(() => {
     const checkToken = async () => {
@@ -255,7 +259,6 @@ const App = () => {
       <FlashMessage position={'top'} />
     </>
   );
- 
 };
 
 const AppWithContext = () => {
