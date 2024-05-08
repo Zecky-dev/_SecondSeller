@@ -14,7 +14,7 @@ import {Formik} from 'formik';
 import {CreateAdvertisementSchema} from '@utils/validationSchemas';
 
 // Styles
-import { getStyles } from './CreateAndUpdateAdvertisement.style';
+import {getStyles} from './CreateAndUpdateAdvertisement.style';
 
 // Utility functions
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -36,7 +36,8 @@ import {uploadImagesAndGetURLs} from '../../services/otherServices';
 
 // useUser hook
 import {useUser} from '../../context/UserProvider';
-import {useTheme} from '../../context/ThemeContext'
+import {useTheme} from '../../context/ThemeContext';
+import {showMessage} from 'react-native-flash-message';
 
 
 
@@ -71,7 +72,7 @@ const takeImageFromGallery = async (setImages, setFieldValue) => {
 
 const CreateAndUpdateAdvertisement = ({navigation, route}) => {
   const {advertisement} = route.params;
-  const { theme } = useTheme()
+  const {theme} = useTheme();
   const styles = getStyles(theme);
 
   // Galeriden seçilen resimlerin dizisini tutan state

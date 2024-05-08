@@ -14,6 +14,7 @@ import {AdvertisementCard, Button, Input, EmptyList} from '@components';
 
 import THEMECOLORS from '@utils/colors';
 import {useTheme} from '../../context/ThemeContext';
+import {showMessage} from 'react-native-flash-message';
 
 const Home = ({navigation}) => {
   const [filterModalVisible, setFilterModalVisible] = useState(false);
