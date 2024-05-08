@@ -1,42 +1,41 @@
-import React from 'react';
-import {View, Text,FlatList} from 'react-native';
-import styles from './Chat.style'
+import React, {useEffect} from 'react';
+import {View, FlatList} from 'react-native';
+import styles from './Chat.style';
 
-import {ChatBubble,ChatInput} from '@components';
-import { Message } from '@utils/models';
+import {ChatBubble, ChatInput} from '@components';
+import {useUser} from '../../context/UserProvider';
 
-const Chat = () => {
-  
-  // Giriş yapan kullanıcının kullanıcı adı 
-  const user = "Zecky";
+import {checkRooms} from '../../services/firebaseChatService';
 
-  // Mock mesajlar
-  const messages = [
-    new Message(1,"Selam","Zecky","17:06"),
-    new Message(2,"Selammm","Alper","17:32"),
-    new Message(3,"Sattığınız ürünü çok beğendim, ama fiyatta anlaşmamız lazım","Zecky","17:33"),
-    new Message(4,"150 TL uygun mu?","Zecky","17:33"),
-    new Message(5,"120 TL'de anlaşalım İNŞALLAH","Alper","18:00"),
-    new Message(6,"Tamamdır alıyorum","Zecky","18:12"),
+const Chat = ({route}) => {
+  const {
+    user: {_id: userID},
+  } = useUser();
+  const {advertisementID, ownerID} = route.params;
 
-]
+  useEffect(() => {
+    const handleRoomID = async () => {
+      const roomID = await checkRooms(advertisementID, userID, ownerID);
+      console.log(roomID);
+    };
+    handleRoomID();
+  }, [advertisementID]);
 
   return (
-      <View style={styles.container}>
-        <FlatList
-        data={messages}
+    <View style={styles.container}>
+      <FlatList
+        data={[]}
         contentContainerStyle={styles.chatListContainer}
         renderItem={({item}) => (
           <ChatBubble
-            isOwner={item.messageOwner === user}
+            isOwner={true}
             messageDetails={item}
             key={item.messageId}
           />
         )}
       />
-      <ChatInput/>
-      </View>
-      
+      <ChatInput />
+    </View>
   );
 };
 

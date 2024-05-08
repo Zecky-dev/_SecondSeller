@@ -51,6 +51,7 @@ const Advertisements = ({advertisements}) => {
             handleUpdateButton={() => {
               navigation.navigate('UpdateAdvertisementScreen', {
                 advertisement: item,
+                isOwnStack: true,
               });
             }}
           />

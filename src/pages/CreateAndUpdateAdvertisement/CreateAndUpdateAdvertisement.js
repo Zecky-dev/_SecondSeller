@@ -25,7 +25,7 @@ import {
   getCurrentLocation,
   showFlashMessage,
 } from '@utils/functions';
-import { showMessage } from 'react-native-flash-message';
+import {showMessage} from 'react-native-flash-message';
 
 // Service functions
 import {
@@ -37,8 +37,6 @@ import {uploadImagesAndGetURLs} from '../../services/otherServices';
 // useUser hook
 import {useUser} from '../../context/UserProvider';
 import {useTheme} from '../../context/ThemeContext';
-
-
 
 // Galeriden resim seçilir, boyutu küçültülür ve slider'a set edilir.
 const takeImageFromGallery = async (setImages, setFieldValue) => {
@@ -70,7 +68,7 @@ const takeImageFromGallery = async (setImages, setFieldValue) => {
 };
 
 const CreateAndUpdateAdvertisement = ({navigation, route}) => {
-  const {advertisement} = route.params;
+  const {advertisement, isOwnStack} = route.params;
   const {theme} = useTheme();
   const styles = getStyles(theme);
 

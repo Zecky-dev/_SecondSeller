@@ -41,8 +41,7 @@ import FlashMessage from 'react-native-flash-message';
 import {getUserFromToken} from '@utils/functions';
 
 // Bootsplash
-import BootSplash from "react-native-bootsplash";
-
+import BootSplash from 'react-native-bootsplash';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -51,7 +50,7 @@ const Stack = createNativeStackNavigator();
 const HomeStack = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen component={Home} name="AdvertisementsScreen" />
+      <Stack.Screen component={Home} name="HomeAdvertisementsScreen" />
       <Stack.Screen
         component={AdvertisementDetailStack}
         name="AdvertisementDetailStack"
@@ -248,15 +247,11 @@ const App = () => {
     };
     const init = async () => {
       await checkToken();
-    }
+    };
 
     init().finally(async () => {
-      await BootSplash.hide({ fade: true });
-    })
-
-
-
-    
+      await BootSplash.hide({fade: true});
+    });
   }, []);
 
   return (

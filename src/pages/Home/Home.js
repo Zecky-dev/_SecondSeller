@@ -97,7 +97,9 @@ const Home = ({navigation}) => {
           <>
             <FlatList
               data={advertisements.filter(
-                advertisement => advertisement.soldStatus == false,
+                advertisement =>
+                  advertisement.soldStatus == false &&
+                  user.banneds.includes(advertisement.owner) == false,
               )}
               style={{backgroundColor: COLORS.pageBackground}}
               keyExtractor={(item, index) => item._id}
