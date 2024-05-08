@@ -60,6 +60,15 @@ const Login = ({navigation}) => {
     <ScrollView
       style={{height: '100%'}}
       contentContainerStyle={styles.container}>
+
+    {/*
+      <Button 
+        onPress={() => console.log("Tema değiştirme")}
+        label={`Tema: ${theme === "dark" ? "Koyu" : "Aydınlık"}`}
+        additionalStyles={{container: styles.themeChangeButton}}
+      />
+  */}
+    
       <Text style={styles.appName}>{CONSTANTS.APP_NAME}</Text>
       <Text style={styles.appSlogan}>{CONSTANTS.APP_SLOGAN}</Text>
 

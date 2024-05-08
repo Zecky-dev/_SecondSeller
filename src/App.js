@@ -40,6 +40,10 @@ import FlashMessage from 'react-native-flash-message';
 // Storage
 import {getUserFromToken} from '@utils/functions';
 
+// Bootsplash
+import BootSplash from "react-native-bootsplash";
+
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -238,7 +242,17 @@ const App = () => {
       const userData = await getUserFromToken();
       setUser(userData);
     };
-    checkToken();
+    const init = async () => {
+      await checkToken();
+    }
+
+    init().finally(async () => {
+      await BootSplash.hide({ fade: true });
+    })
+
+
+
+    
   }, []);
 
   return (

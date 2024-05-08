@@ -30,7 +30,6 @@ const Home = ({navigation}) => {
       values,
       user.token,
     );
-    console.log(filteredAdvertisements);
     setAdvertisements(filteredAdvertisements);
     setFilterModalVisible(false);
   };
