@@ -20,7 +20,8 @@ export const getStyles = theme => {
         },
         label: {
             color: COLORS.titleColor,
-            fontSize: CONSTANTS.fontSize.L4
+            fontSize: CONSTANTS.fontSize.L4,
+            textAlign: 'center',
         },
         icon: {
             //marginRight: CONSTANTS.margin.L1

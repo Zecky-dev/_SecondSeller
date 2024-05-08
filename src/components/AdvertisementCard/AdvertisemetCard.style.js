@@ -43,8 +43,8 @@ export const getStyles = theme => {
         position: 'absolute',
         right: CONSTANTS.margin.L3,
         top: CONSTANTS.margin.L3,
-        backgroundColor: COLORS.white,
-        borderRadius: CONSTANTS.borderRadius.L4,
+        backgroundColor: COLORS.titleColor,
+        borderRadius: CONSTANTS.borderRadius.L2,
         padding: CONSTANTS.padding.L1,
       },
     }),
@@ -60,7 +60,7 @@ export const getStyles = theme => {
       image: {
         width: '100%',
         height: 150,
-        resizeMode: 'contain',
+        resizeMode: 'cover',
       },
       name: {
         textAlign: 'center',
@@ -81,8 +81,11 @@ export const getStyles = theme => {
       },
       likeButton: {
         position: 'absolute',
-        right: CONSTANTS.margin.L2,
-        top: CONSTANTS.margin.L2,
+        right: CONSTANTS.margin.L4,
+        top: CONSTANTS.margin.L4,
+        padding: CONSTANTS.padding.L1,
+        backgroundColor: COLORS.titleColor,
+        borderRadius: CONSTANTS.borderRadius.L5,
       },
       actionButtonsContainer: {
         flexDirection: 'row',

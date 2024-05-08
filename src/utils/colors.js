@@ -7,7 +7,8 @@ const MAIN = {
     black: 'black',
     white: 'white',
     cardTitle: 'black',
-    cardDescription: 'rgba(0,0,0,0.5)'
+    cardDescription: 'rgba(0,0,0,0.5)',
+    blackMuted: 'rgba(0,0,0,0.5)',
 }
 
 const COLORS = {
