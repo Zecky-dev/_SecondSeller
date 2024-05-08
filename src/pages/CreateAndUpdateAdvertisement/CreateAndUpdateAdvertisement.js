@@ -37,7 +37,6 @@ import {uploadImagesAndGetURLs} from '../../services/otherServices';
 // useUser hook
 import {useUser} from '../../context/UserProvider';
 import {useTheme} from '../../context/ThemeContext';
-import {showMessage} from 'react-native-flash-message';
 
 
 
