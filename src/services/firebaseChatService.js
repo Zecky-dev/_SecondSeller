@@ -1,61 +1,89 @@
+import { getUser } from '../services/userServices'
 import firestore from '@react-native-firebase/firestore';
 import uuid from 'react-native-uuid';
 
-const firebaseConnection = firestore().collection('rooms');
 
-/* 
-advertisementID: sohbet için kullanılacak ilan ID'si, userID mevcut kullanıcı ID'si
-kullanıcı ID'si verilen kişi daha önce bir sohbet başlattıysa ilgili sohbeti getirir
-ilan ait sohbet bulunamazsa yeni sohbet oluşturulur
-*/
-const checkRooms = (advertisementID, userID, ownerID) => {
+const firebaseConnection = firestore().collection('ChatRooms');
+
+// İlan ID'si verilen ilan için daha önce bir oda oluşturulup oluşturulmadığını kontrol eden, oda oluşturulmamış ise oda oluşturan fonksiyon
+const checkChatRoom = (advertisementID, senderID, advertisementOwnerID) => {
   return new Promise((resolve, reject) => {
     firebaseConnection
       .where('advertisementID', '==', advertisementID)
-      .where('usersIDs', 'array-contains', userID)
+      .where('participantIDs', 'array-contains', senderID)
       .get()
-      .then(querySnapshot => {
-        const docs = querySnapshot.docs;
-
-        if (docs.length === 0) {
-          createRoom(advertisementID, userID, ownerID)
-            .then(roomID => {
-              if (roomID) resolve(roomID);
-              else reject('Room creation failed');
-            })
-            .catch(error => {
-              reject(error);
-            });
-        } else if (docs.length == 1) {
-          console.log(docs[0].id);
-          resolve(docs[0].id);
+      .then(async querySnapshot => {
+        const rooms = querySnapshot.docs;
+        let roomID;
+        if (rooms.length === 0) {
+          roomID = await createRoom(
+            advertisementID,
+            senderID,
+            advertisementOwnerID,
+          );
+          resolve(roomID);
         } else {
-          const ids = docs.map(doc => doc.id);
-          resolve(ids);
+          roomID = rooms[0].id;
+          resolve(roomID);
         }
       })
-      .catch(error => {
-        reject(error);
+      .catch(err => {
+        console.log('ROOM_CHECK_ERROR', err);
+        reject(null);
       });
   });
 };
 
-// yeni sohbet oluşturma
+// Yeni sohbet oluşturma
 const createRoom = async (advertisementID, userID, ownerID) => {
-  // roomID değerini kullanıcılara ekle
-  const roomID = uuid.v4();
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
+    const participantIDs = [userID, ownerID];
+    const roomID = uuid.v4();
     try {
-      const response = firebaseConnection.doc(roomID).set({
+      await firebaseConnection.doc(roomID).set({
         advertisementID,
-        usersIDs: [userID, ownerID],
+        participantIDs,
         messages: [],
       });
-      resolve(response);
-    } catch (error) {
-      reject(error);
+      resolve(roomID);
+    } catch (err) {
+      console.log('CREATE_ROOM_ERROR', err);
+      reject(err);
     }
   });
+};
+
+// ID'si verilen sohbet odasının bilgilerini getirir
+// Anlık takip yok sadece çağırdığımız zaman getiriyor
+const getRoomDataById = async roomID => {
+  try {
+    const roomDocs = await firebaseConnection
+      .where(firestore.FieldPath.documentId(), '==', roomID)
+      .get();
+
+    if (!roomDocs.empty) {
+      const roomData = roomDocs.docs[0].data(); // Düzeltme yapıldı
+      return roomData;
+    } else {
+      throw Error(`Couldn't get any room by ${roomID} id.`);
+    }
+  } catch (err) {
+    console.log('getRoomDataById error', err);
+    throw err;
+  }
+};
+
+// Mesaj yazma
+const createMessage = async (roomID, messageDetails) => {
+  
+  try {
+    await firebaseConnection.doc(roomID).update({
+      messages: firestore.FieldValue.arrayUnion(messageDetails),
+    });
+    console.log("MESSAGE_CREATION_SUCCESS")
+  } catch (err) {
+    console.log('MESSAGE_CREATION_ERROR', err);
+  }
 };
 
 const getMyRooms = async userID => {
@@ -79,4 +107,4 @@ const getMyRooms = async userID => {
 
 // addMessage, deleteMessage, clearMessages
 
-export {checkRooms, getMyRooms};
+export {checkChatRoom, getRoomDataById, createMessage};

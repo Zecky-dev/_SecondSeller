@@ -14,7 +14,6 @@ import {AdvertisementCard, Button, Input, EmptyList} from '@components';
 
 import THEMECOLORS from '@utils/colors';
 import {useTheme} from '../../context/ThemeContext';
-import {showMessage} from 'react-native-flash-message';
 
 const Home = ({navigation}) => {
   const [filterModalVisible, setFilterModalVisible] = useState(false);
@@ -97,9 +96,7 @@ const Home = ({navigation}) => {
           <>
             <FlatList
               data={advertisements.filter(
-                advertisement =>
-                  advertisement.soldStatus == false &&
-                  user.banneds.includes(advertisement.owner) == false,
+                advertisement => advertisement.soldStatus == false,
               )}
               style={{backgroundColor: COLORS.pageBackground}}
               keyExtractor={(item, index) => item._id}

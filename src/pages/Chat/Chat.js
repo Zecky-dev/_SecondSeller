@@ -1,42 +1,73 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, FlatList} from 'react-native';
 import styles from './Chat.style';
 
-import {ChatBubble, ChatInput} from '@components';
-import {useUser} from '../../context/UserProvider';
+import firestore from '@react-native-firebase/firestore';
 
-import {checkRooms} from '../../services/firebaseChatService';
+import {ChatBubble, ChatInput} from '@components';
+
+import {
+  checkChatRoom,
+  getRoomDataById,
+  createMessage,
+} from '../../services/firebaseChatService';
+
+import {getUser} from '../../services/userServices';
 
 const Chat = ({route}) => {
-  const {
-    user: {_id: userID},
-  } = useUser();
-  const {advertisementID, ownerID} = route.params;
+  const {advertisementID, senderID, ownerID} = route.params;
+  const [roomData, setRoomData] = useState(null);
 
   useEffect(() => {
-    const handleRoomID = async () => {
-      const roomID = await checkRooms(advertisementID, userID, ownerID);
-      console.log(roomID);
+    const handleChatRoomID = async () => {
+      const chatRoomID = await checkChatRoom(
+        advertisementID,
+        senderID,
+        ownerID,
+      );
+
+      const subscriber = firestore()
+        .collection('ChatRooms')
+        .doc(chatRoomID)
+        .onSnapshot(documentSnapshot => {
+          const data = documentSnapshot.data();
+          console.log(data)
+          setRoomData({...data,roomID: chatRoomID});
+        });
+
+      return () => subscriber();
     };
-    handleRoomID();
+    handleChatRoomID(advertisementID, senderID, ownerID);
+  }, []);
+
+  useEffect(() => {
+    if (roomData) {
+    }
   }, [advertisementID]);
 
-  return (
-    <View style={styles.container}>
-      <FlatList
-        data={[]}
-        contentContainerStyle={styles.chatListContainer}
-        renderItem={({item}) => (
-          <ChatBubble
-            isOwner={true}
-            messageDetails={item}
-            key={item.messageId}
-          />
-        )}
-      />
-      <ChatInput />
-    </View>
-  );
+  if (roomData !== null) {
+    return (
+      <View style={styles.container}>
+        <FlatList
+          data={roomData.messages}
+          contentContainerStyle={styles.chatListContainer}
+          renderItem={({item}) => {
+            console.log(item.sender)
+            return <ChatBubble
+              isOwner={item.sender === ownerID}
+              messageDetails={item}
+              key={item.messageId}
+            />
+          }}
+        />
+        <ChatInput
+          createMessage={createMessage}
+          senderID={senderID}
+          roomID={roomData.roomID}
+        />
+      </View>
+    );
+  }
 };
 
 export default Chat;

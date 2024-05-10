@@ -107,7 +107,7 @@ const AdvertisementDetail = ({route, navigation}) => {
               resizeMode="contain"
             />
           </MapView>
-          {userID !== owner && (
+          
             <View style={{flexDirection: 'row'}}>
               <Button
                 icon={{
@@ -124,6 +124,7 @@ const AdvertisementDetail = ({route, navigation}) => {
                 onPress={() =>
                   navigation.navigate('ChatScreen', {
                     advertisementID,
+                    senderID: userID,
                     ownerID: owner,
                   })
                 }
@@ -143,7 +144,7 @@ const AdvertisementDetail = ({route, navigation}) => {
                 onPress={() => console.log('Teklif Ver')}
               />
             </View>
-          )}
+         
         </ScrollView>
       </View>
     );
