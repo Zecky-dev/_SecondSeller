@@ -10,6 +10,7 @@ export {default as OptionPicker} from './OptionPicker';
 export {default as MessageCard} from './MessageCard';
 export {default as EmptyList} from './EmptyList';
 export {default as MapBubble} from './ChatBubble/MapBubble';
+export {default as ChatHeader} from './ChatHeader';
 
 // Page components
 export {default as ChatInput} from '../pages/Chat/ChatInput';

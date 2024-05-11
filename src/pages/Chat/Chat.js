@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {View, FlatList} from 'react-native';
+import {View, FlatList, Text} from 'react-native';
 import {getStyles} from './Chat.style';
 
 import firestore from '@react-native-firebase/firestore';
@@ -11,7 +11,7 @@ import {checkChatRoom, createMessage} from '../../services/firebaseChatService';
 import NoMessageDark from '@assets/images/no_message_dark.png';
 import NoMessageLight from '@assets/images/no_message_light.png';
 
-import {getUser} from '../../services/userServices';
+import {getUser, getSenderReceiverData} from '../../services/userServices';
 
 import {useTheme} from '../../context/ThemeContext';
 
@@ -51,22 +51,10 @@ const Chat = ({route}) => {
     };
     handleChatRoomID(advertisementID, senderID, receiverID);
 
-    const getUsersData = async () => {
-      const senderData = await getUser(senderID, user.token);
-      const receiverData = await getUser(receiverID, user.token);
-      const participantDatas = [
-        {
-          id: senderID,
-          nameSurname: senderData.data.nameSurname,
-          imageURL: senderData.data.imageURL,
-        },
-        {
-          id: receiverID,
-          nameSurname: receiverData.data.nameSurname,
-          imageURL: receiverData.data.imageURL,
-        },
-      ];
-      setUserDatas(participantDatas);
+    const getUsersData = async () => {      
+      const { sender, receiver } = await getSenderReceiverData(senderID, receiverID, user.token)
+      const userDatas = [ sender, receiver];
+      setUserDatas(userDatas);
     };
     getUsersData();
   }, []);
@@ -93,7 +81,7 @@ const Chat = ({route}) => {
                 <ChatBubble
                   theme={theme}
                   isOwner={item.sender == senderID}
-                  user={userDatas.find(user => user.id === item.sender)}
+                  user={userDatas.find(user => user._id === item.sender)}
                   messageDetails={item}
                   key={item.messageId}
                 />

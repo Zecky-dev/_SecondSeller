@@ -1,5 +1,11 @@
 import React, {useEffect} from 'react';
-import {StatusBar, View, Text} from 'react-native';
+import {
+  StatusBar,
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import {useIsFocused, CommonActions} from '@react-navigation/native';
 
 // Constants
@@ -38,10 +44,13 @@ import ThemeContextProvider, {useTheme} from './context/ThemeContext';
 import FlashMessage from 'react-native-flash-message';
 
 // Storage
-import {getUserFromToken} from '@utils/functions';
+import {getUserFromToken, makePhoneCall} from '@utils/functions';
 
 // Bootsplash
 import BootSplash from 'react-native-bootsplash';
+import { ChatHeader } from '@components';
+
+import { blockUser } from './services/userServices';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -49,8 +58,8 @@ const Stack = createNativeStackNavigator();
 // İlanlar sayfası için kullanılan stack
 const HomeStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false,}}>
-      <Stack.Screen component={Home} name="HomeAdvertisementsScreen"/>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen component={Home} name="HomeAdvertisementsScreen" />
       <Stack.Screen
         component={AdvertisementDetailStack}
         name="AdvertisementDetailStack"
@@ -60,10 +69,28 @@ const HomeStack = () => {
 };
 
 const ProfileMessagesStack = () => {
+  const {theme} = useTheme();
+  const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
+
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen component={Messages} name="MessageListScreen" />
-      <Stack.Screen component={Chat} name="ChatScreen"/>
+      <Stack.Screen
+        component={Chat}
+        name="ChatScreen"
+        screenOptions={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: COLORS.primary,
+          },
+          headerTitleStyle: {
+            fontFamily: 'Galada-Regular',
+            fontSize: CONSTANTS.fontSize.L5,
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: COLORS.titleColor,
+        }}
+      />
     </Stack.Navigator>
   );
 };
@@ -75,7 +102,16 @@ const AdvertisementDetailStack = () => {
         component={AdvertisementDetail}
         name="AdvertisementDetailScreen"
       />
-      <Stack.Screen component={Chat} name="ChatScreen" />
+      <Stack.Screen
+        component={Chat}
+        name="ChatScreen"
+        options={({route}) => {
+          return {
+            headerShown: true,
+            header: () => <ChatHeader receiver={route.params.receiver} title={route.params.title} blockUser={blockUser}/>
+          };
+        }}
+      />
     </Stack.Navigator>
   );
 };
@@ -135,30 +171,26 @@ const BottomTabs = () => {
   const {theme} = useTheme();
   const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
 
-
-  
-
-
   return (
     <Tab.Navigator
       screenOptions={({route}) => {
         return {
           tabBarActiveTintColor: COLORS.titleColor,
-        tabBarInactiveTintColor: COLORS.titleColor,
-        headerTitle: CONSTANTS.APP_NAME,
-        tabBarStyle: {
-          backgroundColor: COLORS.primary,
-        },
-        headerStyle: {
-          backgroundColor: COLORS.primary,
-        },
-        headerTitleStyle: {
-          fontFamily: 'Galada-Regular',
-          fontSize: CONSTANTS.fontSize.L6,
-        },
-        headerTitleAlign: 'center',
-        headerTintColor: COLORS.titleColor,
-        headerShown: route.key !== "ChatScreen"
+          tabBarInactiveTintColor: COLORS.titleColor,
+          headerTitle: CONSTANTS.APP_NAME,
+          tabBarStyle: {
+            backgroundColor: COLORS.primary,
+          },
+          headerStyle: {
+            backgroundColor: COLORS.primary,
+          },
+          headerTitleStyle: {
+            fontFamily: 'Galada-Regular',
+            fontSize: CONSTANTS.fontSize.L6,
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: COLORS.titleColor,
+          headerShown: route.key !== 'ChatScreen',
         };
       }}>
       <Tab.Screen

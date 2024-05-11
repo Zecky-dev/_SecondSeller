@@ -9,6 +9,8 @@ import THEMECOLORS from '@utils/colors';
 import {getStyles} from './AdvertisementDetail.style';
 
 import {getAdvertisementAPI} from '../../services/advertisementServices';
+import {getSenderReceiverData} from '../../services/userServices';
+
 import {useUser} from '../../context/UserProvider';
 import {showMessage} from 'react-native-flash-message';
 import {useTheme} from '../../context/ThemeContext';
@@ -25,6 +27,7 @@ const AdvertisementDetail = ({route, navigation}) => {
   const [loading, setLoading] = useState(false);
   const [offerModalVisible, setOfferModalVisible] = useState(false);
   const [advertisement, setAdvertisement] = useState(null);
+  const [senderReceiver, setSenderReceiver] = useState(null);
   const {theme} = useTheme();
   const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
   const styles = getStyles(theme);
@@ -129,7 +132,7 @@ const AdvertisementDetail = ({route, navigation}) => {
             />
           </MapView>
 
-          {userID !== owner && (
+          {owner !== userID && (
             <View style={{flexDirection: 'row'}}>
               <Button
                 icon={{
@@ -143,13 +146,29 @@ const AdvertisementDetail = ({route, navigation}) => {
                     flex: 1,
                   },
                 }}
-                onPress={() =>
-                  navigation.navigate('ChatScreen', {
-                    advertisementID,
-                    senderID: userID,
-                    receiverID: owner,
-                  })
-                }
+                onPress={async () => {
+                  const {receiver, sender} = await getSenderReceiverData(
+                    userID,
+                    owner,
+                    token,
+                  );
+
+                  if (!receiver.blocked.includes(sender._id)) {
+                    navigation.navigate('ChatScreen', {
+                      advertisementID,
+                      senderID: userID,
+                      receiverID: owner,
+                      receiver,
+                      sender,
+                      title,
+                    });
+                  } else {
+                    showMessage({
+                      message: 'Bu kullanıcı tarafından bloklandınız!',
+                      type: 'danger',
+                    });
+                  }
+                }}
               />
               <Button
                 icon={{
@@ -163,7 +182,7 @@ const AdvertisementDetail = ({route, navigation}) => {
                   },
                 }}
                 label="Teklif Ver"
-                onPress={() => setOfferModalVisible(true)}
+                onPress={() => console.log('Teklif Ver')}
               />
             </View>
           )}
