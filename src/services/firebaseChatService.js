@@ -1,4 +1,4 @@
-import { getUser } from '../services/userServices'
+import { getUser, updateUser } from '../services/userServices'
 import firestore from '@react-native-firebase/firestore';
 import uuid from 'react-native-uuid';
 
@@ -104,6 +104,7 @@ const getMyRooms = async userID => {
       });
   });
 };
+
 
 // addMessage, deleteMessage, clearMessages
 

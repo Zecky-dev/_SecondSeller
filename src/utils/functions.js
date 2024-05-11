@@ -1,4 +1,4 @@
-import { PermissionsAndroid } from 'react-native';
+import { PermissionsAndroid, Linking } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import {showMessage} from 'react-native-flash-message';
 import {Buffer} from 'buffer';
@@ -105,10 +105,17 @@ const resizeImage = (asset, width, height) => {
   });
 };
 
+const makePhoneCall = (phoneNumber) => {
+  Linking.openURL(`tel:${phoneNumber}`)
+} 
+
+
+
 export {
   showFlashMessage,
   getUserFromToken,
   getCurrentLocation,
   resizeImage,
-  locationPermissionGranted
+  locationPermissionGranted,
+  makePhoneCall,
 };

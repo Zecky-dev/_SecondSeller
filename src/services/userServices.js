@@ -221,6 +221,26 @@ const favoriteUnFavorite = async (userID, postID) => {
   }
 };
 
+const blockUser = async (userID) => {
+  try {
+    const response = await axios.put(`${BASE_URL}/block?id=${userID}`)
+    return {
+      status: response.status,
+      message: response.data.messsage,
+      data: response.data.data
+    }
+  }
+  catch(err) {
+    return {
+      status: 'error',
+      message: 'An error occured while blocking user.',
+      error: err.response.data
+    }
+  }
+}
+
+
+
 export {
   register,
   login,
@@ -229,4 +249,5 @@ export {
   favoriteUnFavorite,
   updateUser,
   changePassword,
+  blockUser
 };
