@@ -1,22 +1,30 @@
 import {COLORS, CONSTANTS} from '@utils';
-import React from 'react';
+import React, { useRef } from 'react';
 import {TextInput, Pressable,View} from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import styles from './ChatInput.style'
+import {getStyles} from './ChatInput.style'
 
-const ChatInput = ({onChangeText, createMessage, roomID ,senderID}) => {
+const ChatInput = ({onChangeText, createMessage, roomID ,senderID, theme}) => {
+
+  const inputRef = useRef()
+  const styles = getStyles(theme)
+
   return (
     <View style={styles.container}>
       <TextInput
       onChangeText={onChangeText}
       placeholder={"Mesajınız..."}
       style={styles.input}
+      blurOnSubmit={false}
+      ref={inputRef}
+      clearButtonMode='always'
       onSubmitEditing={(event) => {
         const messageContent = event.nativeEvent.text;
         if(messageContent.trim() !== "") {
           const message = {sender: senderID, message: messageContent, createDate: new Date().toLocaleString()}
           createMessage(roomID, message)
+          inputRef.current.clear()
         }
       }}
       />

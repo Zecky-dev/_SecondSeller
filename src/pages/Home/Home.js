@@ -14,6 +14,11 @@ import {AdvertisementCard, Button, Input, EmptyList} from '@components';
 
 import THEMECOLORS from '@utils/colors';
 import {useTheme} from '../../context/ThemeContext';
+import { showMessage } from 'react-native-flash-message';
+
+import EmptyListDarkVector from '@assets/images/empty_list_dark.png'
+import EmptyListLightVector from '@assets/images/empty_list_light.png'
+
 
 const Home = ({navigation}) => {
   const [filterModalVisible, setFilterModalVisible] = useState(false);
@@ -23,7 +28,10 @@ const Home = ({navigation}) => {
 
   const {user} = useUser();
   const {theme} = useTheme();
+  
   const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
+  const EmptyListVector = theme === "dark" ? EmptyListDarkVector : EmptyListLightVector
+
 
   const filter = async values => {
     const filteredAdvertisements = await getFilteredAdvertisement(
@@ -91,7 +99,7 @@ const Home = ({navigation}) => {
         {loading ? (
           <Animation animationName={'loading'} />
         ) : advertisements.length === 0 ? (
-          <EmptyList label={'İlan listesi boş!'} />
+          <EmptyList label={'İlan listesi boş!'} vector={EmptyListVector} />
         ) : (
           <>
             <FlatList

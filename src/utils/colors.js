@@ -14,7 +14,7 @@ const MAIN = {
 const COLORS = {
   LIGHT: {
     ...MAIN,
-    primary: 'rgb(190,49,68)',
+    primary: '#BE3144',
     textColor: 'black',
     titleColor: 'white',
     titleMutedColor: 'whitesmoke',

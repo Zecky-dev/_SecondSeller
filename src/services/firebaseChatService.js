@@ -75,7 +75,6 @@ const getRoomDataById = async roomID => {
 
 // Mesaj yazma
 const createMessage = async (roomID, messageDetails) => {
-  
   try {
     await firebaseConnection.doc(roomID).update({
       messages: firestore.FieldValue.arrayUnion(messageDetails),
@@ -86,10 +85,11 @@ const createMessage = async (roomID, messageDetails) => {
   }
 };
 
+// Katılımcı olarak bulunulan odaları ve o odanın hangi ilanla ilgili olduğunu içeren bir obje dizisi döndürür
 const getMyRooms = async userID => {
   return new Promise((resolve, reject) => {
     firebaseConnection
-      .where('usersIDs', 'array-contains', userID)
+      .where('participantIDs', 'array-contains', userID)
       .get()
       .then(querySnapshot => {
         const docs = querySnapshot.docs;
@@ -107,4 +107,4 @@ const getMyRooms = async userID => {
 
 // addMessage, deleteMessage, clearMessages
 
-export {checkChatRoom, getRoomDataById, createMessage};
+export {checkChatRoom, getRoomDataById, createMessage, getMyRooms};

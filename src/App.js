@@ -49,8 +49,8 @@ const Stack = createNativeStackNavigator();
 // İlanlar sayfası için kullanılan stack
 const HomeStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen component={Home} name="HomeAdvertisementsScreen" />
+    <Stack.Navigator screenOptions={{headerShown: false,}}>
+      <Stack.Screen component={Home} name="HomeAdvertisementsScreen"/>
       <Stack.Screen
         component={AdvertisementDetailStack}
         name="AdvertisementDetailStack"
@@ -63,7 +63,7 @@ const ProfileMessagesStack = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen component={Messages} name="MessageListScreen" />
-      <Stack.Screen component={Chat} name="ChatScreen" />
+      <Stack.Screen component={Chat} name="ChatScreen"/>
     </Stack.Navigator>
   );
 };
@@ -135,10 +135,15 @@ const BottomTabs = () => {
   const {theme} = useTheme();
   const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
 
+
+  
+
+
   return (
     <Tab.Navigator
-      screenOptions={{
-        tabBarActiveTintColor: COLORS.titleColor,
+      screenOptions={({route}) => {
+        return {
+          tabBarActiveTintColor: COLORS.titleColor,
         tabBarInactiveTintColor: COLORS.titleColor,
         headerTitle: CONSTANTS.APP_NAME,
         tabBarStyle: {
@@ -153,6 +158,8 @@ const BottomTabs = () => {
         },
         headerTitleAlign: 'center',
         headerTintColor: COLORS.titleColor,
+        headerShown: route.key !== "ChatScreen"
+        };
       }}>
       <Tab.Screen
         name="HomeScreen"

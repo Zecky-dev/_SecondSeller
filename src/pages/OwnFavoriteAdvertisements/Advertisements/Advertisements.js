@@ -14,12 +14,17 @@ import {showFlashMessage} from '@utils/functions';
 import THEMECOLORS from '@utils/colors';
 import {useTheme} from '../../../context/ThemeContext';
 
+
+import EmptyListDarkVector from '@assets/images/empty_list_dark.png'
+import EmptyListLightVector from '@assets/images/empty_list_light.png'
+
 const Advertisements = ({advertisements}) => {
   const {
     user: {_id: id, token},
   } = useUser();
   const {theme} = useTheme();
   const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
+  const EmptyListVector = theme === "dark" ? EmptyListDarkVector : EmptyListLightVector
 
   const navigation = useNavigation();
 
@@ -29,7 +34,7 @@ const Advertisements = ({advertisements}) => {
   };
 
   if (advertisements.length === 0) {
-    return <EmptyList label={'İlan listesi boş!'} />;
+    return <EmptyList label={'İlan listesi boş!'} vector={EmptyListVector}/>;
   } else {
     return (
       <FlatList
