@@ -1,49 +1,14 @@
 import moment from 'moment';
 import 'moment/locale/tr';
-import React, {useEffect, useState} from 'react';
-import {View, Text, Image, Dimensions, Linking, Platform} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, Image} from 'react-native';
 
 import {getStyles} from './ChatBubble.style';
 
 import {CONSTANTS} from '@utils';
-import MapView, {Marker} from 'react-native-maps';
+import {MapBubble} from '@components';
 
 // Gönderen kişinin mesajı sağda olmalı, diğerininki solda
-
-// component'e taşı
-const ChatBubbleMap = ({latitude, longitude, username}) => {
-  const {height, width} = Dimensions.get('window');
-
-  const openMap = () => {
-    var scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';
-    var url = scheme + `${latitude},${longitude}`;
-    Linking.openURL(url);
-  };
-
-  return (
-    <MapView
-      onPress={() => openMap()}
-      initialRegion={{
-        latitude,
-        longitude,
-        latitudeDelta: 0.5,
-        longitudeDelta: 0.5 * (width / height),
-      }}
-      zoomEnabled={false}
-      scrollEnabled={false}
-      style={{
-        width: '100%',
-        height: 100,
-      }}>
-      <Marker
-        coordinate={{latitude, longitude}}
-        title={username}
-        style={{width: 26, height: 40}}
-        onPress={() => openMap()}
-      />
-    </MapView>
-  );
-};
 
 const ChatBubble = ({user, messageDetails, theme, isOwner}) => {
   const styles = getStyles(theme);
@@ -81,7 +46,7 @@ const ChatBubble = ({user, messageDetails, theme, isOwner}) => {
           <Text style={styles.messageOwner}>{user.nameSurname}</Text>
         </View>
         {isLocation ? (
-          <ChatBubbleMap
+          <MapBubble
             latitude={location.latitude}
             longitude={location.longitude}
             username={user.nameSurname}

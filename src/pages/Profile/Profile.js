@@ -3,22 +3,19 @@ import {View, Text, Image} from 'react-native';
 
 import {Button} from '@components';
 
-import { getStyles } from './Profile.style.js';
+import {getStyles} from './Profile.style.js';
 import {CONSTANTS} from '@utils';
-import THEMECOLORS from '@utils/colors.js'
+import THEMECOLORS from '@utils/colors.js';
 
 import Storage from '@utils/Storage.js';
 import {useUser} from '../../context/UserProvider.js';
-import {useTheme} from '../../context/ThemeContext.js'
-
-
+import {useTheme} from '../../context/ThemeContext.js';
 
 const Profile = ({navigation}) => {
   const {user, setUser} = useUser();
-  const { theme, setTheme } = useTheme()
-  const styles = getStyles(theme)
-  const COLORS = theme === "dark" ? THEMECOLORS.DARK : THEMECOLORS.LIGHT
-
+  const {theme, setTheme} = useTheme();
+  const styles = getStyles(theme);
+  const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
 
   return (
     <View style={styles.container}>
@@ -50,22 +47,22 @@ const Profile = ({navigation}) => {
           color: COLORS.textColor,
           size: CONSTANTS.fontSize.L5,
         }}
-        label="Mesajlarım"
+        label="Sohbetlerim"
         additionalStyles={styles.profileButtonStyle}
       />
 
       <Button
         onPress={() => {
-          const newTheme = theme === "dark" ? "light" : "dark";
-          Storage.storeData('theme',newTheme);
-          setTheme(newTheme)
+          const newTheme = theme === 'dark' ? 'light' : 'dark';
+          Storage.storeData('theme', newTheme);
+          setTheme(newTheme);
         }}
         icon={{
           name: 'theme-light-dark',
           color: COLORS.textColor,
           size: CONSTANTS.fontSize.L5,
         }}
-        label={`Tema: ${theme === "dark" ? "Karanlık" : "Aydınlık"}`}
+        label={`Tema: ${theme === 'dark' ? 'Karanlık' : 'Aydınlık'}`}
         additionalStyles={styles.profileButtonStyle}
       />
 

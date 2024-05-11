@@ -12,6 +12,9 @@ import {getAdvertisementAPI} from '../../services/advertisementServices';
 import {useUser} from '../../context/UserProvider';
 import {showMessage} from 'react-native-flash-message';
 import {useTheme} from '../../context/ThemeContext';
+import OfferModal from './OfferModal/OfferModal';
+import {showFlashMessage} from '@utils/functions';
+import {checkChatRoom, createMessage} from '../../services/firebaseChatService';
 
 const AdvertisementDetail = ({route, navigation}) => {
   const {id: advertisementID} = route.params;
@@ -20,6 +23,7 @@ const AdvertisementDetail = ({route, navigation}) => {
   } = useUser();
 
   const [loading, setLoading] = useState(false);
+  const [offerModalVisible, setOfferModalVisible] = useState(false);
   const [advertisement, setAdvertisement] = useState(null);
   const {theme} = useTheme();
   const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
@@ -44,6 +48,23 @@ const AdvertisementDetail = ({route, navigation}) => {
   useEffect(() => {
     getAdvertisement();
   }, []);
+
+  const sendOffer = async price => {
+    setOfferModalVisible(false);
+    const roomID = await checkChatRoom(
+      advertisementID,
+      userID,
+      advertisement.owner,
+    );
+    const messageDetails = {
+      sender: userID,
+      message: `Teklifim: ${price} TL`,
+      createDate: new Date().toLocaleString(),
+      isLocation: false,
+    };
+    createMessage(roomID, messageDetails);
+    showFlashMessage(200, 'Teklif gönderildi!');
+  };
 
   if (advertisement && !loading) {
     const {
@@ -108,43 +129,51 @@ const AdvertisementDetail = ({route, navigation}) => {
             />
           </MapView>
 
-          <View style={{flexDirection: 'row'}}>
-            <Button
-              icon={{
-                name: 'chat',
-                color: COLORS.titleColor,
-                size: 24,
-              }}
-              label="Sohbet Başlat"
-              additionalStyles={{
-                container: {
-                  flex: 1,
-                },
-              }}
-              onPress={() =>
-                navigation.navigate('ChatScreen', {
-                  advertisementID,
-                  senderID: userID,
-                  receiverID: owner,
-                })
-              }
-            />
-            <Button
-              icon={{
-                name: 'offer',
-                color: COLORS.titleColor,
-                size: 24,
-              }}
-              additionalStyles={{
-                container: {
-                  flex: 1,
-                },
-              }}
-              label="Teklif Ver"
-              onPress={() => console.log('Teklif Ver')}
-            />
-          </View>
+          {userID !== owner && (
+            <View style={{flexDirection: 'row'}}>
+              <Button
+                icon={{
+                  name: 'chat',
+                  color: COLORS.titleColor,
+                  size: 24,
+                }}
+                label="Sohbet Başlat"
+                additionalStyles={{
+                  container: {
+                    flex: 1,
+                  },
+                }}
+                onPress={() =>
+                  navigation.navigate('ChatScreen', {
+                    advertisementID,
+                    senderID: userID,
+                    receiverID: owner,
+                  })
+                }
+              />
+              <Button
+                icon={{
+                  name: 'offer',
+                  color: COLORS.titleColor,
+                  size: 24,
+                }}
+                additionalStyles={{
+                  container: {
+                    flex: 1,
+                  },
+                }}
+                label="Teklif Ver"
+                onPress={() => setOfferModalVisible(true)}
+              />
+            </View>
+          )}
         </ScrollView>
+        <OfferModal
+          isVisible={offerModalVisible}
+          setVisible={setOfferModalVisible}
+          price={price}
+          sendOffer={sendOffer}
+        />
       </View>
     );
   } else {
