@@ -1,7 +1,6 @@
-import { getUser } from '../services/userServices'
+import {getUser} from '../services/userServices';
 import firestore from '@react-native-firebase/firestore';
 import uuid from 'react-native-uuid';
-
 
 const firebaseConnection = firestore().collection('ChatRooms');
 
@@ -79,7 +78,7 @@ const createMessage = async (roomID, messageDetails) => {
     await firebaseConnection.doc(roomID).update({
       messages: firestore.FieldValue.arrayUnion(messageDetails),
     });
-    console.log("MESSAGE_CREATION_SUCCESS")
+    console.log('MESSAGE_CREATION_SUCCESS');
   } catch (err) {
     console.log('MESSAGE_CREATION_ERROR', err);
   }
@@ -96,6 +95,8 @@ const getMyRooms = async userID => {
         const ids = docs.map(doc => ({
           advertisementID: doc.data().advertisementID,
           roomID: doc.id,
+          messageCount: doc.data().messages.length,
+          participantIDs: doc.data().participantIDs.filter(id => id !== userID),
         }));
         resolve(ids);
       })

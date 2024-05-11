@@ -1,21 +1,21 @@
 // Components
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {ScrollView, Text, View} from 'react-native';
-import {Button, Input,Animation} from '@components';
+import {Button, Input, Animation} from '@components';
 
 // Styles & Colors
-import { CONSTANTS} from '@utils';
-import THEMECOLORS from '@utils/colors'
-import { getStyles } from './Register.style';
+import {CONSTANTS} from '@utils';
+import THEMECOLORS from '@utils/colors';
+import {getStyles} from './Register.style';
 
 // Forms and Validations
 import {Formik} from 'formik';
 import {RegisterSchema} from '@utils/validationSchemas';
 
 // Register
-import {sendEmailVerification } from '../../../services/userServices';
-import { showFlashMessage } from '@utils/functions';
-import { useTheme } from '../../../context/ThemeContext';
+import {sendEmailVerification} from '../../../services/userServices';
+import {showFlashMessage} from '@utils/functions';
+import {useTheme} from '../../../context/ThemeContext';
 
 const initialValues = {
   nameSurname: '',
@@ -25,19 +25,16 @@ const initialValues = {
   passwordConfirm: '',
 };
 
-
-
 // validation ekle
 
 const Register = ({navigation}) => {
+  const [loading, setLoading] = useState(false);
 
-  const [loading,setLoading] = useState(false)
-  
-  const { theme } = useTheme()
-  const COLORS = theme === "dark" ? THEMECOLORS.DARK : THEMECOLORS.LIGHT
-  const styles= getStyles(theme)
+  const {theme} = useTheme();
+  const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
+  const styles = getStyles(theme);
 
-  if(!loading) {
+  if (!loading) {
     return (
       <View style={{backgroundColor: COLORS.pageBackground}}>
         <Button
@@ -48,7 +45,7 @@ const Register = ({navigation}) => {
             color: COLORS.textColor,
           }}
           additionalStyles={{
-            container: styles.additionalStylesContainer
+            container: styles.additionalStylesContainer,
           }}
         />
         <ScrollView
@@ -58,19 +55,21 @@ const Register = ({navigation}) => {
           <View style={styles.title} />
           <Formik
             initialValues={initialValues}
-            onSubmit={ async (user) => {
-              setLoading(true)
-              const response = await sendEmailVerification(user)
-              if(response.status.toString().startsWith('2')) {
-                navigation.navigate('EmailVerificationScreen', { verificationCode: response.data, user, type: 'register' } )              
+            onSubmit={async user => {
+              setLoading(true);
+              const response = await sendEmailVerification(user, '');
+              if (response.status.toString().startsWith('2')) {
+                navigation.navigate('EmailVerificationScreen', {
+                  verificationCode: response.data,
+                  user,
+                  type: 'register',
+                });
+              } else {
+                showFlashMessage(response.status, response.message);
               }
-              else {
-                showFlashMessage(response.status,response.message)
-              }
-              setLoading(false)
+              setLoading(false);
             }}
-            validationSchema={RegisterSchema}
-            >
+            validationSchema={RegisterSchema}>
             {({handleChange, handleSubmit, values, errors, touched}) => (
               <>
                 <Input
@@ -88,7 +87,11 @@ const Register = ({navigation}) => {
                   onChangeText={handleChange('emailAddress')}
                   value={values.emailAddress}
                   keyboardType="email-address"
-                  errors={touched.emailAddress && errors.emailAddress && errors.emailAddress}
+                  errors={
+                    touched.emailAddress &&
+                    errors.emailAddress &&
+                    errors.emailAddress
+                  }
                   placeholder="info@secondeseller.com"
                 />
                 <Input
@@ -108,7 +111,9 @@ const Register = ({navigation}) => {
                   onChangeText={handleChange('password')}
                   value={values.password}
                   secret={true}
-                  errors={touched.password && errors.password && errors.password}
+                  errors={
+                    touched.password && errors.password && errors.password
+                  }
                 />
                 <Input
                   label={'Şifre Tekrar'}
@@ -128,14 +133,9 @@ const Register = ({navigation}) => {
         </ScrollView>
       </View>
     );
+  } else {
+    return <Animation animationName={'loading'} />;
   }
-
-  else {
-    return <Animation animationName={"loading"}/>
-  }
-
-
-  
 };
 
 export default Register;

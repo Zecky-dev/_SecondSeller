@@ -1,16 +1,29 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native'
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 
-import styles from './MessageCard.style'
+import {getStyles} from './MessageCard.style';
+import {useTheme} from '../../context/ThemeContext';
 
+const MessageCard = ({onPress, message}) => {
+  const {theme} = useTheme();
+  const styles = getStyles(theme);
 
-const MessageCard = ({onPress}) => {
-    return (
-        <TouchableOpacity style={styles.container} activeOpacity={.7} onPress={onPress}>
-            <Image source={{ uri: "https://randomuser.me/api/portraits/men/58.jpg"}} style={styles.image} />
-            <Text style={styles.name}>Alper Köşgeroğlu</Text>
-        </TouchableOpacity>
-    )
-}
+  return (
+    <TouchableOpacity
+      style={styles.container}
+      activeOpacity={0.7}
+      onPress={onPress}>
+      <Image
+        source={
+          message.imageURL
+            ? {uri: message.imageURL}
+            : require('@assets/images/avatar.png')
+        }
+        style={styles.image}
+      />
+      <Text style={styles.name}>{message.nameSurname}</Text>
+    </TouchableOpacity>
+  );
+};
 
-export default MessageCard
+export default MessageCard;

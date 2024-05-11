@@ -2,8 +2,8 @@ import {useUser} from '../../../context/UserProvider';
 import React, {useState} from 'react';
 import {Image, ScrollView, Pressable, Text, Alert} from 'react-native';
 
-import { getStyles } from './ProfileEdit.style';
-import { useTheme } from '../../../context/ThemeContext'
+import {getStyles} from './ProfileEdit.style';
+import {useTheme} from '../../../context/ThemeContext';
 
 import {UpdateProfileSchema} from '@utils/validationSchemas';
 import {Formik} from 'formik';
@@ -21,7 +21,6 @@ import {
 } from '../../../services/userServices';
 import {uploadImagesAndGetURLs} from '../../../services/otherServices';
 import Storage from '@utils/Storage';
-
 
 // Cihazdan resim alma
 const takeImageFromGallery = async setFieldValue => {
@@ -76,8 +75,8 @@ const createAlert = (id, values, setUser) => {
 const ProfilEdit = ({navigation}) => {
   const {user, setUser} = useUser();
   const [loading, setLoading] = useState(false);
-  const { theme } = useTheme();
-  const styles = getStyles(theme)
+  const {theme} = useTheme();
+  const styles = getStyles(theme);
 
   // Kullanıcı bilgilerini güncelleme
   const handleUpdate = async newUser => {
