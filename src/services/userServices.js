@@ -3,12 +3,12 @@ import axios from 'axios';
 import {BASE_URL} from '@env';
 
 // E-mail doğrulaması atan servis fonksiyonu
-const sendEmailVerification = async values => {
+const sendEmailVerification = async (values, type) => {
   const {emailAddress, phoneNumber} = values;
   try {
     const response = await axios.post(
       `${BASE_URL}/user/sendEmailVerification`,
-      {emailAddress, phoneNumber, type: ''},
+      {emailAddress, phoneNumber, type},
     );
     return {
       status: response.status,

@@ -107,44 +107,43 @@ const AdvertisementDetail = ({route, navigation}) => {
               resizeMode="contain"
             />
           </MapView>
-          
-            <View style={{flexDirection: 'row'}}>
-              <Button
-                icon={{
-                  name: 'chat',
-                  color: COLORS.titleColor,
-                  size: 24,
-                }}
-                label="Sohbet Başlat"
-                additionalStyles={{
-                  container: {
-                    flex: 1,
-                  },
-                }}
-                onPress={() =>
-                  navigation.navigate('ChatScreen', {
-                    advertisementID,
-                    senderID: userID,
-                    ownerID: owner,
-                  })
-                }
-              />
-              <Button
-                icon={{
-                  name: 'offer',
-                  color: COLORS.titleColor,
-                  size: 24,
-                }}
-                additionalStyles={{
-                  container: {
-                    flex: 1,
-                  },
-                }}
-                label="Teklif Ver"
-                onPress={() => console.log('Teklif Ver')}
-              />
-            </View>
-         
+
+          <View style={{flexDirection: 'row'}}>
+            <Button
+              icon={{
+                name: 'chat',
+                color: COLORS.titleColor,
+                size: 24,
+              }}
+              label="Sohbet Başlat"
+              additionalStyles={{
+                container: {
+                  flex: 1,
+                },
+              }}
+              onPress={() =>
+                navigation.navigate('ChatScreen', {
+                  advertisementID,
+                  senderID: userID,
+                  receiverID: owner,
+                })
+              }
+            />
+            <Button
+              icon={{
+                name: 'offer',
+                color: COLORS.titleColor,
+                size: 24,
+              }}
+              additionalStyles={{
+                container: {
+                  flex: 1,
+                },
+              }}
+              label="Teklif Ver"
+              onPress={() => console.log('Teklif Ver')}
+            />
+          </View>
         </ScrollView>
       </View>
     );
