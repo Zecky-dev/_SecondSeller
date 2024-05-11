@@ -221,9 +221,11 @@ const favoriteUnFavorite = async (userID, postID) => {
   }
 };
 
-const blockUser = async (userID) => {
+const blockUser = async (from, userID) => {
+  console.log(from,userID)
+
   try {
-    const response = await axios.put(`${BASE_URL}/block?id=${userID}`)
+    const response = await axios.put(`${BASE_URL}/user/block?from=${from}&id=${userID}`)
     return {
       status: response.status,
       message: response.data.messsage,
@@ -239,6 +241,15 @@ const blockUser = async (userID) => {
   }
 }
 
+const getSenderReceiverData = async (senderID, receiverID, token) => {
+  const senderData = await getUser(senderID, token)
+  const receiverData = await getUser(receiverID, token)
+  return {
+    sender: senderData.data,
+    receiver: receiverData.data
+  }
+}
+
 
 
 export {
@@ -249,5 +260,6 @@ export {
   favoriteUnFavorite,
   updateUser,
   changePassword,
-  blockUser
+  blockUser,
+  getSenderReceiverData
 };

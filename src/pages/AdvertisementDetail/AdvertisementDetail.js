@@ -9,6 +9,8 @@ import THEMECOLORS from '@utils/colors';
 import {getStyles} from './AdvertisementDetail.style';
 
 import {getAdvertisementAPI} from '../../services/advertisementServices';
+import {getSenderReceiverData} from '../../services/userServices';
+
 import {useUser} from '../../context/UserProvider';
 import {showMessage} from 'react-native-flash-message';
 import {useTheme} from '../../context/ThemeContext';
@@ -21,6 +23,7 @@ const AdvertisementDetail = ({route, navigation}) => {
 
   const [loading, setLoading] = useState(false);
   const [advertisement, setAdvertisement] = useState(null);
+  const [senderReceiver, setSenderReceiver] = useState(null);
   const {theme} = useTheme();
   const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
   const styles = getStyles(theme);
@@ -108,42 +111,60 @@ const AdvertisementDetail = ({route, navigation}) => {
             />
           </MapView>
 
-          <View style={{flexDirection: 'row'}}>
-            <Button
-              icon={{
-                name: 'chat',
-                color: COLORS.titleColor,
-                size: 24,
-              }}
-              label="Sohbet Başlat"
-              additionalStyles={{
-                container: {
-                  flex: 1,
-                },
-              }}
-              onPress={() =>
-                navigation.navigate('ChatScreen', {
-                  advertisementID,
-                  senderID: userID,
-                  receiverID: owner,
-                })
-              }
-            />
-            <Button
-              icon={{
-                name: 'offer',
-                color: COLORS.titleColor,
-                size: 24,
-              }}
-              additionalStyles={{
-                container: {
-                  flex: 1,
-                },
-              }}
-              label="Teklif Ver"
-              onPress={() => console.log('Teklif Ver')}
-            />
-          </View>
+          {owner !== userID && (
+            <View style={{flexDirection: 'row'}}>
+              <Button
+                icon={{
+                  name: 'chat',
+                  color: COLORS.titleColor,
+                  size: 24,
+                }}
+                label="Sohbet Başlat"
+                additionalStyles={{
+                  container: {
+                    flex: 1,
+                  },
+                }}
+                onPress={async () => {
+                  const {receiver, sender} = await getSenderReceiverData(
+                    userID,
+                    owner,
+                    token,
+                  );
+
+                  if (!receiver.blocked.includes(sender._id)) {
+                    navigation.navigate('ChatScreen', {
+                      advertisementID,
+                      senderID: userID,
+                      receiverID: owner,
+                      receiver,
+                      sender,
+                      title,
+                    });
+                  } else {
+                    showMessage({
+                      message: 'Bu kullanıcı tarafından bloklandınız!',
+                      type: 'danger',
+                    });
+                  }
+                }}
+              />
+              <Button
+                icon={{
+                  name: 'offer',
+                  color: COLORS.titleColor,
+                  size: 24,
+                }}
+                additionalStyles={{
+                  container: {
+                    flex: 1,
+                  },
+                }}
+                label="Teklif Ver"
+                onPress={() => console.log('Teklif Ver')}
+              />
+            </View>
+          )}
         </ScrollView>
       </View>
     );

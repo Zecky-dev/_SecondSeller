@@ -32,6 +32,7 @@ const Messages = ({navigation}) => {
       for (let chat of myChatRooms) {
         const receiverID = chat.participantIDs[0];
         const receiverUser = await getUser(receiverID, user.token);
+        console.log(receiverUser)
         const receiverChatInfo = {
           receiverID,
           nameSurname: receiverUser.data.nameSurname,

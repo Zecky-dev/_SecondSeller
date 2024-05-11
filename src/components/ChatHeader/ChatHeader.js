@@ -8,18 +8,24 @@ import {useTheme} from '../../context/ThemeContext';
 import {CONSTANTS} from '@utils';
 import THEMECOLORS from '@utils/colors';
 
-const ChatHeader = ({advertisementDetails, blockUser}) => {
+import { useNavigation } from '@react-navigation/native';
+import { useUser } from '../../context/UserProvider'
+
+const ChatHeader = ({receiver, sender, title, blockUser}) => {
+
+  const { _id: id, phoneNumber } = receiver  
+
+  const { user } = useUser()
+
   const {theme} = useTheme();
   const styles = getStyles(theme);
   const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
 
-  const phoneNumber = '5059880137';
-  const advertisementName = 'İlan ismi';
-  const userID = "123456"
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
-      <Text style={styles.advertisementName}>{advertisementName}</Text>
+      <Text style={styles.advertisementName}>{title}</Text>
       <View style={{flexDirection: 'row'}}>
         <TouchableOpacity
           onPress={() => {
@@ -34,7 +40,10 @@ const ChatHeader = ({advertisementDetails, blockUser}) => {
           />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => console.log('Arama')}
+          onPress={() => {
+            blockUser(user._id, id)
+            navigation.goBack()
+          }}
           style={styles.button}
           activeOpacity={0.7}>
           <Icon

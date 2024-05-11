@@ -50,6 +50,8 @@ import {getUserFromToken, makePhoneCall} from '@utils/functions';
 import BootSplash from 'react-native-bootsplash';
 import { ChatHeader } from '@components';
 
+import { blockUser } from './services/userServices';
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -106,7 +108,7 @@ const AdvertisementDetailStack = () => {
         options={({route}) => {
           return {
             headerShown: true,
-            header: () => <ChatHeader />
+            header: () => <ChatHeader receiver={route.params.receiver} title={route.params.title} blockUser={blockUser}/>
           };
         }}
       />
