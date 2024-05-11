@@ -16,13 +16,17 @@ import {getUser, getSenderReceiverData} from '../../services/userServices';
 import {useTheme} from '../../context/ThemeContext';
 
 import {useUser} from '../../context/UserProvider';
+import FastMessageChips from './FastMessageChips/FastMessageChips';
+import {CONSTANTS} from '@utils';
 
 const Chat = ({route}) => {
   const {user} = useUser();
   const {advertisementID, senderID, receiverID} = route.params;
+  const amITheOwner = user.advertisements.includes(advertisementID);
 
   const [roomData, setRoomData] = useState(null);
   const [userDatas, setUserDatas] = useState([]);
+  const [message, setMessage] = useState('');
 
   const {theme} = useTheme();
   const styles = getStyles(theme);
@@ -51,13 +55,21 @@ const Chat = ({route}) => {
     };
     handleChatRoomID(advertisementID, senderID, receiverID);
 
-    const getUsersData = async () => {      
-      const { sender, receiver } = await getSenderReceiverData(senderID, receiverID, user.token)
-      const userDatas = [ sender, receiver];
+    const getUsersData = async () => {
+      const {sender, receiver} = await getSenderReceiverData(
+        senderID,
+        receiverID,
+        user.token,
+      );
+      const userDatas = [sender, receiver];
       setUserDatas(userDatas);
     };
     getUsersData();
   }, []);
+
+  const onFastMessagePress = message => {
+    setMessage(message);
+  };
 
   if (roomData === null) {
     return <Animation animationName={'loading'} />;
@@ -89,12 +101,20 @@ const Chat = ({route}) => {
             }}
           />
         )}
-
+        <FastMessageChips
+          messages={
+            amITheOwner
+              ? CONSTANTS.FAST_MESSAGES.OWNER.messages
+              : CONSTANTS.FAST_MESSAGES.RECEIVER.messages
+          }
+          onPress={onFastMessagePress}
+        />
         <ChatInput
           createMessage={createMessage}
           senderID={senderID}
           roomID={roomData.roomID}
           theme={theme}
+          message={message}
         />
       </View>
     );

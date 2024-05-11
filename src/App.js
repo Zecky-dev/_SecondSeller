@@ -1,11 +1,5 @@
 import React, {useEffect} from 'react';
-import {
-  StatusBar,
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import {StatusBar, View} from 'react-native';
 import {useIsFocused, CommonActions} from '@react-navigation/native';
 
 // Constants
@@ -48,9 +42,9 @@ import {getUserFromToken, makePhoneCall} from '@utils/functions';
 
 // Bootsplash
 import BootSplash from 'react-native-bootsplash';
-import { ChatHeader } from '@components';
+import {ChatHeader} from '@components';
 
-import { blockUser } from './services/userServices';
+import {blockUser} from './services/userServices';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -90,6 +84,19 @@ const ProfileMessagesStack = () => {
           headerTitleAlign: 'center',
           headerTintColor: COLORS.titleColor,
         }}
+        options={({route}) => {
+          return {
+            headerShown: true,
+            header: () => (
+              <ChatHeader
+                receiver={route.params.receiver}
+                title={route.params.title}
+                blockUser={blockUser}
+                sender={route.params.sender}
+              />
+            ),
+          };
+        }}
       />
     </Stack.Navigator>
   );
@@ -108,7 +115,14 @@ const AdvertisementDetailStack = () => {
         options={({route}) => {
           return {
             headerShown: true,
-            header: () => <ChatHeader receiver={route.params.receiver} title={route.params.title} blockUser={blockUser}/>
+            header: () => (
+              <ChatHeader
+                receiver={route.params.receiver}
+                title={route.params.title}
+                blockUser={blockUser}
+                sender={route.params.sender}
+              />
+            ),
           };
         }}
       />

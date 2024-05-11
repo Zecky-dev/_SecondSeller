@@ -24,8 +24,13 @@ export const getStyles = theme => {
     name: {
       color: COLORS.cardTitle,
       fontSize: CONSTANTS.fontSize.L5,
-      flex: 1,
       textAlign: 'center',
+    },
+    advertisementTitle: {
+      textAlign: 'center',
+      color: COLORS.cardDescription,
+      fontSize: CONSTANTS.fontSize.L3,
+      fontStyle: 'italic',
     },
   });
 };

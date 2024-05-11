@@ -182,7 +182,7 @@ const AdvertisementDetail = ({route, navigation}) => {
                   },
                 }}
                 label="Teklif Ver"
-                onPress={() => console.log('Teklif Ver')}
+                onPress={() => setOfferModalVisible(true)}
               />
             </View>
           )}

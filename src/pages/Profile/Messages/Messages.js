@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, FlatList, Image} from 'react-native';
+import {View, Text, FlatList} from 'react-native';
 
 import {MessageCard, Animation, EmptyList} from '@components';
 
-import styles from './Messages.style';
-
 import {getMyRooms} from '../../../services/firebaseChatService';
 import {useUser} from '../../../context/UserProvider';
-import {getUser} from '../../../services/userServices';
+import {getSenderReceiverData, getUser} from '../../../services/userServices';
+import {getAdvertisementAPI} from '../../../services/advertisementServices';
 import {getStyles} from './Messages.style';
 import {useTheme} from '../../../context/ThemeContext';
 
@@ -33,7 +32,10 @@ const Messages = ({navigation}) => {
       for (let chat of myChatRooms) {
         const receiverID = chat.participantIDs[0];
         const receiverUser = await getUser(receiverID, user.token);
-        console.log(receiverUser)
+        const advertisement = await getAdvertisementAPI(
+          chat.advertisementID,
+          user.token,
+        );
         const receiverChatInfo = {
           receiverID,
           nameSurname: receiverUser.data.nameSurname,
@@ -41,6 +43,7 @@ const Messages = ({navigation}) => {
           roomID: chat.roomID,
           messageCount: chat.messageCount,
           advertisementID: chat.advertisementID,
+          title: advertisement.data.data.title,
         };
         chats.push(receiverChatInfo);
       }
@@ -65,13 +68,23 @@ const Messages = ({navigation}) => {
             renderItem={({item}) => (
               <MessageCard
                 message={item}
-                onPress={() =>
+                title={item.title}
+                onPress={async () => {
+                  const {receiver, sender} = await getSenderReceiverData(
+                    user._id,
+                    item.receiverID,
+                    user.token,
+                  );
+
                   navigation.navigate('ChatScreen', {
                     advertisementID: item.advertisementID,
                     senderID: user._id,
                     receiverID: item.receiverID,
-                  })
-                }
+                    receiver,
+                    sender,
+                    title: item.title,
+                  });
+                }}
               />
             )}
           />

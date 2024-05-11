@@ -1,15 +1,15 @@
 import {COLORS, CONSTANTS} from '@utils';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {TextInput, Pressable, View} from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {getStyles} from './ChatInput.style';
 import {getCurrentLocation} from '../../../utils/functions';
 
-const ChatInput = ({createMessage, roomID, senderID, theme}) => {
+const ChatInput = ({createMessage, roomID, senderID, theme, message}) => {
   const inputRef = useRef();
   const styles = getStyles(theme);
-  const [messageContent, setMessageContent] = useState('');
+  const [messageContent, setMessageContent] = useState(message);
 
   const sendMessage = (roomID, messageContent, isLocation) => {
     const message = {
@@ -22,9 +22,14 @@ const ChatInput = ({createMessage, roomID, senderID, theme}) => {
     inputRef.current.clear();
   };
 
+  useEffect(() => {
+    setMessageContent(message);
+  }, [message]);
+
   return (
     <View style={styles.container}>
       <TextInput
+        value={messageContent}
         onChangeText={value => setMessageContent(value)}
         placeholder={'Mesajınız...'}
         style={styles.input}
