@@ -40,12 +40,11 @@ const sendEmailVerification = async (values, type) => {
 
 
 //Şifre Değiştirme Fonksiyonu
-const findUserByEmailAddress = async value => {
-  const {emailAddress} = value;
+const passwordReset = async value => {
+  const { emailAddress } = value;
   try {
-    const response = await axios.put(
-      `${BASE_URL}/user/findUserByEmailAddress`,
-      {emailAddress},
+    const response = await axios.get(
+      `${BASE_URL}/user/passwordReset?emailAddress=${emailAddress}`,
     );
     return {
       status: response.status,
@@ -274,11 +273,11 @@ const updatePassword = async (emailAddress, newPassword) => {
 
 
 // Favoriye ekleme, çıkarma servis fonksiyonu
-const favoriteUnFavorite = async (userID, postID) => {
+const favoriteUnFavorite = async (userID, advertisementID) => {
   try {
-    const response = await axios.put(`${BASE_URL}/user/likeDislike`, {
+    const response = await axios.put(`${BASE_URL}/user/favoriteUnfavorite`, {
       userID,
-      postID,
+      advertisementID,
     });
     return {
       status: response.status,
@@ -334,6 +333,6 @@ export {
   changePassword,
   blockUser,
   getSenderReceiverData,
-  findUserByEmailAddress,
+  passwordReset,
   updatePassword
 };

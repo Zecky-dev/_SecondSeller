@@ -1,72 +1,82 @@
-import React, { useState } from 'react';
-import { View, Text, Image, } from 'react-native';
-import { Formik } from 'formik';
-import { EmailSchema } from '@utils/validationSchemas';
-import ForgotVector from '@assets/images/forgotPass.png';
+import React, {useState} from 'react';
+import {View, Image} from 'react-native';
+import {Formik} from 'formik';
+import {EmailSchema} from '@utils/validationSchemas';
 //Style
-import styles from './Forgot.style';
+import {getStyles} from './Forgot.style';
 
-import { findUserByEmailAddress } from '../../../services/userServices';
+import {passwordReset} from '../../../services/userServices';
 
 // Components
-import { Input, Button, Animation } from '@components';
+import {Input, Button, Animation} from '@components';
 
 // Flashmessage
-import { showFlashMessage } from '@utils/functions';
+import {showFlashMessage} from '@utils/functions';
 
-//import { sendEmailVerification, forgotPassword } from '../../../services/userServices';
+// Vectors
+import ForgotPasswordDark from '@assets/images/forgot_password_dark.png';
+import ForgotPasswordLight from '@assets/images/forgot_password_light.png';
 
-const Forgot = ({ navigation }) => {
+// Context
+import {useTheme} from '../../../context/ThemeContext';
 
-    const [loading, setLoading] = useState(false)
-    const [code, setCode] = useState("")
+const Forgot = ({navigation}) => {
+  const [loading, setLoading] = useState(false);
 
-    if (!loading) {
-        return (
+  const {theme} = useTheme();
+  const styles = getStyles(theme);
+  const ForgotPasswordVector =
+    theme === 'dark' ? ForgotPasswordDark : ForgotPasswordLight;
 
-            <View style={styles.container}>
+  if (!loading) {
+    return (
+      <View style={styles.container}>
+        <Image source={ForgotPasswordVector} style={styles.vectorImage} />
+        <Formik
+          initialValues={{
+            emailAddress: '',
+          }}
+          validationSchema={EmailSchema}
+          onSubmit={async values => {
+            setLoading(true);
+            const response = await passwordReset(values);
+            setLoading(false);
+            if (response.status !== 200) {
+              showFlashMessage(response.status, response.message);
+            } else {
+              navigation.navigate('EmailVerificationScreen', {
+                verificationCode: response.data.data,
+                user: {emailAddress: values.emailAddress},
+                type: 'forgotPassword',
+              });
+            }
+          }}>
+          {({handleChange, handleSubmit, values, errors, touched}) => (
+            <View>
+              <Input
+                placeholder="E-posta Adresi"
+                onChangeText={handleChange('emailAddress')}
+                errors={
+                  touched.emailAddress &&
+                  errors.emailAddress &&
+                  errors.emailAddress
+                }
+                value={values. emailAddress}
+              />
 
-                <Image source={ForgotVector} style={styles.vectorImage} />
-
-                <Formik
-                    initialValues={{
-                        emailAddress: '',
-                    }}
-                    validationSchema={EmailSchema}
-                    onSubmit={async values => {
-                        const response = await findUserByEmailAddress(values)
-                        console.log(response)
-                        navigation.navigate('EmailVerificationScreen', { verificationCode: response.data, user: { emailAddress: values.emailAddress }, type: 'forgotPassword' })
-                    }}
-                >
-                    {({
-                        handleChange,
-                        handleSubmit,
-                        values,
-                        errors,
-                        touched,
-                    }) => (
-                        <View>
-                            <Input
-                                placeholder="E-posta Adresi"
-                                onChangeText={handleChange('emailAddress')}
-                                errors={touched.emailAddress && errors.emailAddress && errors.emailAddress}
-                                value={values.emailAddress}
-                            />
-
-                            <Button label="Email Yolla" onPress={handleSubmit} loading={loading} />
-                        </View>
-                    )}
-                </Formik>
-
+              <Button
+                label="Gönder"
+                onPress={handleSubmit}
+                loading={loading}
+              />
             </View>
-
-        )
-    }
-    else {
-        return <Animation animationName={"loading"} />
-    }
-
-}
+          )}
+        </Formik>
+      </View>
+    );
+  } else {
+    return <Animation animationName={'loading'} />;
+  }
+};
 
 export default Forgot;

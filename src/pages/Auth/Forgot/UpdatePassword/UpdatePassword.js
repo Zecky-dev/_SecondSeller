@@ -5,15 +5,24 @@ import { showFlashMessage } from '@utils/functions';
 import { UpdatePasswordSchema } from '@utils/validationSchemas';
 import { updatePassword } from '../../../../services/userServices';
 import { View,Image } from 'react-native';
-import styles from './UpdatePassword.style';
+
+import { getStyles } from './UpdatePassword.style';
+import { useTheme } from '../../../../context/ThemeContext';
+
+import PasswordChangeDark from '@assets/images/password_change_dark.png'
+import PasswordChangeLight from '@assets/images/password_change_light.png'
+
 
 const UpdatePassword = ({ navigation, route }) => {
 
     const { emailAddress  } = route.params;
+    const { theme } = useTheme()
+    const styles = getStyles(theme)
+    const PasswordChangeVector = theme === "dark" ? PasswordChangeDark : PasswordChangeLight
 
     return (
         <View style={styles.container}>
-            <Image style={styles.vectorImage} source={require('@assets/images/passwordChange.png')}/>
+            <Image style={styles.vectorImage} source={PasswordChangeVector}/>
             <Formik
                 initialValues={{
                     newPassword: '',
