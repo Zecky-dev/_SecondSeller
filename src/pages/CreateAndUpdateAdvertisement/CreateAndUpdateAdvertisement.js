@@ -68,7 +68,7 @@ const takeImageFromGallery = async (setImages, setFieldValue) => {
 };
 
 const CreateAndUpdateAdvertisement = ({navigation, route}) => {
-  const {advertisement, isOwnStack} = route.params;
+  const {advertisement} = route.params;
   const {theme} = useTheme();
   const styles = getStyles(theme);
 
@@ -77,7 +77,7 @@ const CreateAndUpdateAdvertisement = ({navigation, route}) => {
     advertisement ? advertisement.images : [],
   );
   const [loading, setLoading] = useState(false);
-  const {user: User} = useUser();
+  const {user: User, setUser} = useUser();
 
   // Konum, kullanıcı ve ilan bilgilerini konsola yazdıran fonksiyon
   const createAdvertisement = async values => {
@@ -98,7 +98,7 @@ const CreateAndUpdateAdvertisement = ({navigation, route}) => {
         advertisementData,
         User.token,
       );
-      const {status, message} = response.data;
+      const {status, message, data} = response.data;
       if (status !== 'success') {
         showMessage({
           message,
@@ -106,6 +106,11 @@ const CreateAndUpdateAdvertisement = ({navigation, route}) => {
         });
         return;
       }
+
+      // Eğer ilan database'e eklenirse yeni ilanı UserContext verisi içinde güncelle
+      User.advertisements.push(data._id);
+      setUser(User);
+
       navigation.navigate('HomeScreen');
       setLoading(false);
       setImages([]);

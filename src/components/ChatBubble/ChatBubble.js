@@ -1,37 +1,30 @@
 import moment from 'moment';
 import 'moment/locale/tr';
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Dimensions,
-  Linking,
-  Platform,
-  Pressable,
-  Alert,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {View, Text, Image, Pressable, Alert} from 'react-native';
 
 import {getStyles} from './ChatBubble.style';
 
 import {CONSTANTS} from '@utils';
 import {MapBubble} from '@components';
-import { useUser } from '../../context/UserProvider';
 
 // Gönderen kişinin mesajı sağda olmalı, diğerininki solda
 
-const ChatBubble = ({user, messageDetails, theme, isOwner, removeMessage}) => {
+const ChatBubble = ({
+  user,
+  messageDetails,
+  theme,
+  isMessageOwner,
+  removeMessage,
+}) => {
   const styles = getStyles(theme);
   const {createDate, message, isLocation, sender} = messageDetails;
   const [location] = useState(isLocation ? JSON.parse(message) : null);
 
-  const { user : User } = useUser()
-
-  const bubbleContainer = isOwner
+  const bubbleContainer = isMessageOwner
     ? styles.bubbleContainer_right
     : styles.bubbleContainer_left;
-  const bubble = isOwner ? styles.bubble_right : styles.bubble_left;
+  const bubble = isMessageOwner ? styles.bubble_right : styles.bubble_left;
 
   const formattedDate = moment(createDate, 'M/D/YYYY, h:mm:ss A')
     .locale('tr')
@@ -41,7 +34,7 @@ const ChatBubble = ({user, messageDetails, theme, isOwner, removeMessage}) => {
     <Pressable
       style={bubbleContainer}
       onLongPress={() => {
-        if (sender === user._id) {
+        if (isMessageOwner) {
           Alert.alert(
             'Emin misiniz?',
             'Bu mesajı silmek istediğinize emin misiniz?',
@@ -67,13 +60,13 @@ const ChatBubble = ({user, messageDetails, theme, isOwner, removeMessage}) => {
           }}>
           <Image
             source={
-              User.imageURL
-                ? {uri: User.imageURL}
+              user.imageURL
+                ? {uri: user.imageURL}
                 : require('@assets/images/avatar.png')
             }
             style={{width: 40, height: 40, borderRadius: 20}}
           />
-          <Text style={styles.messageOwner}>{User.nameSurname}</Text>
+          <Text style={styles.messageOwner}>{user.nameSurname}</Text>
         </View>
         {isLocation ? (
           <MapBubble

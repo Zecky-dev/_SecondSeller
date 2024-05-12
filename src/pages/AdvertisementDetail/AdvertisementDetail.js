@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {View, Text, Dimensions, ScrollView, Alert} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 const {height, width} = Dimensions.get('window');
@@ -17,7 +17,7 @@ import {getSenderReceiverData} from '../../services/userServices';
 import {useUser} from '../../context/UserProvider';
 import {showMessage} from 'react-native-flash-message';
 import {useTheme} from '../../context/ThemeContext';
-import OfferModal from './OfferModal/OfferModal';
+import OfferModal from './components/OfferModal/OfferModal';
 import {showFlashMessage} from '@utils/functions';
 import {checkChatRoom, createMessage} from '../../services/firebaseChatService';
 
@@ -27,10 +27,11 @@ const AdvertisementDetail = ({route, navigation}) => {
     user: {token, _id: userID},
   } = useUser();
 
+  const markerRef = useRef(null);
+
   const [loading, setLoading] = useState(false);
   const [offerModalVisible, setOfferModalVisible] = useState(false);
   const [advertisement, setAdvertisement] = useState(null);
-  const [senderReceiver, setSenderReceiver] = useState(null);
   const {theme} = useTheme();
   const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
   const styles = getStyles(theme);
@@ -86,7 +87,7 @@ const AdvertisementDetail = ({route, navigation}) => {
 
     const LONGITUDE = location.longitude;
     const LATITUDE = location.latitude;
-    const LATITUDE_DELTA = 0.5;
+    const LATITUDE_DELTA = 0.03;
     const LONGITUDE_DELTA = LATITUDE_DELTA * (width / height);
 
     return (
@@ -116,22 +117,27 @@ const AdvertisementDetail = ({route, navigation}) => {
               latitudeDelta: LATITUDE_DELTA,
               longitudeDelta: LONGITUDE_DELTA,
             }}
-            zoomEnabled={true}
-            scrollEnabled={true}
+            onMapReady={() => {
+              if (markerRef && markerRef.current) {
+                markerRef.current.showCallout();
+              }
+            }}
+            zoomEnabled={false}
+            scrollEnabled={false}
             style={{
               width: '100%',
               height: 250,
             }}>
             <Marker
+              ref={markerRef}
               coordinate={{
                 latitude: location.latitude,
                 longitude: location.longitude,
               }}
               key={id}
-              title="İlan Konumu"
               style={{width: 26, height: 40}}
-              description={'İlan konumu açıklaması'}
               resizeMode="contain"
+              title="İlanın konumu."
             />
           </MapView>
 
@@ -195,22 +201,25 @@ const AdvertisementDetail = ({route, navigation}) => {
               label="İlanı Sil"
               icon={{name: 'trash-can', size: 24, color: COLORS.titleColor}}
               onPress={() => {
-                Alert.alert('Emin misiniz ?', 'Bu ilanı silmek istediğinize emin misiniz ?', [
-                  {
-                    text: 'Evet',
-                    onPress: async () =>  {
-                      await removeAdvertisement(id,token)
-                      navigation.goBack()
+                Alert.alert(
+                  'Emin misiniz ?',
+                  'Bu ilanı silmek istediğinize emin misiniz ?',
+                  [
+                    {
+                      text: 'Evet',
+                      onPress: async () => {
+                        await removeAdvertisement(id, token);
+                        navigation.goBack();
+                      },
                     },
-                  },
-                  {
-                    text: 'Hayır',
-                    onPress: () => console.log('Removing advertisement cancelled!'),
-                    style: 'cancel',
-                  },
-                ]);
-
-               
+                    {
+                      text: 'Hayır',
+                      onPress: () =>
+                        console.log('Removing advertisement cancelled!'),
+                      style: 'cancel',
+                    },
+                  ],
+                );
               }}
             />
           )}

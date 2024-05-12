@@ -1,10 +1,10 @@
 import {StyleSheet} from 'react-native';
-import {CONSTANTS} from '@utils'
+import {CONSTANTS} from '@utils';
 
-import THEMECOLORS from '@utils/colors'
+import THEMECOLORS from '@utils/colors';
 
 export const getStyles = theme => {
-  const COLORS = theme === "dark" ? THEMECOLORS.DARK : THEMECOLORS.LIGHT
+  const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
   return StyleSheet.create({
     container: {
       flexDirection: 'row',
@@ -17,8 +17,8 @@ export const getStyles = theme => {
       backgroundColor: COLORS.cardBackground,
     },
     input: {
-      flex: 1
-    }
-  })
-}
-
+      flex: 1,
+      color: COLORS.black,
+    },
+  });
+};

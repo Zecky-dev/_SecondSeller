@@ -7,9 +7,9 @@ import {CONSTANTS} from '@utils';
 import THEMECOLORS from '@utils/colors';
 
 // React Navigation
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 // Icon
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -29,7 +29,7 @@ import {
   ChangePassword,
   Messages,
   Chat,
-  UpdatePassword
+  UpdatePassword,
 } from '@pages';
 
 // Context
@@ -70,7 +70,11 @@ const ProfileMessagesStack = () => {
 
   return (
     <Stack.Navigator>
-      <Stack.Screen component={Messages} name="MessageListScreen" options={{headerShown: false,}} />
+      <Stack.Screen
+        component={Messages}
+        name="MessageListScreen"
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         component={Chat}
         name="ChatScreen"
@@ -103,7 +107,13 @@ const AdvertisementDetailStack = () => {
         options={({route}) => {
           return {
             headerShown: true,
-            header: () => <ChatHeader receiver={route.params.receiver} title={route.params.title} blockUser={blockUser}/>
+            header: () => (
+              <ChatHeader
+                receiver={route.params.receiver}
+                title={route.params.title}
+                blockUser={blockUser}
+              />
+            ),
           };
         }}
       />
@@ -132,7 +142,7 @@ const ProfileStack = ({navigation}) => {
   };
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen component={Profile} name="ProfileStackScreen" />
       <Stack.Screen component={ProfileEdit} name="ProfileEditScreen" />
       <Stack.Screen
@@ -148,7 +158,7 @@ const ProfileStack = ({navigation}) => {
 
 const AdvertisementStack = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen component={Advertisements} name="Advertisements" />
       <Stack.Screen
         component={AdvertisementDetail}
@@ -186,6 +196,7 @@ const BottomTabs = () => {
           headerTitleAlign: 'center',
           headerTintColor: COLORS.titleColor,
           headerShown: route.key !== 'ChatScreen',
+          tabBarHideOnKeyboard: true,
         };
       }}>
       <Tab.Screen
@@ -193,7 +204,7 @@ const BottomTabs = () => {
         component={HomeStack}
         options={{
           title: 'Anasayfa',
-          tabBarIcon: ({ focused, color, size }) => {
+          tabBarIcon: ({focused, color, size}) => {
             const iconName = focused ? 'home' : 'home-outline';
             const iconColor = focused
               ? COLORS.titleColor
@@ -210,7 +221,7 @@ const BottomTabs = () => {
         }}
         options={{
           title: 'İlan Oluştur',
-          tabBarIcon: ({ focused, size }) => {
+          tabBarIcon: ({focused, size}) => {
             const iconName = focused ? 'plus-circle' : 'plus-circle-outline';
             const iconColor = focused
               ? COLORS.titleColor
@@ -224,7 +235,7 @@ const BottomTabs = () => {
         component={AdvertisementStack}
         options={{
           title: 'İlanlar',
-          tabBarIcon: ({ focused, color, size }) => {
+          tabBarIcon: ({focused, color, size}) => {
             const iconName = focused ? 'heart' : 'heart-outline';
             const iconColor = focused
               ? COLORS.titleColor
@@ -239,7 +250,7 @@ const BottomTabs = () => {
         component={ProfileStack}
         options={{
           title: 'Profil',
-          tabBarIcon: ({ focused, color, size }) => {
+          tabBarIcon: ({focused, color, size}) => {
             const iconName = focused ? 'account' : 'account-outline';
             const iconColor = focused
               ? COLORS.titleColor
@@ -266,10 +277,7 @@ const AuthStack = () => {
         name="EmailVerificationScreen"
         component={EmailValidation}
       />
-      <Stack.Screen
-        name="UpdatePasswordScreen"
-        component={UpdatePassword}
-      />
+      <Stack.Screen name="UpdatePasswordScreen" component={UpdatePassword} />
     </Stack.Navigator>
   );
 };
@@ -295,7 +303,7 @@ const App = () => {
 
   return (
     <>
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         <StatusBar
           backgroundColor={COLORS.primary}
           barStyle={'light-content'}

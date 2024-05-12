@@ -5,7 +5,7 @@ import {MessageCard, Animation, EmptyList} from '@components';
 
 import {getMyRooms} from '../../../services/firebaseChatService';
 import {useUser} from '../../../context/UserProvider';
-import {getSenderReceiverData, getUser} from '../../../services/userServices';
+import {getUser} from '../../../services/userServices';
 import {getAdvertisementAPI} from '../../../services/advertisementServices';
 import {getStyles} from './Messages.style';
 import {useTheme} from '../../../context/ThemeContext';
@@ -75,6 +75,7 @@ const Messages = ({navigation}) => {
             renderItem={({item}) => (
               <MessageCard
                 message={item}
+                title={item.title}
                 onPress={() =>
                   navigation.navigate('ChatScreen', {
                     advertisementID: item.advertisementID,

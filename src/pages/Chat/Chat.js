@@ -8,7 +8,11 @@ import {getStyles} from './Chat.style';
 
 // Firestore & Firestore Services
 import firestore from '@react-native-firebase/firestore';
-import {checkChatRoom, createMessage, removeMessage as removeMessageService} from '../../services/firebaseChatService';
+import {
+  checkChatRoom,
+  createMessage,
+  removeMessage as removeMessageService,
+} from '../../services/firebaseChatService';
 
 // Vectors
 import NoMessageDark from '@assets/images/no_message_dark.png';
@@ -22,11 +26,12 @@ import {useTheme} from '../../context/ThemeContext';
 import {useUser} from '../../context/UserProvider';
 import FastMessageChips from './FastMessageChips/FastMessageChips';
 import {CONSTANTS} from '@utils';
+import {showFlashMessage} from '@utils/functions';
 
-const Chat = ({route}) => {
+const Chat = ({navigation, route}) => {
   const {user} = useUser();
   const {advertisementID, senderID, receiverID} = route.params;
-  const amITheOwner = user.advertisements.includes(advertisementID);
+  const isAdvertisementOwner = user.advertisements.includes(advertisementID);
 
   const [roomData, setRoomData] = useState(null);
   const [userDatas, setUserDatas] = useState([]);
@@ -53,6 +58,15 @@ const Chat = ({route}) => {
         .doc(chatRoomID)
         .onSnapshot(documentSnapshot => {
           const data = documentSnapshot.data();
+
+          // Eğer oda silinirse chat ekranındaki kullanıcı HomeScreen'e gönderilir
+          // isAdvertisementOwner ilan sahibinin bildirim ve yönlendirmeden etkilenmemesi için
+          if (data == undefined && !isAdvertisementOwner) {
+            setRoomData(null);
+            showFlashMessage(400, 'Room not found!');
+            navigation.navigate('HomeAdvertisementsScreen');
+            return;
+          }
           setRoomData({...data, roomID: chatRoomID});
         });
 
@@ -72,13 +86,7 @@ const Chat = ({route}) => {
     getUsersData();
   }, []);
 
-  const onFastMessagePress = message => {
-    setMessage(message);
-  };
-
-
   // Mesaj gönderme & Silme
-
   const sendMessage = async (messageContent, isLocation) => {
     const message = {
       sender: senderID,
@@ -87,15 +95,15 @@ const Chat = ({route}) => {
       isLocation,
     };
     await createMessage(roomData.roomID, message);
+    setMessage('');
   };
 
-  const removeMessage = async (messageDetails) => {
-    await removeMessageService(roomData.roomID, messageDetails)
+  const removeMessage = async messageDetails => {
+    await removeMessageService(roomData.roomID, messageDetails);
   };
 
   // Render
-
-  if (roomData === null) {
+  if (roomData === null || userDatas.length === 0) {
     return <Animation animationName={'loading'} />;
   } else {
     return (
@@ -116,7 +124,7 @@ const Chat = ({route}) => {
               return (
                 <ChatBubble
                   theme={theme}
-                  isOwner={item.sender == senderID}
+                  isMessageOwner={item.sender == senderID}
                   removeMessage={removeMessage}
                   user={userDatas.find(user => user._id === item.sender)}
                   messageDetails={item}
@@ -126,13 +134,14 @@ const Chat = ({route}) => {
             }}
           />
         )}
+        {/* isAdvertisementOwner'a göre FastMessageChips içeriği değişmektedir */}
         <FastMessageChips
           messages={
-            amITheOwner
+            isAdvertisementOwner
               ? CONSTANTS.FAST_MESSAGES.OWNER.messages
               : CONSTANTS.FAST_MESSAGES.RECEIVER.messages
           }
-          onPress={onFastMessagePress}
+          onPress={chipContent => setMessage(chipContent)}
         />
         <ChatInput
           sendMessage={sendMessage}

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text} from 'react-native';
 import Modal from 'react-native-modal';
-import {useTheme} from '../../../context/ThemeContext';
+import {useTheme} from '../../../../context/ThemeContext';
 
 import {getStyles} from './OfferModal.style';
 import {Button, Input} from '@components';

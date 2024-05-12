@@ -33,7 +33,7 @@ const takeImageFromGallery = async setFieldValue => {
   if (!result.didCancel) {
     for (let asset of result.assets) {
       try {
-        const resizedImage = await resizeImage(asset, 200, 200);
+        const resizedImage = await resizeImage(asset, 1280, 720);
         if (resizedImage !== null) setFieldValue('imageURL', resizedImage.uri);
       } catch (err) {
         showMessage({

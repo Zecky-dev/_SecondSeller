@@ -7,14 +7,14 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 // styles & constants
 import THEMECOLORS from '../../utils/colors';
 import CONSTANTS from '../../utils/constants';
-import { getStyles } from './AdvertisemetCard.style';
+import {getStyles} from './AdvertisemetCard.style';
 
 // Custom components
 import {Button} from '@components';
 
 // Uygulama genelindeki kullanıcıyı döndüren hook
 import {useUser} from '../../context/UserProvider';
-import { useTheme } from '../../context/ThemeContext';
+import {useTheme} from '../../context/ThemeContext';
 
 // Kart - büyük versiyon
 const LittleCard = ({
@@ -26,9 +26,8 @@ const LittleCard = ({
 }) => {
   const {user, setUser} = useUser();
   const {images, title, price} = advertisement;
-  const { theme } = useTheme();
-  const COLORS = theme === "dark" ? THEMECOLORS.DARK : THEMECOLORS.LIGHT
-
+  const {theme} = useTheme();
+  const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
 
   // Kalp icon durum kontrolü
   const [liked, setLiked] = useState(
@@ -92,8 +91,8 @@ const BigCard = ({
   handleUpdateButton,
 }) => {
   const {user, setUser} = useUser();
-  const { theme } = useTheme();
-  const COLORS = theme === "dark" ? THEMECOLORS.DARK : THEMECOLORS.LIGHT
+  const {theme} = useTheme();
+  const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
 
   const {
     title,
@@ -142,7 +141,11 @@ const BigCard = ({
       )}
       {isOwner && (
         <View style={styles.actionButtonsContainer}>
-          <Button label="İlanı Düzenle" onPress={handleUpdateButton} />
+          <Button
+            label="İlanı Düzenle"
+            onPress={handleUpdateButton}
+            additionalStyles={{container: {flex: 1}}}
+          />
           <Button
             label={isSold ? 'İlanı Aktifleştir' : 'Satıldı İşaretle'}
             onPress={async () => {
@@ -150,6 +153,7 @@ const BigCard = ({
               handleSoldStatus(id, {...advertisement, soldStatus});
               setIsSold(soldStatus);
             }}
+            additionalStyles={{container: {flex: 1}}}
           />
         </View>
       )}
@@ -166,12 +170,11 @@ const AdvertisementCard = ({
   handleSoldStatus,
   handleUpdateButton,
 }) => {
-
-  const { theme } = useTheme();
-  const bigCardStyles = getStyles(theme).bigCardStyles
-  const littleCardStyles = getStyles(theme).littleCardStyles
+  const {theme} = useTheme();
+  const bigCardStyles = getStyles(theme).bigCardStyles;
+  const littleCardStyles = getStyles(theme).littleCardStyles;
   const styles = big ? bigCardStyles : littleCardStyles;
-  
+
   if (!big) {
     return (
       <LittleCard

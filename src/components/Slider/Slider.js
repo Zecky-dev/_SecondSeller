@@ -1,21 +1,28 @@
 import React from 'react';
-import {Dimensions, View, Image, Text} from 'react-native';
+import {View, Image, Text, Pressable} from 'react-native';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 
-import { getStyles } from '../Input/Input.style';
-import { useTheme } from '../../context/ThemeContext'
-import ownStyles from './Slider.style';
+import {getStyles} from '../Input/Input.style';
+import {useTheme} from '../../context/ThemeContext';
+import {getStyles as getSliderStyles} from './Slider.style';
 
-const Slider = ({images, errors}) => {
+// Image vectors
+import SelectImageLight from '@assets/images/select_image_light.png';
+import SelectImageDark from '@assets/images/select_image_dark.png';
 
-  const {theme} = useTheme()
-  const styles = getStyles(theme)
-  
+const Slider = ({images, errors, onPress}) => {
+  const {theme} = useTheme();
+  const ownStyles = getSliderStyles(theme);
+  const styles = getStyles(theme);
+
+  const SelectImageVector =
+    theme === 'dark' ? SelectImageDark : SelectImageLight;
+
   if (images.length === 0) {
     return (
       <>
         <Image
-          source={require('../../assets/images/selectImage.png')}
+          source={SelectImageVector}
           style={ownStyles.emptySlider}
           resizeMode="contain"
         />
@@ -35,9 +42,9 @@ const Slider = ({images, errors}) => {
           data={images}
           renderItem={({item}) => {
             return (
-              <View style={ownStyles.container}>
+              <Pressable style={ownStyles.container} onPress={onPress}>
                 <Image source={{uri: item}} style={ownStyles.sliderImage} />
-              </View>
+              </Pressable>
             );
           }}
         />
