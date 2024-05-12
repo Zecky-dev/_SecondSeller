@@ -77,7 +77,6 @@ const Login = ({navigation}) => {
       <Formik
         initialValues={{
           emailAddress: '',
-          password: '',
         }}
         validationSchema={LoginSchema}
         onSubmit={values => handleLogin(values)}>
@@ -112,7 +111,7 @@ const Login = ({navigation}) => {
         <Text style={styles.createAccountLabelButton} onPress={() => navigation.navigate("RegisterScreen")} >{'\t'}Kayıt Ol</Text>
       </View>
 
-      <Pressable onPress={() => console.log('Şifremi unuttum')}>
+      <Pressable onPress={() => navigation.navigate("ForgotScreen")}>
         <Text style={styles.forgotPasswordLabel}>Şifremi Unuttum</Text>
       </Pressable>
     </ScrollView>

@@ -7,9 +7,9 @@ import {CONSTANTS} from '@utils';
 import THEMECOLORS from '@utils/colors';
 
 // React Navigation
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Icon
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -22,12 +22,14 @@ import {
   CreateAndUpdateAdvertisement,
   Login,
   Register,
+  Forgot,
   EmailValidation,
   AdvertisementDetail,
   ProfileEdit,
   ChangePassword,
   Messages,
   Chat,
+  UpdatePassword
 } from '@pages';
 
 // Context
@@ -130,7 +132,7 @@ const ProfileStack = ({navigation}) => {
   };
 
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen component={Profile} name="ProfileStackScreen" />
       <Stack.Screen component={ProfileEdit} name="ProfileEditScreen" />
       <Stack.Screen
@@ -146,7 +148,7 @@ const ProfileStack = ({navigation}) => {
 
 const AdvertisementStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen component={Advertisements} name="Advertisements" />
       <Stack.Screen
         component={AdvertisementDetail}
@@ -191,7 +193,7 @@ const BottomTabs = () => {
         component={HomeStack}
         options={{
           title: 'Anasayfa',
-          tabBarIcon: ({focused, color, size}) => {
+          tabBarIcon: ({ focused, color, size }) => {
             const iconName = focused ? 'home' : 'home-outline';
             const iconColor = focused
               ? COLORS.titleColor
@@ -208,7 +210,7 @@ const BottomTabs = () => {
         }}
         options={{
           title: 'İlan Oluştur',
-          tabBarIcon: ({focused, size}) => {
+          tabBarIcon: ({ focused, size }) => {
             const iconName = focused ? 'plus-circle' : 'plus-circle-outline';
             const iconColor = focused
               ? COLORS.titleColor
@@ -222,7 +224,7 @@ const BottomTabs = () => {
         component={AdvertisementStack}
         options={{
           title: 'İlanlar',
-          tabBarIcon: ({focused, color, size}) => {
+          tabBarIcon: ({ focused, color, size }) => {
             const iconName = focused ? 'heart' : 'heart-outline';
             const iconColor = focused
               ? COLORS.titleColor
@@ -237,7 +239,7 @@ const BottomTabs = () => {
         component={ProfileStack}
         options={{
           title: 'Profil',
-          tabBarIcon: ({focused, color, size}) => {
+          tabBarIcon: ({ focused, color, size }) => {
             const iconName = focused ? 'account' : 'account-outline';
             const iconColor = focused
               ? COLORS.titleColor
@@ -259,9 +261,14 @@ const AuthStack = () => {
       initialRouteName="LoginScreen">
       <Stack.Screen name="LoginScreen" component={Login} />
       <Stack.Screen name="RegisterScreen" component={Register} />
+      <Stack.Screen name="ForgotScreen" component={Forgot} />
       <Stack.Screen
         name="EmailVerificationScreen"
         component={EmailValidation}
+      />
+      <Stack.Screen
+        name="UpdatePasswordScreen"
+        component={UpdatePassword}
       />
     </Stack.Navigator>
   );
@@ -288,7 +295,7 @@ const App = () => {
 
   return (
     <>
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <StatusBar
           backgroundColor={COLORS.primary}
           barStyle={'light-content'}

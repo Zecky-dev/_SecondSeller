@@ -37,6 +37,43 @@ const sendEmailVerification = async (values, type) => {
   }
 };
 
+
+
+//Şifre Değiştirme Fonksiyonu
+const findUserByEmailAddress = async value => {
+  const {emailAddress} = value;
+  try {
+    const response = await axios.put(
+      `${BASE_URL}/user/findUserByEmailAddress`,
+      {emailAddress},
+    );
+    return {
+      status: response.status,
+      message: response.data.message,
+      data: response.data,
+    };
+  } catch (err) {
+    if (err.response) {
+      return {
+        status: err.response.status,
+        message: err.response.data.message,
+      };
+    } else if (err.request) {
+      return {
+        status: 'Network Error',
+        message:
+          'The request was made but no response was received. Please check your network connection.',
+      };
+    } else {
+      return {
+        status: 'Error',
+        message:
+          'An error occurred while processing your request. Please try again.',
+      };
+    }
+  }
+};
+
 // Kayıt servis fonksiyonu
 const register = async values => {
   const {nameSurname, emailAddress, phoneNumber, password} = values;
@@ -166,6 +203,8 @@ const updateUser = async (userID, values) => {
   }
 };
 
+
+
 // Şifre güncelleme servis fonksiyonu
 const changePassword = async (userID, values) => {
   try {
@@ -199,6 +238,40 @@ const changePassword = async (userID, values) => {
     }
   }
 };
+
+// Yeni şifreyle güncelleme servis fonksiyonu
+const updatePassword = async (emailAddress, newPassword) => {
+  try {
+    const response = await axios.put(
+      `${BASE_URL}/user/updatePassword`,
+      { newPassword, emailAddress },
+    );
+    return {
+      status: response.status,
+      message: response.data.message,
+    };
+  } catch (err) {
+    if (err.response) {
+      return {
+        status: err.response.status,
+        message: err.response.data.message,
+      };
+    } else if (err.request) {
+      return {
+        status: 'Network Error',
+        message:
+          'The request was made but no response was received. Please check your network connection.',
+      };
+    } else {
+      return {
+        status: 'Error',
+        message:
+          'An error occurred while processing your request. Please try again.',
+      };
+    }
+  }
+};
+
 
 // Favoriye ekleme, çıkarma servis fonksiyonu
 const favoriteUnFavorite = async (userID, postID) => {
@@ -260,5 +333,7 @@ export {
   updateUser,
   changePassword,
   blockUser,
-  getSenderReceiverData
+  getSenderReceiverData,
+  findUserByEmailAddress,
+  updatePassword
 };

@@ -1,29 +1,30 @@
-import React, {useState} from 'react';
-import {View, ScrollView, Image, Text} from 'react-native';
-import {Button, Input, Animation} from '@components';
+import React, { useState } from 'react';
+import { View, ScrollView, Image, Text } from 'react-native';
+import { Button, Input, Animation } from '@components';
 
-import {getStyles} from './EmailVerification.style';
+import { getStyles } from './EmailVerification.style';
 
-import {register, updateUser} from '../../services/userServices';
-import {useUser} from '../../context/UserProvider';
-import {useTheme} from '../../context/ThemeContext';
-import {getUserFromToken, showFlashMessage} from '@utils/functions';
+import { register, updateUser } from '../../services/userServices';
+import { useUser } from '../../context/UserProvider';
+import { useTheme } from '../../context/ThemeContext';
+import { getUserFromToken, showFlashMessage } from '@utils/functions';
 import Storage from '@utils/Storage';
+import { createLanguageService } from 'typescript';
 
 import EmailValidationDarkVector from '@assets/images/email_validation_dark.png';
 import EmailValidationLightVector from '@assets/images/email_validation_light.png';
 
-const EmailVerification = ({navigation, route}) => {
+const EmailVerification = ({ navigation, route }) => {
   const [verificationCode, setVerificationCode] = useState('');
   const [loading, setLoading] = useState(false);
-  const {setUser} = useUser();
-  const {theme} = useTheme();
+  const { setUser } = useUser();
+  const { theme } = useTheme();
   const styles = getStyles(theme);
 
   const EmailValidationVector =
     theme === 'dark' ? EmailValidationDarkVector : EmailValidationLightVector;
 
-  const {verificationCode: code, user, type} = route.params;
+  const { verificationCode: code, user, type } = route.params;
 
   // Kullanıcı kayıt işlemi sırasında mail kodunu kontrol eder sonra kullanıcıyı kaydeder
   const checkAndRegister = async () => {
@@ -57,6 +58,12 @@ const EmailVerification = ({navigation, route}) => {
     }
   };
 
+  const checkAndUpdatePassword = () => {
+    if (505050 == code.data) {
+      navigation.navigate('UpdatePasswordScreen', { emailAddress: user.emailAddress })
+    }
+  }
+
   if (loading) {
     return <Animation animationName={'loading'} />;
   } else {
@@ -83,7 +90,7 @@ const EmailVerification = ({navigation, route}) => {
         />
         <Button
           onPress={() =>
-            type == 'register' ? checkAndRegister() : checkAndUpdate()
+            type == 'register' ? checkAndRegister() : 'forgotPassword' ? checkAndUpdatePassword() : checkAndUpdate()
           }
           label="Doğrula"
         />
