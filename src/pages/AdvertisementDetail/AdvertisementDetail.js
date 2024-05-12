@@ -17,6 +17,9 @@ import {getSenderReceiverData} from '../../services/userServices';
 import {useUser} from '../../context/UserProvider';
 import {showMessage} from 'react-native-flash-message';
 import {useTheme} from '../../context/ThemeContext';
+import OfferModal from './OfferModal/OfferModal';
+import {showFlashMessage} from '@utils/functions';
+import {checkChatRoom, createMessage} from '../../services/firebaseChatService';
 
 const AdvertisementDetail = ({route, navigation}) => {
   const {id: advertisementID} = route.params;
@@ -25,6 +28,7 @@ const AdvertisementDetail = ({route, navigation}) => {
   } = useUser();
 
   const [loading, setLoading] = useState(false);
+  const [offerModalVisible, setOfferModalVisible] = useState(false);
   const [advertisement, setAdvertisement] = useState(null);
   const [senderReceiver, setSenderReceiver] = useState(null);
   const {theme} = useTheme();
@@ -50,6 +54,23 @@ const AdvertisementDetail = ({route, navigation}) => {
   useEffect(() => {
     getAdvertisement();
   }, []);
+
+  const sendOffer = async price => {
+    setOfferModalVisible(false);
+    const roomID = await checkChatRoom(
+      advertisementID,
+      userID,
+      advertisement.owner,
+    );
+    const messageDetails = {
+      sender: userID,
+      message: `Teklifim: ${price} TL`,
+      createDate: new Date().toLocaleString(),
+      isLocation: false,
+    };
+    createMessage(roomID, messageDetails);
+    showFlashMessage(200, 'Teklif gönderildi!');
+  };
 
   if (advertisement && !loading) {
     const {
@@ -164,7 +185,7 @@ const AdvertisementDetail = ({route, navigation}) => {
                   },
                 }}
                 label="Teklif Ver"
-                onPress={() => console.log('Teklif Ver')}
+                onPress={() => setOfferModalVisible(true)}
               />
             </View>
           )}
@@ -194,6 +215,12 @@ const AdvertisementDetail = ({route, navigation}) => {
             />
           )}
         </ScrollView>
+        <OfferModal
+          isVisible={offerModalVisible}
+          setVisible={setOfferModalVisible}
+          price={price}
+          sendOffer={sendOffer}
+        />
       </View>
     );
   } else {

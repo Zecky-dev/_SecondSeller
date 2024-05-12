@@ -76,6 +76,48 @@ const FILTER_OPTIONS = {
   CATEGORY: ADVERTISEMENT_CATEGORIES,
 };
 
+const FAST_MESSAGES = {
+  RECEIVER: {
+    messages: [
+      {
+        key: 1,
+        message: 'Hala satılık mı?',
+      },
+      {
+        key: 2,
+        message: 'Son fiyat nedir?',
+      },
+      {
+        key: 3,
+        message: 'Durumu nasıl?',
+      },
+      {
+        key: 4,
+        message: 'Daha fazla bilgi alabilir miyim?',
+      },
+    ],
+  },
+  OWNER: {
+    messages: [
+      {
+        key: 1,
+        message: 'Evet, hala satılık.',
+      },
+      {
+        key: 2,
+        message: 'Üzgünüm, satıldı.',
+      },
+      {
+        key: 3,
+        message: 'Teklifin nedir?',
+      },
+      {
+        key: 4,
+        message: 'Maalesef, teklifini kabul edemem.',
+      },
+    ],
+  },
+};
 
 export default {
   padding,
@@ -88,4 +130,5 @@ export default {
   APP_SLOGAN,
   APP_FONT,
   FILTER_OPTIONS,
+  FAST_MESSAGES,
 };

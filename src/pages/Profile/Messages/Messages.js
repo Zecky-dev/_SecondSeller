@@ -1,23 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, FlatList} from 'react-native';
 
-import {MessageCard, Button, Animation, EmptyList} from '@components';
-import {CONSTANTS, COLORS} from '@utils';
+import {MessageCard, Animation, EmptyList} from '@components';
 
-import styles from './Messages.style';
-
-import NoMessageDarkVector from '@assets/images/no_message_dark.png';
-import NoMessageLightVector from '@assets/images/no_message_light.png';
-
-import {
-  getMyRooms,
-  getRoomDataById,
-} from '../../../services/firebaseChatService';
+import {getMyRooms} from '../../../services/firebaseChatService';
 import {useUser} from '../../../context/UserProvider';
-import {getUser} from '../../../services/userServices';
+import {getSenderReceiverData, getUser} from '../../../services/userServices';
+import {getAdvertisementAPI} from '../../../services/advertisementServices';
 import {getStyles} from './Messages.style';
 import {useTheme} from '../../../context/ThemeContext';
-import {getAdvertisementAPI} from '../../../services/advertisementServices';
+
+import EmptyListDark from '@assets/images/empty_list_dark.png';
+import EmptyListLight from '@assets/images/empty_list_light.png';
 
 const Messages = ({navigation}) => {
   const {user} = useUser();
@@ -26,8 +20,8 @@ const Messages = ({navigation}) => {
 
   const {theme} = useTheme();
   const styles = getStyles(theme);
-  const NoMesageVector =
-    theme === 'dark' ? NoMessageDarkVector : NoMessageLightVector;
+
+  const EmptyListVector = theme === 'dark' ? EmptyListDark : EmptyListLight;
 
   useEffect(() => {
     const handleRoomID = async () => {

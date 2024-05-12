@@ -4,7 +4,7 @@ import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {getStyles} from './MessageCard.style';
 import {useTheme} from '../../context/ThemeContext';
 
-const MessageCard = ({onPress, message}) => {
+const MessageCard = ({onPress, message, title}) => {
   const {theme} = useTheme();
   const styles = getStyles(theme);
 
@@ -21,7 +21,10 @@ const MessageCard = ({onPress, message}) => {
         }
         style={styles.image}
       />
-      <Text style={styles.name}>{message.nameSurname}</Text>
+      <View style={{flex: 1}}>
+        <Text style={styles.name}>{message.nameSurname}</Text>
+        <Text style={styles.advertisementTitle}>{title}</Text>
+      </View>
     </TouchableOpacity>
   );
 };

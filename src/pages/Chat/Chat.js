@@ -20,13 +20,17 @@ import {getSenderReceiverData} from '../../services/userServices';
 // Context
 import {useTheme} from '../../context/ThemeContext';
 import {useUser} from '../../context/UserProvider';
-
+import FastMessageChips from './FastMessageChips/FastMessageChips';
+import {CONSTANTS} from '@utils';
 
 const Chat = ({route}) => {
   const {user} = useUser();
   const {advertisementID, senderID, receiverID} = route.params;
+  const amITheOwner = user.advertisements.includes(advertisementID);
+
   const [roomData, setRoomData] = useState(null);
   const [userDatas, setUserDatas] = useState([]);
+  const [message, setMessage] = useState('');
 
   // styling
   const {theme} = useTheme();
@@ -56,13 +60,21 @@ const Chat = ({route}) => {
     };
     handleChatRoomID(advertisementID, senderID, receiverID);
 
-    const getUsersData = async () => {      
-      const { sender, receiver } = await getSenderReceiverData(senderID, receiverID, user.token)
-      const userDatas = [ sender, receiver];
+    const getUsersData = async () => {
+      const {sender, receiver} = await getSenderReceiverData(
+        senderID,
+        receiverID,
+        user.token,
+      );
+      const userDatas = [sender, receiver];
       setUserDatas(userDatas);
     };
     getUsersData();
   }, []);
+
+  const onFastMessagePress = message => {
+    setMessage(message);
+  };
 
 
   // Mesaj gönderme & Silme
@@ -80,7 +92,6 @@ const Chat = ({route}) => {
   const removeMessage = async (messageDetails) => {
     await removeMessageService(roomData.roomID, messageDetails)
   };
-
 
   // Render
 
@@ -115,12 +126,20 @@ const Chat = ({route}) => {
             }}
           />
         )}
-
+        <FastMessageChips
+          messages={
+            amITheOwner
+              ? CONSTANTS.FAST_MESSAGES.OWNER.messages
+              : CONSTANTS.FAST_MESSAGES.RECEIVER.messages
+          }
+          onPress={onFastMessagePress}
+        />
         <ChatInput
           sendMessage={sendMessage}
           senderID={senderID}
           roomID={roomData.roomID}
           theme={theme}
+          message={message}
         />
       </View>
     );

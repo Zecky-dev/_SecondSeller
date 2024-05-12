@@ -2,26 +2,26 @@ import React, {useState} from 'react';
 import {View, ScrollView, Image, Text} from 'react-native';
 import {Button, Input, Animation} from '@components';
 
-import { getStyles } from './EmailVerification.style';
+import {getStyles} from './EmailVerification.style';
 
 import {register, updateUser} from '../../services/userServices';
 import {useUser} from '../../context/UserProvider';
-import {useTheme} from '../../context/ThemeContext'
+import {useTheme} from '../../context/ThemeContext';
 import {getUserFromToken, showFlashMessage} from '@utils/functions';
 import Storage from '@utils/Storage';
 
-import EmailValidationDarkVector from '@assets/images/email_validation_dark.png'
-import EmailValidationLightVector from '@assets/images/email_validation_dark.png'
-
+import EmailValidationDarkVector from '@assets/images/email_validation_dark.png';
+import EmailValidationLightVector from '@assets/images/email_validation_light.png';
 
 const EmailVerification = ({navigation, route}) => {
   const [verificationCode, setVerificationCode] = useState('');
   const [loading, setLoading] = useState(false);
   const {setUser} = useUser();
-  const { theme } = useTheme()
-  const styles = getStyles(theme)
+  const {theme} = useTheme();
+  const styles = getStyles(theme);
 
-  const EmailValidationVector = theme === "dark" ? EmailValidationDarkVector : EmailValidationLightVector
+  const EmailValidationVector =
+    theme === 'dark' ? EmailValidationDarkVector : EmailValidationLightVector;
 
   const {verificationCode: code, user, type} = route.params;
 
@@ -62,10 +62,7 @@ const EmailVerification = ({navigation, route}) => {
   } else {
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        <Image
-          source={EmailValidationVector}
-          style={styles.image}
-        />
+        <Image source={EmailValidationVector} style={styles.image} />
 
         <View style={styles.textContainer}>
           <Text style={styles.infoMessage}>
