@@ -10,9 +10,9 @@ import {getStyles as getSliderStyles} from './Slider.style';
 import SelectImageLight from '@assets/images/select_image_light.png';
 import SelectImageDark from '@assets/images/select_image_dark.png';
 
-const Slider = ({images, errors, onPress}) => {
+const Slider = ({images, errors, onPress, type = 'normal'}) => {
   const {theme} = useTheme();
-  const ownStyles = getSliderStyles(theme);
+  const ownStyles = getSliderStyles(theme, type);
   const styles = getStyles(theme);
 
   const SelectImageVector =
