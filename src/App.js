@@ -43,7 +43,6 @@ import {getUserFromToken, makePhoneCall} from '@utils/functions';
 // Bootsplash
 import BootSplash from 'react-native-bootsplash';
 import {ChatHeader} from '@components';
-import {ChatHeader} from '@components';
 
 import {blockUser} from './services/userServices';
 

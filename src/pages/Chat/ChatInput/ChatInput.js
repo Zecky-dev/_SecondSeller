@@ -4,35 +4,20 @@ import {TextInput, Pressable, View} from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {getStyles} from './ChatInput.style';
-import {getCurrentLocation} from '../../../utils/functions';
+import {getCurrentLocation, locationPermissionGranted} from '../../../utils/functions';
+import { showMessage } from 'react-native-flash-message';
 
-<<<<<<< HEAD
-const ChatInput = ({sendMessage, roomID, senderID, theme}) => {
-=======
-const ChatInput = ({createMessage, roomID, senderID, theme, message}) => {
->>>>>>> 5363fc7ec351b741a99f673009b5fc887efa6d4e
+const ChatInput = ({sendMessage, senderID, theme, message}) => {
   const inputRef = useRef();
   const styles = getStyles(theme);
+
   const [messageContent, setMessageContent] = useState(message);
 
-<<<<<<< HEAD
-=======
-  const sendMessage = (roomID, messageContent, isLocation) => {
-    const message = {
-      sender: senderID,
-      message: messageContent,
-      createDate: new Date().toLocaleString(),
-      isLocation,
-    };
-    createMessage(roomID, message);
-    inputRef.current.clear();
-  };
-
   useEffect(() => {
-    setMessageContent(message);
-  }, [message]);
+    setMessageContent(message)
+  },[message])
 
->>>>>>> 5363fc7ec351b741a99f673009b5fc887efa6d4e
+
   return (
     <View style={styles.container}>
       <TextInput
@@ -56,10 +41,19 @@ const ChatInput = ({createMessage, roomID, senderID, theme, message}) => {
         color={COLORS.black}
         size={CONSTANTS.fontSize.L6}
         onPress={async () => {
-          const location = await getCurrentLocation();
-          const message = JSON.stringify(location);
-          sendMessage(message, true);
-          inputRef.current.clear()
+          const locationPermission = await locationPermissionGranted()
+          if(locationPermission) {
+            const location = await getCurrentLocation();
+            const message = JSON.stringify(location);
+            sendMessage(message, true);
+            inputRef.current.clear()  
+          }
+          else {
+            showMessage({
+              type: "warning",
+              message: "Konum izni vermediniz, ayarlardan konum iznini aktif hale getirin."
+            })
+          }
         }}
       />
       <Icon

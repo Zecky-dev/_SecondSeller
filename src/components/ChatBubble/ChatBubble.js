@@ -1,7 +1,6 @@
 import moment from 'moment';
 import 'moment/locale/tr';
 import React, {useState} from 'react';
-<<<<<<< HEAD
 import {
   View,
   Text,
@@ -13,55 +12,21 @@ import {
   Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-=======
-import {View, Text, Image} from 'react-native';
->>>>>>> 5363fc7ec351b741a99f673009b5fc887efa6d4e
 
 import {getStyles} from './ChatBubble.style';
 
 import {CONSTANTS} from '@utils';
-<<<<<<< HEAD
-
-import {useUser} from '../../context/UserProvider';
-
-const ChatBubbleMap = ({latitude, longitude}) => {
-  const openMap = () => {
-    var scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';
-    var url = scheme + `${latitude},${longitude}`;
-    Linking.openURL(url);
-  };
-
-  return (
-    <Pressable
-      onPress={() => openMap()}
-      style={{flexDirection: 'row', alignItems: 'centers'}}>
-      <Icon name="map-marker" size={18} color={'red'} />
-      <Text style={{color: 'red', fontWeight: 'bold', fontSize: 18}}>
-        Konumu Göster
-      </Text>
-    </Pressable>
-  );
-};
-
-const ChatBubble = ({
-  user: User,
-  messageDetails,
-  theme,
-  isOwner,
-  removeMessage,
-}) => {
-  const {user} = useUser();
-
-=======
 import {MapBubble} from '@components';
+import { useUser } from '../../context/UserProvider';
 
 // Gönderen kişinin mesajı sağda olmalı, diğerininki solda
 
-const ChatBubble = ({user, messageDetails, theme, isOwner}) => {
->>>>>>> 5363fc7ec351b741a99f673009b5fc887efa6d4e
+const ChatBubble = ({user, messageDetails, theme, isOwner, removeMessage}) => {
   const styles = getStyles(theme);
   const {createDate, message, isLocation, sender} = messageDetails;
   const [location] = useState(isLocation ? JSON.parse(message) : null);
+
+  const { user : User } = useUser()
 
   const bubbleContainer = isOwner
     ? styles.bubbleContainer_right
@@ -111,17 +76,10 @@ const ChatBubble = ({user, messageDetails, theme, isOwner}) => {
           <Text style={styles.messageOwner}>{User.nameSurname}</Text>
         </View>
         {isLocation ? (
-<<<<<<< HEAD
-          <ChatBubbleMap
-            latitude={location?.latitude}
-            longitude={location?.longitude}
-            username={User.nameSurname}
-=======
           <MapBubble
             latitude={location.latitude}
             longitude={location.longitude}
             username={user.nameSurname}
->>>>>>> 5363fc7ec351b741a99f673009b5fc887efa6d4e
           />
         ) : (
           <Text style={styles.message}>{message}</Text>

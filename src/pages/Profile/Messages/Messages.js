@@ -21,7 +21,7 @@ const Messages = ({navigation}) => {
   const {theme} = useTheme();
   const styles = getStyles(theme);
 
-  const EmptyListVector = theme === 'dark' ? EmptyListDark : EmptyListLight;
+  const NoMesageVector = theme === 'dark' ? EmptyListDark : EmptyListLight;
 
   useEffect(() => {
     const handleRoomID = async () => {
