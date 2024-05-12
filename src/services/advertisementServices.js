@@ -101,12 +101,11 @@ const getAdvertisementByUserIdAPI = async (id, token) => {
   }
 };
 
-const updateAdversiment = async (id, values, token) => {
+const updateAdvertisementAPI = async (id, values, token) => {
   if (token) {
     delete values._id;
     delete values.createDate;
     delete values.__v;
-    console.log(values);
     try {
       const response = await axios.put(
         `${BASE_URL}/advertisements/${id}`,
@@ -130,10 +129,39 @@ const updateAdversiment = async (id, values, token) => {
   }
 };
 
+const getFilteredAdvertisement = async (values, token) => {
+  if (token) {
+    let queryString = '';
+    for (let value in values) {
+      if (value !== 'default' && value !== null) {
+        queryString += `&${value}=${values[value]}`;
+      }
+    }
+    try {
+      const advertisements = await axios.get(
+        `${BASE_URL}/advertisements/filter?${queryString}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+          },
+        },
+      );
+      return advertisements.data.data;
+    } catch (err) {
+      console.log('ADVERTISEMENT_GET_ERROR', err);
+      return null;
+    }
+  }
+
+};
+
+
 export {
   createAdvertisementAPI,
   getAdvertisementAPI,
   getAllAdvertisementAPI,
   getAdvertisementByUserIdAPI,
-  updateAdversiment,
+  updateAdvertisementAPI,
+  getFilteredAdvertisement
 };

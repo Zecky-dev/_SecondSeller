@@ -3,17 +3,44 @@ import {View, FlatList} from 'react-native';
 
 import {useUser} from '../../context/UserProvider';
 
-import {getAllAdvertisementAPI} from '../../services/advertisementServices';
+import {
+  getAllAdvertisementAPI,
+  getFilteredAdvertisement,
+} from '../../services/advertisementServices';
 import {favoriteUnFavorite} from '../../services/userServices';
 
 import FilterModal from './components/FilterModal/FilterModal';
-import {AdvertisementCard, Button, Input} from '@components';
+import {AdvertisementCard, Button, Input, EmptyList} from '@components';
+
+import THEMECOLORS from '@utils/colors';
+import {useTheme} from '../../context/ThemeContext';
+import { showMessage } from 'react-native-flash-message';
+
+import EmptyListDarkVector from '@assets/images/empty_list_dark.png'
+import EmptyListLightVector from '@assets/images/empty_list_light.png'
+
 
 const Home = ({navigation}) => {
   const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [advertisements, setAdvertisements] = useState([]);
+  const [search, setSearch] = useState('');
+
   const {user} = useUser();
+  const {theme} = useTheme();
+  
+  const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
+  const EmptyListVector = theme === "dark" ? EmptyListDarkVector : EmptyListLightVector
+
+
+  const filter = async values => {
+    const filteredAdvertisements = await getFilteredAdvertisement(
+      values,
+      user.token,
+    );
+    setAdvertisements(filteredAdvertisements);
+    setFilterModalVisible(false);
+  };
 
   // Sistemden tüm ilanları getirir
   const getAllAdvertisements = () => {
@@ -45,12 +72,22 @@ const Home = ({navigation}) => {
   } else {
     return (
       <View style={{flex: 1}}>
-        <View style={{flexDirection: 'row'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            backgroundColor: COLORS.pageBackground,
+          }}>
           <Input
             placeholder="İlan ara.."
-            onChangeText={value => setSearch(value)}
+            onChangeText={value => {
+              if (value === '') {
+                getAllAdvertisements();
+              } else {
+                setSearch(value);
+              }
+            }}
             additionalStyles={{outerContainer: {flex: 1}}}
-            onSubmitEditing={() => console.log('Edit finished!')}
+            onSubmitEditing={() => filter({title: search})}
           />
 
           <Button
@@ -61,30 +98,39 @@ const Home = ({navigation}) => {
 
         {loading ? (
           <Animation animationName={'loading'} />
+        ) : advertisements.length === 0 ? (
+          <EmptyList label={'İlan listesi boş!'} vector={EmptyListVector} />
         ) : (
           <>
             <FlatList
-              data={advertisements}
+              data={advertisements.filter(
+                advertisement => advertisement.soldStatus == false,
+              )}
+              style={{backgroundColor: COLORS.pageBackground}}
               keyExtractor={(item, index) => item._id}
               numColumns={2}
-              renderItem={({item}) => {
-                if (!item.soldStatus)
-                  return (
-                    <AdvertisementCard
-                      advertisement={item}
-                      isOwner={user._id === item.owner}
-                      favoriteUnfavorite={favoriteUnFavorite}
-                      big={false}
-                      onPress={() => {
-                        navigation.navigate('AdvertisementDetailScreen', {
-                          id: item._id,
-                        });
-                      }}
-                    />
-                  );
-              }}
+              renderItem={({item}) => (
+                <AdvertisementCard
+                  advertisement={item}
+                  isOwner={user._id === item.owner}
+                  favoriteUnfavorite={favoriteUnFavorite}
+                  big={false}
+                  onPress={() => {
+                    navigation.navigate('AdvertisementDetailStack', {
+                      screen: 'AdvertisementDetailScreen',
+                      params: {
+                        id: item._id,
+                      },
+                    });
+                  }}
+                />
+              )}
             />
-            <FilterModal isVisible={filterModalVisible} />
+            <FilterModal
+              isVisible={filterModalVisible}
+              setVisible={setFilterModalVisible}
+              filter={filter}
+            />
           </>
         )}
       </View>

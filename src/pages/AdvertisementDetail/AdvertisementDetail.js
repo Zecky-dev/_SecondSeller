@@ -3,21 +3,34 @@ import {View, Text, Dimensions, ScrollView} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 const {height, width} = Dimensions.get('window');
 
-import {Slider, Button,Animation} from '@components';
-import {COLORS} from '@utils';
+import {Slider, Button, Animation} from '@components';
+import THEMECOLORS from '@utils/colors';
 
-import styles from './AdvertisementDetail.style';
+import {getStyles} from './AdvertisementDetail.style';
 
 import {getAdvertisementAPI} from '../../services/advertisementServices';
+import {getSenderReceiverData} from '../../services/userServices';
+
 import {useUser} from '../../context/UserProvider';
 import {showMessage} from 'react-native-flash-message';
+import {useTheme} from '../../context/ThemeContext';
+import OfferModal from './OfferModal/OfferModal';
+import {showFlashMessage} from '@utils/functions';
+import {checkChatRoom, createMessage} from '../../services/firebaseChatService';
 
-const AdvertisementDetail = ({route}) => {
+const AdvertisementDetail = ({route, navigation}) => {
   const {id: advertisementID} = route.params;
-  const {user : { token } } = useUser();
+  const {
+    user: {token, _id: userID},
+  } = useUser();
 
   const [loading, setLoading] = useState(false);
+  const [offerModalVisible, setOfferModalVisible] = useState(false);
   const [advertisement, setAdvertisement] = useState(null);
+  const [senderReceiver, setSenderReceiver] = useState(null);
+  const {theme} = useTheme();
+  const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
+  const styles = getStyles(theme);
 
   const getAdvertisement = () => {
     setLoading(true);
@@ -39,6 +52,23 @@ const AdvertisementDetail = ({route}) => {
     getAdvertisement();
   }, []);
 
+  const sendOffer = async price => {
+    setOfferModalVisible(false);
+    const roomID = await checkChatRoom(
+      advertisementID,
+      userID,
+      advertisement.owner,
+    );
+    const messageDetails = {
+      sender: userID,
+      message: `Teklifim: ${price} TL`,
+      createDate: new Date().toLocaleString(),
+      isLocation: false,
+    };
+    createMessage(roomID, messageDetails);
+    showFlashMessage(200, 'Teklif gönderildi!');
+  };
+
   if (advertisement && !loading) {
     const {
       _id: id,
@@ -58,7 +88,7 @@ const AdvertisementDetail = ({route}) => {
 
     return (
       <View style={styles.outerContainer}>
-        <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
+        <ScrollView contentContainerStyle={{flexGrow: 1}}>
           {/* Slider */}
           <Slider images={images} />
 
@@ -102,43 +132,71 @@ const AdvertisementDetail = ({route}) => {
             />
           </MapView>
 
-          <View style={{flexDirection: 'row'}}>
-            <Button
-              icon={{
-                name: 'chat',
-                color: COLORS.white,
-                size: 24,
-              }}
-              label="Sohbet Başlat"
-              additionalStyles={{
-                container: {
-                  flex: 1,
-                },
-              }}
-              onPress={() => console.log('Chat ekranına git')}
-            />
-            <Button
-              icon={{
-                name: 'offer',
-                color: COLORS.white,
-                size: 24,
-              }}
-              additionalStyles={{
-                container: {
-                  flex: 1,
-                },
-              }}
-              label="Teklif Ver"
-              onPress={() => console.log('Teklif Ver')}
-            />
-          </View>
+          {owner !== userID && (
+            <View style={{flexDirection: 'row'}}>
+              <Button
+                icon={{
+                  name: 'chat',
+                  color: COLORS.titleColor,
+                  size: 24,
+                }}
+                label="Sohbet Başlat"
+                additionalStyles={{
+                  container: {
+                    flex: 1,
+                  },
+                }}
+                onPress={async () => {
+                  const {receiver, sender} = await getSenderReceiverData(
+                    userID,
+                    owner,
+                    token,
+                  );
+
+                  if (!receiver.blocked.includes(sender._id)) {
+                    navigation.navigate('ChatScreen', {
+                      advertisementID,
+                      senderID: userID,
+                      receiverID: owner,
+                      receiver,
+                      sender,
+                      title,
+                    });
+                  } else {
+                    showMessage({
+                      message: 'Bu kullanıcı tarafından bloklandınız!',
+                      type: 'danger',
+                    });
+                  }
+                }}
+              />
+              <Button
+                icon={{
+                  name: 'offer',
+                  color: COLORS.titleColor,
+                  size: 24,
+                }}
+                additionalStyles={{
+                  container: {
+                    flex: 1,
+                  },
+                }}
+                label="Teklif Ver"
+                onPress={() => setOfferModalVisible(true)}
+              />
+            </View>
+          )}
         </ScrollView>
+        <OfferModal
+          isVisible={offerModalVisible}
+          setVisible={setOfferModalVisible}
+          price={price}
+          sendOffer={sendOffer}
+        />
       </View>
     );
-  }
-
-  else {
-    return <Animation animationName={"loading"} />
+  } else {
+    return <Animation animationName={'loading'} />;
   }
 };
 

@@ -2,7 +2,7 @@
 import React, {useState, useEffect} from 'react';
 import {useWindowDimensions} from 'react-native';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import {COLORS} from '@utils';
+import THEMECOLORS from '@utils/colors';
 
 // Pages
 import Advertisements from './Advertisements';
@@ -10,6 +10,7 @@ import {useUser} from '../../context/UserProvider';
 import {getAdvertisementByUserIdAPI} from '../../services/advertisementServices';
 import {showMessage} from 'react-native-flash-message';
 import {Animation} from '@components';
+import { useTheme } from '../../context/ThemeContext';
 
 const OwnFavoriteAdvertisements = ({navigation}) => {
   const [ownAdvertisements, setOwnAdvertisements] = useState([]);
@@ -17,6 +18,8 @@ const OwnFavoriteAdvertisements = ({navigation}) => {
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const [loading, setLoading] = useState(false);
+
+
   const {
     user: {_id: id, token},
   } = useUser();
@@ -34,7 +37,6 @@ const OwnFavoriteAdvertisements = ({navigation}) => {
           setFavoriteAdvertisements(favoriteAdvertisements);
         })
         .catch(err => {
-          console.log(err);
           showMessage({
             message: 'İlanlar getirilirken bir hata meydana geldi!',
             type: 'danger',
@@ -77,6 +79,10 @@ const OwnFavoriteAdvertisements = ({navigation}) => {
 };
 
 const renderTabBar = props => {
+  const { theme } = useTheme();
+
+  const COLORS = theme === "dark" ? THEMECOLORS.DARK : THEMECOLORS.LIGHT
+
   return (
     <TabBar
       {...props}

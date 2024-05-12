@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 // Components
-import {ScrollView, Text, View, PermissionsAndroid} from 'react-native';
+import {ScrollView} from 'react-native';
 
 import {Button, Slider, Input, Animation} from '@components';
 import Dropdown from '../../components/OptionPicker/OptionPicker';
@@ -14,24 +14,29 @@ import {Formik} from 'formik';
 import {CreateAdvertisementSchema} from '@utils/validationSchemas';
 
 // Styles
-import styles from './CreateAdvertisement.style';
+import {getStyles} from './CreateAndUpdateAdvertisement.style';
 
 // Utility functions
 import {launchImageLibrary} from 'react-native-image-picker';
-import {showMessage} from 'react-native-flash-message';
 import {
   getUserFromToken,
   resizeImage,
   locationPermissionGranted,
   getCurrentLocation,
+  showFlashMessage,
 } from '@utils/functions';
+import {showMessage} from 'react-native-flash-message';
 
 // Service functions
-import {createAdvertisementAPI} from '../../services/advertisementServices';
+import {
+  createAdvertisementAPI,
+  updateAdvertisementAPI,
+} from '../../services/advertisementServices';
 import {uploadImagesAndGetURLs} from '../../services/otherServices';
 
 // useUser hook
 import {useUser} from '../../context/UserProvider';
+import {useTheme} from '../../context/ThemeContext';
 
 // Galeriden resim seçilir, boyutu küçültülür ve slider'a set edilir.
 const takeImageFromGallery = async (setImages, setFieldValue) => {
@@ -62,9 +67,15 @@ const takeImageFromGallery = async (setImages, setFieldValue) => {
   setFieldValue('images', images);
 };
 
-const CreateAdvertisement = ({navigation}) => {
+const CreateAndUpdateAdvertisement = ({navigation, route}) => {
+  const {advertisement, isOwnStack} = route.params;
+  const {theme} = useTheme();
+  const styles = getStyles(theme);
+
   // Galeriden seçilen resimlerin dizisini tutan state
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(
+    advertisement ? advertisement.images : [],
+  );
   const [loading, setLoading] = useState(false);
   const {user: User} = useUser();
 
@@ -76,8 +87,7 @@ const CreateAdvertisement = ({navigation}) => {
       setLoading(true);
       user = await getUserFromToken();
       imageURLs = await uploadImagesAndGetURLs(images);
-      // location = await getCurrentLocation();
-      location = {longitude: 37.157, latitude: 12.14578};
+      location = await getCurrentLocation();
       advertisementData = {
         ...values,
         location,
@@ -108,6 +118,26 @@ const CreateAdvertisement = ({navigation}) => {
     }
   };
 
+  const updateAdvertisement = async values => {
+    setLoading(true);
+
+    if (advertisement.images !== values.images)
+      values.images = await uploadImagesAndGetURLs(values.images);
+
+    values.owner = advertisement.owner;
+    values.location = advertisement.location;
+    values.soldStatus = advertisement.soldStatus;
+
+    const response = await updateAdvertisementAPI(
+      advertisement._id,
+      values,
+      User.token,
+    );
+    showFlashMessage(response.status, response.data.message);
+    navigation.goBack();
+    setLoading(false);
+  };
+
   if (loading) {
     return <Animation animationName={'loading'} />;
   } else {
@@ -115,14 +145,18 @@ const CreateAdvertisement = ({navigation}) => {
       <ScrollView contentContainerStyle={styles.container}>
         <Formik
           initialValues={{
-            title: '',
-            description: '',
-            price: '',
-            category: 'default',
-            images: [],
+            title: advertisement ? advertisement.title : '',
+            description: advertisement ? advertisement.description : '',
+            price: advertisement ? String(advertisement.price) : '',
+            category: advertisement ? advertisement.category : 'default',
+            images,
           }}
           validationSchema={CreateAdvertisementSchema}
-          onSubmit={values => createAdvertisement(values)}>
+          onSubmit={values => {
+            advertisement
+              ? updateAdvertisement(values)
+              : createAdvertisement(values);
+          }}>
           {({
             handleChange,
             handleSubmit,
@@ -137,6 +171,7 @@ const CreateAdvertisement = ({navigation}) => {
                 images={images}
                 errors={errors.images && touched.images && errors.images}
               />
+
               <Button
                 onPress={() => takeImageFromGallery(setImages, setFieldValue)}
                 label={
@@ -172,6 +207,7 @@ const CreateAdvertisement = ({navigation}) => {
               />
 
               <Dropdown
+                value={values.category}
                 label={'İlan Kategorisi'}
                 items={CONSTANTS.ADVERTISEMENT_CATEGORIES}
                 setSelectedItem={selectedCategory => {
@@ -180,7 +216,10 @@ const CreateAdvertisement = ({navigation}) => {
                 errors={errors.category && touched.category && errors.category}
               />
 
-              <Button onPress={handleSubmit} label="İlan Oluştur" />
+              <Button
+                onPress={handleSubmit}
+                label={advertisement ? 'İlan Güncelle' : 'İlan Oluştur'}
+              />
             </>
           )}
         </Formik>
@@ -189,4 +228,4 @@ const CreateAdvertisement = ({navigation}) => {
   }
 };
 
-export default CreateAdvertisement;
+export default CreateAndUpdateAdvertisement;

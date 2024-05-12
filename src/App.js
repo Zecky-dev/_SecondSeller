@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
-import { StatusBar, View } from 'react-native';
+import React, {useEffect} from 'react';
+import {StatusBar, View} from 'react-native';
+import {useIsFocused, CommonActions} from '@react-navigation/native';
 
 // Constants
-import { COLORS, CONSTANTS } from '@utils';
+import {CONSTANTS} from '@utils';
+import THEMECOLORS from '@utils/colors';
 
 // React Navigation
 import { NavigationContainer } from '@react-navigation/native';
@@ -17,7 +19,7 @@ import {
   Profile,
   Home,
   Advertisements,
-  CreateAdvertisement,
+  CreateAndUpdateAdvertisement,
   Login,
   Register,
   Forgot,
@@ -25,17 +27,26 @@ import {
   AdvertisementDetail,
   ProfileEdit,
   ChangePassword,
+  Messages,
+  Chat,
   UpdatePassword
 } from '@pages';
 
 // Context
-import UserContextProvider, { useUser } from './context/UserProvider';
+import UserContextProvider, {useUser} from './context/UserProvider';
+import ThemeContextProvider, {useTheme} from './context/ThemeContext';
 
 // FlashMessage
 import FlashMessage from 'react-native-flash-message';
 
 // Storage
-import { getUserFromToken } from '@utils/functions';
+import {getUserFromToken, makePhoneCall} from '@utils/functions';
+
+// Bootsplash
+import BootSplash from 'react-native-bootsplash';
+import {ChatHeader} from '@components';
+
+import {blockUser} from './services/userServices';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -43,18 +54,104 @@ const Stack = createNativeStackNavigator();
 // İlanlar sayfası için kullanılan stack
 const HomeStack = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen component={Home} name="AdvertisementsScreen" />
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen component={Home} name="HomeAdvertisementsScreen" />
+      <Stack.Screen
+        component={AdvertisementDetailStack}
+        name="AdvertisementDetailStack"
+      />
+    </Stack.Navigator>
+  );
+};
+
+const ProfileMessagesStack = () => {
+  const {theme} = useTheme();
+  const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
+
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen component={Messages} name="MessageListScreen" />
+      <Stack.Screen
+        component={Chat}
+        name="ChatScreen"
+        screenOptions={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: COLORS.primary,
+          },
+          headerTitleStyle: {
+            fontFamily: 'Galada-Regular',
+            fontSize: CONSTANTS.fontSize.L5,
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: COLORS.titleColor,
+        }}
+        options={({route}) => {
+          return {
+            headerShown: true,
+            header: () => (
+              <ChatHeader
+                receiver={route.params.receiver}
+                title={route.params.title}
+                blockUser={blockUser}
+                sender={route.params.sender}
+              />
+            ),
+          };
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const AdvertisementDetailStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen
         component={AdvertisementDetail}
         name="AdvertisementDetailScreen"
+      />
+      <Stack.Screen
+        component={Chat}
+        name="ChatScreen"
+        options={({route}) => {
+          return {
+            headerShown: true,
+            header: () => (
+              <ChatHeader
+                receiver={route.params.receiver}
+                title={route.params.title}
+                blockUser={blockUser}
+                sender={route.params.sender}
+              />
+            ),
+          };
+        }}
       />
     </Stack.Navigator>
   );
 };
 
 // Profile sayfası için kullanılan stack
-const ProfileStack = () => {
+const ProfileStack = ({navigation}) => {
+  const isProfileFocused = useIsFocused();
+
+  useEffect(() => {
+    if (!isProfileFocused) {
+      // Eğer Profil ekranı odaklanmamışsa, ProfileStack'i sıfırla
+      resetProfileStack();
+    }
+  }, [isProfileFocused]);
+
+  const resetProfileStack = () => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{name: 'ProfileStackScreen'}],
+      }),
+    );
+  };
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen component={Profile} name="ProfileStackScreen" />
@@ -65,6 +162,7 @@ const ProfileStack = () => {
         name="ProfileEmailValidationScreen"
       />
       <Stack.Screen component={ChangePassword} name="ChangePasswordScreen" />
+      <Stack.Screen component={ProfileMessagesStack} name="MessagesScreen" />
     </Stack.Navigator>
   );
 };
@@ -77,26 +175,39 @@ const AdvertisementStack = () => {
         component={AdvertisementDetail}
         name="OwnAdvertisementDetailScreen"
       />
+      <Stack.Screen
+        component={CreateAndUpdateAdvertisement}
+        name="UpdateAdvertisementScreen"
+      />
     </Stack.Navigator>
   );
 };
 
 const BottomTabs = () => {
+  const {theme} = useTheme();
+  const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
+
   return (
     <Tab.Navigator
-      screenOptions={{
-        tabBarActiveTintColor: COLORS.black,
-        tabBarInactiveTintColor: COLORS.blackMuted,
-        headerTitle: CONSTANTS.APP_NAME,
-        headerStyle: {
-          backgroundColor: COLORS.primary,
-        },
-        headerTitleStyle: {
-          fontFamily: 'Galada-Regular',
-          fontSize: CONSTANTS.fontSize.L6,
-        },
-        headerTitleAlign: 'center',
-        headerTintColor: COLORS.white,
+      screenOptions={({route}) => {
+        return {
+          tabBarActiveTintColor: COLORS.titleColor,
+          tabBarInactiveTintColor: COLORS.titleColor,
+          headerTitle: CONSTANTS.APP_NAME,
+          tabBarStyle: {
+            backgroundColor: COLORS.primary,
+          },
+          headerStyle: {
+            backgroundColor: COLORS.primary,
+          },
+          headerTitleStyle: {
+            fontFamily: 'Galada-Regular',
+            fontSize: CONSTANTS.fontSize.L6,
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: COLORS.titleColor,
+          headerShown: route.key !== 'ChatScreen',
+        };
       }}>
       <Tab.Screen
         name="HomeScreen"
@@ -105,19 +216,26 @@ const BottomTabs = () => {
           title: 'Anasayfa',
           tabBarIcon: ({ focused, color, size }) => {
             const iconName = focused ? 'home' : 'home-outline';
-            const iconColor = focused ? COLORS.black : COLORS.blackMuted;
+            const iconColor = focused
+              ? COLORS.titleColor
+              : COLORS.titleMutedColor;
             return <Icon name={iconName} color={iconColor} size={size} />;
           },
         }}
       />
       <Tab.Screen
         name="CreateAdvertisementScreen"
-        component={CreateAdvertisement}
+        component={CreateAndUpdateAdvertisement}
+        initialParams={{
+          advertisement: null,
+        }}
         options={{
           title: 'İlan Oluştur',
           tabBarIcon: ({ focused, size }) => {
             const iconName = focused ? 'plus-circle' : 'plus-circle-outline';
-            const iconColor = focused ? COLORS.black : COLORS.blackMuted;
+            const iconColor = focused
+              ? COLORS.titleColor
+              : COLORS.titleMutedColor;
             return <Icon name={iconName} color={iconColor} size={size} />;
           },
         }}
@@ -129,7 +247,9 @@ const BottomTabs = () => {
           title: 'İlanlar',
           tabBarIcon: ({ focused, color, size }) => {
             const iconName = focused ? 'heart' : 'heart-outline';
-            const iconColor = focused ? COLORS.red : color;
+            const iconColor = focused
+              ? COLORS.titleColor
+              : COLORS.titleMutedColor;
             return <Icon name={iconName} color={iconColor} size={size} />;
           },
         }}
@@ -142,7 +262,9 @@ const BottomTabs = () => {
           title: 'Profil',
           tabBarIcon: ({ focused, color, size }) => {
             const iconName = focused ? 'account' : 'account-outline';
-            const iconColor = focused ? COLORS.black : COLORS.blackMuted;
+            const iconColor = focused
+              ? COLORS.titleColor
+              : COLORS.titleMutedColor;
             return <Icon name={iconName} color={iconColor} size={size} />;
           },
         }}
@@ -174,14 +296,22 @@ const AuthStack = () => {
 };
 
 const App = () => {
-  const { user, setUser } = useUser();
+  const {user, setUser} = useUser();
+  const {theme} = useTheme();
+  const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
 
   useEffect(() => {
     const checkToken = async () => {
       const userData = await getUserFromToken();
       setUser(userData);
     };
-    checkToken();
+    const init = async () => {
+      await checkToken();
+    };
+
+    init().finally(async () => {
+      await BootSplash.hide({fade: true});
+    });
   }, []);
 
   return (
@@ -202,9 +332,11 @@ const App = () => {
 
 const AppWithContext = () => {
   return (
-    <UserContextProvider>
-      <App />
-    </UserContextProvider>
+    <ThemeContextProvider>
+      <UserContextProvider>
+        <App />
+      </UserContextProvider>
+    </ThemeContextProvider>
   );
 };
 

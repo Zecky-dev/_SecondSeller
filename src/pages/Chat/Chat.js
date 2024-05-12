@@ -1,43 +1,124 @@
-import React from 'react';
-import {View, Text,FlatList} from 'react-native';
-import styles from './Chat.style'
+import React, {useEffect, useState, useRef} from 'react';
+import {View, FlatList, Text} from 'react-native';
+import {getStyles} from './Chat.style';
 
-import {ChatBubble,ChatInput} from '@components';
-import { Message } from '@utils/models';
+import firestore from '@react-native-firebase/firestore';
 
-const Chat = () => {
-  
-  // Giriş yapan kullanıcının kullanıcı adı 
-  const user = "Zecky";
+import {ChatBubble, ChatInput, EmptyList, Animation} from '@components';
 
-  // Mock mesajlar
-  const messages = [
-    new Message(1,"Selam","Zecky","17:06"),
-    new Message(2,"Selammm","Alper","17:32"),
-    new Message(3,"Sattığınız ürünü çok beğendim, ama fiyatta anlaşmamız lazım","Zecky","17:33"),
-    new Message(4,"150 TL uygun mu?","Zecky","17:33"),
-    new Message(5,"120 TL'de anlaşalım İNŞALLAH","Alper","18:00"),
-    new Message(6,"Tamamdır alıyorum","Zecky","18:12"),
+import {checkChatRoom, createMessage} from '../../services/firebaseChatService';
 
-]
+import NoMessageDark from '@assets/images/no_message_dark.png';
+import NoMessageLight from '@assets/images/no_message_light.png';
 
-  return (
+import {getUser, getSenderReceiverData} from '../../services/userServices';
+
+import {useTheme} from '../../context/ThemeContext';
+
+import {useUser} from '../../context/UserProvider';
+import FastMessageChips from './FastMessageChips/FastMessageChips';
+import {CONSTANTS} from '@utils';
+
+const Chat = ({route}) => {
+  const {user} = useUser();
+  const {advertisementID, senderID, receiverID} = route.params;
+  const amITheOwner = user.advertisements.includes(advertisementID);
+
+  const [roomData, setRoomData] = useState(null);
+  const [userDatas, setUserDatas] = useState([]);
+  const [message, setMessage] = useState('');
+
+  const {theme} = useTheme();
+  const styles = getStyles(theme);
+
+  const chatRef = useRef();
+
+  const NoMessageVector = theme === 'dark' ? NoMessageDark : NoMessageLight;
+
+  useEffect(() => {
+    const handleChatRoomID = async () => {
+      const chatRoomID = await checkChatRoom(
+        advertisementID,
+        senderID,
+        receiverID,
+      );
+
+      const subscriber = firestore()
+        .collection('ChatRooms')
+        .doc(chatRoomID)
+        .onSnapshot(documentSnapshot => {
+          const data = documentSnapshot.data();
+          setRoomData({...data, roomID: chatRoomID});
+        });
+
+      return () => subscriber();
+    };
+    handleChatRoomID(advertisementID, senderID, receiverID);
+
+    const getUsersData = async () => {
+      const {sender, receiver} = await getSenderReceiverData(
+        senderID,
+        receiverID,
+        user.token,
+      );
+      const userDatas = [sender, receiver];
+      setUserDatas(userDatas);
+    };
+    getUsersData();
+  }, []);
+
+  const onFastMessagePress = message => {
+    setMessage(message);
+  };
+
+  if (roomData === null) {
+    return <Animation animationName={'loading'} />;
+  } else {
+    return (
       <View style={styles.container}>
-        <FlatList
-        data={messages}
-        contentContainerStyle={styles.chatListContainer}
-        renderItem={({item}) => (
-          <ChatBubble
-            isOwner={item.messageOwner === user}
-            messageDetails={item}
-            key={item.messageId}
+        {roomData.messages.length === 0 ? (
+          <EmptyList
+            label={'Henüz bir mesajlaşma başlatılmamış'}
+            vector={NoMessageVector}
+          />
+        ) : (
+          <FlatList
+            data={roomData.messages}
+            contentContainerStyle={styles.chatListContainer}
+            ref={chatRef}
+            onContentSizeChange={() => chatRef.current.scrollToEnd()}
+            onLayout={() => chatRef.current.scrollToEnd()}
+            renderItem={({item}) => {
+              return (
+                <ChatBubble
+                  theme={theme}
+                  isOwner={item.sender == senderID}
+                  user={userDatas.find(user => user._id === item.sender)}
+                  messageDetails={item}
+                  key={item.messageId}
+                />
+              );
+            }}
           />
         )}
-      />
-      <ChatInput/>
+        <FastMessageChips
+          messages={
+            amITheOwner
+              ? CONSTANTS.FAST_MESSAGES.OWNER.messages
+              : CONSTANTS.FAST_MESSAGES.RECEIVER.messages
+          }
+          onPress={onFastMessagePress}
+        />
+        <ChatInput
+          createMessage={createMessage}
+          senderID={senderID}
+          roomID={roomData.roomID}
+          theme={theme}
+          message={message}
+        />
       </View>
-      
-  );
+    );
+  }
 };
 
 export default Chat;

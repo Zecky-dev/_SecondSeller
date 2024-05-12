@@ -1,8 +1,9 @@
 import {useUser} from '../../../context/UserProvider';
 import React, {useState} from 'react';
-import {Image, ScrollView, Pressable, Text} from 'react-native';
+import {Image, ScrollView, Pressable, Text, Alert} from 'react-native';
 
-import styles from './ProfileEdit.style';
+import {getStyles} from './ProfileEdit.style';
+import {useTheme} from '../../../context/ThemeContext';
 
 import {UpdateProfileSchema} from '@utils/validationSchemas';
 import {Formik} from 'formik';
@@ -19,6 +20,7 @@ import {
   updateUser,
 } from '../../../services/userServices';
 import {uploadImagesAndGetURLs} from '../../../services/otherServices';
+import Storage from '@utils/Storage';
 
 // Cihazdan resim alma
 const takeImageFromGallery = async setFieldValue => {
@@ -44,9 +46,37 @@ const takeImageFromGallery = async setFieldValue => {
   }
 };
 
+const createAlert = (id, values, setUser) => {
+  Alert.alert(
+    'Hesap Kapatma',
+    'Hesabınızı kapatmak istediğinize emin misiniz?',
+    [
+      {
+        text: 'Hayır',
+        onPress: () => console.log('Cancel pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'Evet',
+        onPress: async () => {
+          const response = await updateUser(id, values);
+          if (response.status === 200) {
+            await Storage.removeData('token');
+            if ((await Storage.getData('token')) === null) {
+              setUser(null);
+            }
+          }
+        },
+      },
+    ],
+  );
+};
+
 const ProfilEdit = ({navigation}) => {
   const {user, setUser} = useUser();
   const [loading, setLoading] = useState(false);
+  const {theme} = useTheme();
+  const styles = getStyles(theme);
 
   // Kullanıcı bilgilerini güncelleme
   const handleUpdate = async newUser => {
@@ -166,11 +196,25 @@ const ProfilEdit = ({navigation}) => {
                 }
                 placeholder={user.phoneNumber}
               />
-              <Text
-                style={styles.changePassword}
-                onPress={() => navigation.navigate('ChangePasswordScreen')}>
-                Şifreni Değiştir
-              </Text>
+              <Button
+                onPress={() => navigation.navigate('ChangePasswordScreen')}
+                label="Şifreni Değiştir"
+                additionalStyles={styles.profileButtonStyle}
+              />
+              <Button
+                onPress={() =>
+                  createAlert(
+                    user._id,
+                    {
+                      ...values,
+                      activeStatus: !user.activeStatus,
+                    },
+                    setUser,
+                  )
+                }
+                label="Hesabı Kapat"
+                additionalStyles={styles.profileButtonStyle}
+              />
               <Button label="GÜNCELLE" onPress={handleSubmit} />
             </>
           )}

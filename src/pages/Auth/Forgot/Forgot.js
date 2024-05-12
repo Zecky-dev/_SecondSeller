@@ -35,6 +35,7 @@ const Forgot = ({ navigation }) => {
                     validationSchema={EmailSchema}
                     onSubmit={async values => {
                         const response = await findUserByEmailAddress(values)
+                        console.log(response)
                         navigation.navigate('EmailVerificationScreen', { verificationCode: response.data, user: { emailAddress: values.emailAddress }, type: 'forgotPassword' })
                     }}
                 >

@@ -2,9 +2,10 @@ import React, {useState} from 'react'
 import { TextInput, View, Text, Pressable } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import styles from './Input.style'
-import COLORS from '../../utils/colors'
+import { getStyles } from './Input.style'
+import THEMECOLORS from '../../utils/colors'
 import CONSTANTS from '../../utils/constants'
+import { useTheme } from '../../context/ThemeContext'
 
 const Input = ({
     label,
@@ -22,6 +23,10 @@ const Input = ({
 
     const [inputVisible,setInputVisible] = useState(secret)
 
+    const { theme } = useTheme()
+    const COLORS = theme === "dark" ? THEMECOLORS.DARK : THEMECOLORS.LIGHT
+    const styles = getStyles(theme)
+    
     return (
         <View style={[
             styles.outerContainer,
@@ -42,6 +47,7 @@ const Input = ({
                     onChangeText={onChangeText}
                     keyboardType={keyboardType}
                     secureTextEntry={inputVisible}
+                    placeholderTextColor={COLORS.textMutedColor}
                     style={styles.input}
                     multiline = {multiline}
                     value={value}
@@ -57,7 +63,7 @@ const Input = ({
                             name={
                                 inputVisible ? "eye-off" : "eye"
                             }
-                            color={COLORS.blackMuted}
+                            color={COLORS.textColor}
                             size={CONSTANTS.fontSize.L5}/>
                         </Pressable>
                         

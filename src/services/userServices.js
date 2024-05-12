@@ -3,12 +3,12 @@ import axios from 'axios';
 import {BASE_URL} from '@env';
 
 // E-mail doğrulaması atan servis fonksiyonu
-const sendEmailVerification = async values => {
+const sendEmailVerification = async (values, type) => {
   const {emailAddress, phoneNumber} = values;
   try {
     const response = await axios.post(
       `${BASE_URL}/user/sendEmailVerification`,
-      {emailAddress, phoneNumber, type: ''},
+      {emailAddress, phoneNumber, type},
     );
     return {
       status: response.status,
@@ -294,6 +294,37 @@ const favoriteUnFavorite = async (userID, postID) => {
   }
 };
 
+const blockUser = async (from, userID) => {
+  console.log(from,userID)
+
+  try {
+    const response = await axios.put(`${BASE_URL}/user/block?from=${from}&id=${userID}`)
+    return {
+      status: response.status,
+      message: response.data.messsage,
+      data: response.data.data
+    }
+  }
+  catch(err) {
+    return {
+      status: 'error',
+      message: 'An error occured while blocking user.',
+      error: err.response.data
+    }
+  }
+}
+
+const getSenderReceiverData = async (senderID, receiverID, token) => {
+  const senderData = await getUser(senderID, token)
+  const receiverData = await getUser(receiverID, token)
+  return {
+    sender: senderData.data,
+    receiver: receiverData.data
+  }
+}
+
+
+
 export {
   register,
   login,
@@ -302,6 +333,8 @@ export {
   favoriteUnFavorite,
   updateUser,
   changePassword,
+  blockUser,
+  getSenderReceiverData,
   findUserByEmailAddress,
   updatePassword
 };

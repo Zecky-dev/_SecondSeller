@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import {View, Text, Image, Pressable, ScrollView} from 'react-native';
 
 // Style
-import styles from './Login.style';
+import { getStyles } from './Login.style';
 
 // Utils
 import {CONSTANTS} from '@utils';
 
 // Components
-import {Input, Button, Animation} from '@components';
+import {Input, Button } from '@components';
 
 // Assets
-import LoginVector from '@assets/images/login_vector.png';
+import LoginVectorDark from '@assets/images/login_vector_dark.png';
+import LoginVectorLight from '@assets/images/login_vector_light.png'
 
 // Formik & Validations
 import { Formik } from 'formik';
@@ -26,11 +27,18 @@ import { getUserFromToken, showFlashMessage } from '@utils/functions';
 // Storage
 import Storage from '@utils/Storage';
 import { useUser } from '../../../context/UserProvider';
+import { useTheme } from '../../../context/ThemeContext';
 
 const Login = ({navigation}) => {
 
+
   const [loading,setLoading] = useState(false)
   const { setUser } = useUser()
+  const { theme } = useTheme();
+  const styles = getStyles(theme)
+
+  const LoginVector = theme === "dark" ? LoginVectorDark : LoginVectorLight 
+
 
   const handleLogin = async (values) => {
     setLoading(true)
@@ -52,6 +60,15 @@ const Login = ({navigation}) => {
     <ScrollView
       style={{height: '100%'}}
       contentContainerStyle={styles.container}>
+
+    {/*
+      <Button 
+        onPress={() => console.log("Tema değiştirme")}
+        label={`Tema: ${theme === "dark" ? "Koyu" : "Aydınlık"}`}
+        additionalStyles={{container: styles.themeChangeButton}}
+      />
+  */}
+    
       <Text style={styles.appName}>{CONSTANTS.APP_NAME}</Text>
       <Text style={styles.appSlogan}>{CONSTANTS.APP_SLOGAN}</Text>
 

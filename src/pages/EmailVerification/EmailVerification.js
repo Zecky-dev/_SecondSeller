@@ -1,21 +1,30 @@
-import React, {useState} from 'react';
-import {View, ScrollView, Image, Text} from 'react-native';
-import {Button, Input, Animation} from '@components';
+import React, { useState } from 'react';
+import { View, ScrollView, Image, Text } from 'react-native';
+import { Button, Input, Animation } from '@components';
 
-import styles from './EmailVerification.style';
+import { getStyles } from './EmailVerification.style';
 
-import {register, updateUser} from '../../services/userServices';
-import {useUser} from '../../context/UserProvider';
-import {getUserFromToken, showFlashMessage} from '@utils/functions';
+import { register, updateUser } from '../../services/userServices';
+import { useUser } from '../../context/UserProvider';
+import { useTheme } from '../../context/ThemeContext';
+import { getUserFromToken, showFlashMessage } from '@utils/functions';
 import Storage from '@utils/Storage';
 import { createLanguageService } from 'typescript';
 
-const EmailVerification = ({navigation, route}) => {
+import EmailValidationDarkVector from '@assets/images/email_validation_dark.png';
+import EmailValidationLightVector from '@assets/images/email_validation_light.png';
+
+const EmailVerification = ({ navigation, route }) => {
   const [verificationCode, setVerificationCode] = useState('');
   const [loading, setLoading] = useState(false);
-  const {setUser} = useUser();
+  const { setUser } = useUser();
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
 
-  const {verificationCode: code, user, type} = route.params;
+  const EmailValidationVector =
+    theme === 'dark' ? EmailValidationDarkVector : EmailValidationLightVector;
+
+  const { verificationCode: code, user, type } = route.params;
 
   // Kullanıcı kayıt işlemi sırasında mail kodunu kontrol eder sonra kullanıcıyı kaydeder
   const checkAndRegister = async () => {
@@ -25,7 +34,6 @@ const EmailVerification = ({navigation, route}) => {
       if (response.status.toString().startsWith('2')) {
         await Storage.storeData('token', response.data);
         const user = await getUserFromToken();
-        console.log('USER', user);
         setUser(user);
       } else {
         showFlashMessage(response.status, response.message);
@@ -52,7 +60,7 @@ const EmailVerification = ({navigation, route}) => {
 
   const checkAndUpdatePassword = () => {
     if (505050 == code.data) {
-      navigation.navigate('UpdatePasswordScreen', {emailAddress: user.emailAddress})
+      navigation.navigate('UpdatePasswordScreen', { emailAddress: user.emailAddress })
     }
   }
 
@@ -61,10 +69,7 @@ const EmailVerification = ({navigation, route}) => {
   } else {
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        <Image
-          source={require('@assets/images/emailValidation.png')}
-          style={styles.image}
-        />
+        <Image source={EmailValidationVector} style={styles.image} />
 
         <View style={styles.textContainer}>
           <Text style={styles.infoMessage}>

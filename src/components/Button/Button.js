@@ -3,7 +3,8 @@ import {TouchableOpacity, Text, View, ActivityIndicator} from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import styles from './Button.style';
+import { getStyles } from './Button.style';
+import { useTheme } from '../../context/ThemeContext';
 
 const Button = ({
   onPress,
@@ -13,6 +14,10 @@ const Button = ({
   loading = false,
   additionalStyles = {container: {}, label: {}},
 }) => {
+
+  const { theme } = useTheme()
+  const styles = getStyles(theme)
+
   return (
     <TouchableOpacity
       onPress={onPress}
