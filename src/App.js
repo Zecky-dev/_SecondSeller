@@ -1,13 +1,13 @@
-import React, {useEffect} from 'react';
-import {StatusBar, View} from 'react-native';
+import React, { useEffect } from 'react';
+import { StatusBar, View } from 'react-native';
 
 // Constants
-import {COLORS, CONSTANTS} from '@utils';
+import { COLORS, CONSTANTS } from '@utils';
 
 // React Navigation
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Icon
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -20,20 +20,22 @@ import {
   CreateAdvertisement,
   Login,
   Register,
+  Forgot,
   EmailValidation,
   AdvertisementDetail,
   ProfileEdit,
   ChangePassword,
+  UpdatePassword
 } from '@pages';
 
 // Context
-import UserContextProvider, {useUser} from './context/UserProvider';
+import UserContextProvider, { useUser } from './context/UserProvider';
 
 // FlashMessage
 import FlashMessage from 'react-native-flash-message';
 
 // Storage
-import {getUserFromToken} from '@utils/functions';
+import { getUserFromToken } from '@utils/functions';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -41,7 +43,7 @@ const Stack = createNativeStackNavigator();
 // İlanlar sayfası için kullanılan stack
 const HomeStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen component={Home} name="AdvertisementsScreen" />
       <Stack.Screen
         component={AdvertisementDetail}
@@ -54,7 +56,7 @@ const HomeStack = () => {
 // Profile sayfası için kullanılan stack
 const ProfileStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen component={Profile} name="ProfileStackScreen" />
       <Stack.Screen component={ProfileEdit} name="ProfileEditScreen" />
       <Stack.Screen
@@ -69,7 +71,7 @@ const ProfileStack = () => {
 
 const AdvertisementStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen component={Advertisements} name="Advertisements" />
       <Stack.Screen
         component={AdvertisementDetail}
@@ -101,7 +103,7 @@ const BottomTabs = () => {
         component={HomeStack}
         options={{
           title: 'Anasayfa',
-          tabBarIcon: ({focused, color, size}) => {
+          tabBarIcon: ({ focused, color, size }) => {
             const iconName = focused ? 'home' : 'home-outline';
             const iconColor = focused ? COLORS.black : COLORS.blackMuted;
             return <Icon name={iconName} color={iconColor} size={size} />;
@@ -113,7 +115,7 @@ const BottomTabs = () => {
         component={CreateAdvertisement}
         options={{
           title: 'İlan Oluştur',
-          tabBarIcon: ({focused, size}) => {
+          tabBarIcon: ({ focused, size }) => {
             const iconName = focused ? 'plus-circle' : 'plus-circle-outline';
             const iconColor = focused ? COLORS.black : COLORS.blackMuted;
             return <Icon name={iconName} color={iconColor} size={size} />;
@@ -125,7 +127,7 @@ const BottomTabs = () => {
         component={AdvertisementStack}
         options={{
           title: 'İlanlar',
-          tabBarIcon: ({focused, color, size}) => {
+          tabBarIcon: ({ focused, color, size }) => {
             const iconName = focused ? 'heart' : 'heart-outline';
             const iconColor = focused ? COLORS.red : color;
             return <Icon name={iconName} color={iconColor} size={size} />;
@@ -138,7 +140,7 @@ const BottomTabs = () => {
         component={ProfileStack}
         options={{
           title: 'Profil',
-          tabBarIcon: ({focused, color, size}) => {
+          tabBarIcon: ({ focused, color, size }) => {
             const iconName = focused ? 'account' : 'account-outline';
             const iconColor = focused ? COLORS.black : COLORS.blackMuted;
             return <Icon name={iconName} color={iconColor} size={size} />;
@@ -158,16 +160,21 @@ const AuthStack = () => {
       initialRouteName="LoginScreen">
       <Stack.Screen name="LoginScreen" component={Login} />
       <Stack.Screen name="RegisterScreen" component={Register} />
+      <Stack.Screen name="ForgotScreen" component={Forgot} />
       <Stack.Screen
         name="EmailVerificationScreen"
         component={EmailValidation}
+      />
+      <Stack.Screen
+        name="UpdatePasswordScreen"
+        component={UpdatePassword}
       />
     </Stack.Navigator>
   );
 };
 
 const App = () => {
-  const {user, setUser} = useUser();
+  const { user, setUser } = useUser();
 
   useEffect(() => {
     const checkToken = async () => {
@@ -179,7 +186,7 @@ const App = () => {
 
   return (
     <>
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <StatusBar
           backgroundColor={COLORS.primary}
           barStyle={'light-content'}
