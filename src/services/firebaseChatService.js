@@ -1,4 +1,4 @@
-import { getUser, updateUser } from '../services/userServices'
+import {getUser, updateUser} from '../services/userServices';
 import firestore from '@react-native-firebase/firestore';
 import uuid from 'react-native-uuid';
 
@@ -52,6 +52,19 @@ const createRoom = async (advertisementID, userID, ownerID) => {
   });
 };
 
+// Parametr olarak verilen ilan ID'sine sahip olan ilanları siler
+const deleteRoom = async advertisementID => {
+  const rooms = await firebaseConnection
+    .where('advertisementID', '==', advertisementID)
+    .get();
+  const roomDocs = rooms.docs;
+  if (roomDocs.length !== 0) {
+    for (let room of roomDocs) {
+      room.ref.delete();
+    }
+  }
+};
+
 // ID'si verilen sohbet odasının bilgilerini getirir
 // Anlık takip yok sadece çağırdığımız zaman getiriyor
 const getRoomDataById = async roomID => {
@@ -72,13 +85,25 @@ const getRoomDataById = async roomID => {
   }
 };
 
-// Mesaj yazma
+// Mesaj oluşturma
 const createMessage = async (roomID, messageDetails) => {
   try {
     await firebaseConnection.doc(roomID).update({
       messages: firestore.FieldValue.arrayUnion(messageDetails),
     });
     console.log('MESSAGE_CREATION_SUCCESS');
+  } catch (err) {
+    console.log('MESSAGE_CREATION_ERROR', err);
+  }
+};
+
+// Mesaj silme
+const removeMessage = async (roomID, messageDetails) => {
+  try {
+    await firebaseConnection.doc(roomID).update({
+      messages: firestore.FieldValue.arrayRemove(messageDetails),
+    });
+    console.log('MESSAGE_DELETION_SUCCESS');
   } catch (err) {
     console.log('MESSAGE_CREATION_ERROR', err);
   }
@@ -106,7 +131,13 @@ const getMyRooms = async userID => {
   });
 };
 
-
 // addMessage, deleteMessage, clearMessages
 
-export {checkChatRoom, getRoomDataById, createMessage, getMyRooms};
+export {
+  checkChatRoom,
+  getRoomDataById,
+  createMessage,
+  getMyRooms,
+  removeMessage,
+  deleteRoom,
+};

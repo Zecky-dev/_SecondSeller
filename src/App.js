@@ -48,9 +48,9 @@ import {getUserFromToken, makePhoneCall} from '@utils/functions';
 
 // Bootsplash
 import BootSplash from 'react-native-bootsplash';
-import { ChatHeader } from '@components';
+import {ChatHeader} from '@components';
 
-import { blockUser } from './services/userServices';
+import {blockUser} from './services/userServices';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -73,22 +73,21 @@ const ProfileMessagesStack = () => {
   const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
 
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen component={Messages} name="MessageListScreen" />
+    <Stack.Navigator>
+      <Stack.Screen component={Messages} name="MessageListScreen" options={{headerShown: false,}} />
       <Stack.Screen
         component={Chat}
         name="ChatScreen"
-        screenOptions={{
-          headerShown: true,
-          headerStyle: {
-            backgroundColor: COLORS.primary,
-          },
-          headerTitleStyle: {
-            fontFamily: 'Galada-Regular',
-            fontSize: CONSTANTS.fontSize.L5,
-          },
-          headerTitleAlign: 'center',
-          headerTintColor: COLORS.titleColor,
+        options={({route}) => {
+          return {
+            header: () => (
+              <ChatHeader
+                receiver={route.params.receiver}
+                title={route.params.title}
+                blockUser={blockUser}
+              />
+            ),
+          };
         }}
       />
     </Stack.Navigator>
@@ -108,7 +107,13 @@ const AdvertisementDetailStack = () => {
         options={({route}) => {
           return {
             headerShown: true,
-            header: () => <ChatHeader receiver={route.params.receiver} title={route.params.title} blockUser={blockUser}/>
+            header: () => (
+              <ChatHeader
+                receiver={route.params.receiver}
+                title={route.params.title}
+                blockUser={blockUser}
+              />
+            ),
           };
         }}
       />

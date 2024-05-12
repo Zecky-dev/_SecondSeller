@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Dimensions, ScrollView} from 'react-native';
+import {View, Text, Dimensions, ScrollView, Alert} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 const {height, width} = Dimensions.get('window');
 
@@ -8,7 +8,10 @@ import THEMECOLORS from '@utils/colors';
 
 import {getStyles} from './AdvertisementDetail.style';
 
-import {getAdvertisementAPI} from '../../services/advertisementServices';
+import {
+  getAdvertisementAPI,
+  removeAdvertisement,
+} from '../../services/advertisementServices';
 import {getSenderReceiverData} from '../../services/userServices';
 
 import {useUser} from '../../context/UserProvider';
@@ -164,6 +167,31 @@ const AdvertisementDetail = ({route, navigation}) => {
                 onPress={() => console.log('Teklif Ver')}
               />
             </View>
+          )}
+
+          {owner === userID && (
+            <Button
+              label="İlanı Sil"
+              icon={{name: 'trash-can', size: 24, color: COLORS.titleColor}}
+              onPress={() => {
+                Alert.alert('Emin misiniz ?', 'Bu ilanı silmek istediğinize emin misiniz ?', [
+                  {
+                    text: 'Evet',
+                    onPress: async () =>  {
+                      await removeAdvertisement(id,token)
+                      navigation.goBack()
+                    },
+                  },
+                  {
+                    text: 'Hayır',
+                    onPress: () => console.log('Removing advertisement cancelled!'),
+                    style: 'cancel',
+                  },
+                ]);
+
+               
+              }}
+            />
           )}
         </ScrollView>
       </View>

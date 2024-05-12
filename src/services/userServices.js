@@ -221,9 +221,8 @@ const favoriteUnFavorite = async (userID, postID) => {
   }
 };
 
+// Engelleme - engelleme sonrası kullanıcının son halini cevap olarak döner
 const blockUser = async (from, userID) => {
-  console.log(from,userID)
-
   try {
     const response = await axios.put(`${BASE_URL}/user/block?from=${from}&id=${userID}`)
     return {

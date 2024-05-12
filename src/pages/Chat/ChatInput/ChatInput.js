@@ -6,21 +6,10 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {getStyles} from './ChatInput.style';
 import {getCurrentLocation} from '../../../utils/functions';
 
-const ChatInput = ({createMessage, roomID, senderID, theme}) => {
+const ChatInput = ({sendMessage, roomID, senderID, theme}) => {
   const inputRef = useRef();
   const styles = getStyles(theme);
   const [messageContent, setMessageContent] = useState('');
-
-  const sendMessage = (roomID, messageContent, isLocation) => {
-    const message = {
-      sender: senderID,
-      message: messageContent,
-      createDate: new Date().toLocaleString(),
-      isLocation,
-    };
-    createMessage(roomID, message);
-    inputRef.current.clear();
-  };
 
   return (
     <View style={styles.container}>
@@ -34,7 +23,8 @@ const ChatInput = ({createMessage, roomID, senderID, theme}) => {
         onSubmitEditing={event => {
           const messageContent = event.nativeEvent.text;
           if (messageContent.trim() !== '') {
-            sendMessage(roomID, messageContent.trim(), false);
+            sendMessage(messageContent.trim(), false);
+            inputRef.current.clear()
           }
         }}
       />
@@ -45,7 +35,8 @@ const ChatInput = ({createMessage, roomID, senderID, theme}) => {
         onPress={async () => {
           const location = await getCurrentLocation();
           const message = JSON.stringify(location);
-          sendMessage(roomID, message, true);
+          sendMessage(message, true);
+          inputRef.current.clear()
         }}
       />
       <Icon
@@ -54,7 +45,8 @@ const ChatInput = ({createMessage, roomID, senderID, theme}) => {
         size={CONSTANTS.fontSize.L6}
         onPress={() => {
           if (messageContent.trim() !== '') {
-            sendMessage(roomID, messageContent.trim(), false);
+            sendMessage(messageContent.trim(), false);
+            inputRef.current.clear()
           }
         }}
       />

@@ -1,19 +1,25 @@
 import moment from 'moment';
 import 'moment/locale/tr';
-import React, {useEffect, useState} from 'react';
-import {View, Text, Image, Dimensions, Linking, Platform} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  Dimensions,
+  Linking,
+  Platform,
+  Pressable,
+  Alert,
+} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {getStyles} from './ChatBubble.style';
 
 import {CONSTANTS} from '@utils';
-import MapView, {Marker} from 'react-native-maps';
 
-// Gönderen kişinin mesajı sağda olmalı, diğerininki solda
+import {useUser} from '../../context/UserProvider';
 
-// component'e taşı
-const ChatBubbleMap = ({latitude, longitude, username}) => {
-  const {height, width} = Dimensions.get('window');
-
+const ChatBubbleMap = ({latitude, longitude}) => {
   const openMap = () => {
     var scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';
     var url = scheme + `${latitude},${longitude}`;
@@ -21,36 +27,29 @@ const ChatBubbleMap = ({latitude, longitude, username}) => {
   };
 
   return (
-    <MapView
+    <Pressable
       onPress={() => openMap()}
-      initialRegion={{
-        latitude,
-        longitude,
-        latitudeDelta: 0.5,
-        longitudeDelta: 0.5 * (width / height),
-      }}
-      zoomEnabled={false}
-      scrollEnabled={false}
-      style={{
-        width: '100%',
-        height: 100,
-      }}>
-      <Marker
-        coordinate={{latitude, longitude}}
-        title={username}
-        style={{width: 26, height: 40}}
-        onPress={() => openMap()}
-      />
-    </MapView>
+      style={{flexDirection: 'row', alignItems: 'centers'}}>
+      <Icon name="map-marker" size={18} color={'red'} />
+      <Text style={{color: 'red', fontWeight: 'bold', fontSize: 18}}>
+        Konumu Göster
+      </Text>
+    </Pressable>
   );
 };
 
-const ChatBubble = ({user, messageDetails, theme, isOwner}) => {
+const ChatBubble = ({
+  user: User,
+  messageDetails,
+  theme,
+  isOwner,
+  removeMessage,
+}) => {
+  const {user} = useUser();
+
   const styles = getStyles(theme);
-  const {createDate, message, isLocation} = messageDetails;
-  const [location, setLocation] = useState(
-    isLocation ? JSON.parse(message) : null,
-  );
+  const {createDate, message, isLocation, sender} = messageDetails;
+  const [location] = useState(isLocation ? JSON.parse(message) : null);
 
   const bubbleContainer = isOwner
     ? styles.bubbleContainer_right
@@ -62,7 +61,26 @@ const ChatBubble = ({user, messageDetails, theme, isOwner}) => {
     .format('DD MMMM YYYY, HH:mm');
 
   return (
-    <View style={bubbleContainer}>
+    <Pressable
+      style={bubbleContainer}
+      onLongPress={() => {
+        if (sender === user._id) {
+          Alert.alert(
+            'Emin misiniz?',
+            'Bu mesajı silmek istediğinize emin misiniz?',
+            [
+              {
+                text: 'Evet',
+                onPress: () => removeMessage(messageDetails),
+              },
+              {
+                text: 'Hayır',
+                onPress: () => console.log('Messsage deleting cancelled!'),
+              },
+            ],
+          );
+        }
+      }}>
       <View style={bubble}>
         <View
           style={{
@@ -72,26 +90,26 @@ const ChatBubble = ({user, messageDetails, theme, isOwner}) => {
           }}>
           <Image
             source={
-              user.imageURL
-                ? {uri: user.imageURL}
+              User.imageURL
+                ? {uri: User.imageURL}
                 : require('@assets/images/avatar.png')
             }
             style={{width: 40, height: 40, borderRadius: 20}}
           />
-          <Text style={styles.messageOwner}>{user.nameSurname}</Text>
+          <Text style={styles.messageOwner}>{User.nameSurname}</Text>
         </View>
         {isLocation ? (
           <ChatBubbleMap
-            latitude={location.latitude}
-            longitude={location.longitude}
-            username={user.nameSurname}
+            latitude={location?.latitude}
+            longitude={location?.longitude}
+            username={User.nameSurname}
           />
         ) : (
           <Text style={styles.message}>{message}</Text>
         )}
         <Text style={styles.messageDate}>{formattedDate}</Text>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

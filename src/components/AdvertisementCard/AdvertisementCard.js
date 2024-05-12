@@ -37,7 +37,7 @@ const LittleCard = ({
 
   // Eğer local de bulunan user'ın favorileri güncellenirse kart üzerindeki icon'lar tekrardan düzenlenecek
   useEffect(() => {
-    setLiked(user.favorites.includes(advertisement._id));
+    setLiked(user?.favorites?.includes(advertisement._id));
   }, [user.favorites]);
 
   // Kalp icon'una basılınca ilan favorilere eklenecek veya favorilerden kaldırılacak,
