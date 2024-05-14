@@ -13,9 +13,9 @@ import {Formik} from 'formik';
 import {RegisterSchema} from '@utils/validationSchemas';
 
 // Register
-import {sendEmailVerification} from '../../../services/userServices';
+import {sendEmailVerification} from '@services/userServices';
 import {showFlashMessage} from '@utils/functions';
-import {useTheme} from '../../../context/ThemeContext';
+import {useTheme} from '@context/ThemeContext';
 
 const initialValues = {
   nameSurname: '',

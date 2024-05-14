@@ -31,12 +31,12 @@ import {showMessage} from 'react-native-flash-message';
 import {
   createAdvertisementAPI,
   updateAdvertisementAPI,
-} from '../../services/advertisementServices';
-import {uploadImagesAndGetURLs} from '../../services/otherServices';
+} from '@services/advertisementServices';
+import {uploadImagesAndGetURLs} from '@services/otherServices';
 
 // useUser hook
-import {useUser} from '../../context/UserProvider';
-import {useTheme} from '../../context/ThemeContext';
+import {useUser} from '@context/UserProvider';
+import {useTheme} from '@context/ThemeContext';
 
 // Galeriden resim seçilir, boyutu küçültülür ve slider'a set edilir.
 const takeImageFromGallery = async (setImages, setFieldValue) => {

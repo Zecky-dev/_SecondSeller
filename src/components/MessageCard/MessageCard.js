@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 
 import {getStyles} from './MessageCard.style';
-import {useTheme} from '../../context/ThemeContext';
+import {useTheme} from '@context/ThemeContext';
 
 const MessageCard = ({onPress, message, title}) => {
   const {theme} = useTheme();

@@ -3,8 +3,8 @@ import {TouchableOpacity, Text, View, ActivityIndicator} from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { getStyles } from './Button.style';
-import { useTheme } from '../../context/ThemeContext';
+import {getStyles} from './Button.style';
+import {useTheme} from '@context/ThemeContext';
 
 const Button = ({
   onPress,
@@ -14,9 +14,8 @@ const Button = ({
   loading = false,
   additionalStyles = {container: {}, label: {}},
 }) => {
-
-  const { theme } = useTheme()
-  const styles = getStyles(theme)
+  const {theme} = useTheme();
+  const styles = getStyles(theme);
 
   return (
     <TouchableOpacity
@@ -28,9 +27,8 @@ const Button = ({
       ]}
       disabled={loading}
       activeOpacity={0.7}>
-      
       {loading ? (
-        <ActivityIndicator size={'small'} style={styles.loadingIndicator}/>
+        <ActivityIndicator size={'small'} style={styles.loadingIndicator} />
       ) : (
         icon && (
           <Icon

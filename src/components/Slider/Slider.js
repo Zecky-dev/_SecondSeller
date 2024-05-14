@@ -3,7 +3,7 @@ import {View, Image, Text, Pressable} from 'react-native';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 
 import {getStyles} from '../Input/Input.style';
-import {useTheme} from '../../context/ThemeContext';
+import {useTheme} from '@context/ThemeContext';
 import {getStyles as getSliderStyles} from './Slider.style';
 
 // Image vectors

@@ -8,13 +8,13 @@ import {makePhoneCall} from '@utils/functions';
 
 // Styling
 import {getStyles} from './ChatHeader.style';
-import {useTheme} from '../../context/ThemeContext';
+import {useTheme} from '@context/ThemeContext';
 import {CONSTANTS} from '@utils';
 import THEMECOLORS from '@utils/colors';
 
 // Context & Hooks
 import {useNavigation} from '@react-navigation/native';
-import {useUser} from '../../context/UserProvider';
+import {useUser} from '@context/UserProvider';
 
 const ChatHeader = ({receiver, title, blockUser}) => {
   const {_id: id, phoneNumber} = receiver;

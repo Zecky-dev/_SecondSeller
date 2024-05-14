@@ -6,19 +6,18 @@ import {useUser} from '../../context/UserProvider';
 import {
   getAllAdvertisementAPI,
   getFilteredAdvertisement,
-} from '../../services/advertisementServices';
-import {favoriteUnFavorite} from '../../services/userServices';
+} from '@services/advertisementServices';
+import {favoriteUnFavorite} from '@services/userServices';
 
 import FilterModal from './components/FilterModal/FilterModal';
 import {AdvertisementCard, Button, Input, EmptyList} from '@components';
 
 import THEMECOLORS from '@utils/colors';
-import {useTheme} from '../../context/ThemeContext';
-import { showMessage } from 'react-native-flash-message';
+import {useTheme} from '@context/ThemeContext';
+import {showMessage} from 'react-native-flash-message';
 
-import EmptyListDarkVector from '@assets/images/empty_list_dark.png'
-import EmptyListLightVector from '@assets/images/empty_list_light.png'
-
+import EmptyListDarkVector from '@assets/images/empty_list_dark.png';
+import EmptyListLightVector from '@assets/images/empty_list_light.png';
 
 const Home = ({navigation}) => {
   const [filterModalVisible, setFilterModalVisible] = useState(false);
@@ -28,10 +27,10 @@ const Home = ({navigation}) => {
 
   const {user} = useUser();
   const {theme} = useTheme();
-  
-  const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
-  const EmptyListVector = theme === "dark" ? EmptyListDarkVector : EmptyListLightVector
 
+  const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
+  const EmptyListVector =
+    theme === 'dark' ? EmptyListDarkVector : EmptyListLightVector;
 
   const filter = async values => {
     const filteredAdvertisements = await getFilteredAdvertisement(

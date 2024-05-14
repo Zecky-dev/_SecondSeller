@@ -15,15 +15,15 @@ import {getStyles} from './AdvertisementDetail.style';
 import {
   getAdvertisementAPI,
   removeAdvertisement,
-} from '../../services/advertisementServices';
-import {getSenderReceiverData} from '../../services/userServices';
+} from '@services/advertisementServices';
+import {getSenderReceiverData} from '@services/userServices';
 
-import {useUser} from '../../context/UserProvider';
-import {useTheme} from '../../context/ThemeContext';
+import {useUser} from '@context/UserProvider';
+import {useTheme} from '@context/ThemeContext';
 
 import {showMessage} from 'react-native-flash-message';
 
-import {checkChatRoom, createMessage} from '../../services/firebaseChatService';
+import {checkChatRoom, createMessage} from '@services/firebaseChatService';
 
 const AdvertisementDetail = ({route, navigation}) => {
   const {id: advertisementID} = route.params;

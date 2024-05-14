@@ -3,20 +3,19 @@ import {FlatList} from 'react-native';
 import {AdvertisementCard, EmptyList} from '@components';
 
 // Favorite unfavorite servis fonksiyonu
-import {favoriteUnFavorite} from '../../../services/userServices';
-import {updateAdvertisementAPI} from '../../../services/advertisementServices';
+import {favoriteUnFavorite} from '@services/userServices';
+import {updateAdvertisementAPI} from '@services/advertisementServices';
 
 // Uygulama genelindeki kullanıcıyı döndüren hook
-import {useUser} from '../../../context/UserProvider';
+import {useUser} from '@context/UserProvider';
 import {useNavigation} from '@react-navigation/native';
 import {showFlashMessage} from '@utils/functions';
 
 import THEMECOLORS from '@utils/colors';
-import {useTheme} from '../../../context/ThemeContext';
+import {useTheme} from '@context/ThemeContext';
 
-
-import EmptyListDarkVector from '@assets/images/empty_list_dark.png'
-import EmptyListLightVector from '@assets/images/empty_list_light.png'
+import EmptyListDarkVector from '@assets/images/empty_list_dark.png';
+import EmptyListLightVector from '@assets/images/empty_list_light.png';
 
 const Advertisements = ({advertisements}) => {
   const {
@@ -24,7 +23,8 @@ const Advertisements = ({advertisements}) => {
   } = useUser();
   const {theme} = useTheme();
   const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
-  const EmptyListVector = theme === "dark" ? EmptyListDarkVector : EmptyListLightVector
+  const EmptyListVector =
+    theme === 'dark' ? EmptyListDarkVector : EmptyListLightVector;
 
   const navigation = useNavigation();
 
@@ -34,7 +34,7 @@ const Advertisements = ({advertisements}) => {
   };
 
   if (advertisements.length === 0) {
-    return <EmptyList label={'İlan listesi boş!'} vector={EmptyListVector}/>;
+    return <EmptyList label={'İlan listesi boş!'} vector={EmptyListVector} />;
   } else {
     return (
       <FlatList

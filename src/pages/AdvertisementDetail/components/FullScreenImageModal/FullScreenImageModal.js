@@ -1,5 +1,5 @@
 import Modal from 'react-native-modal';
-import {useTheme} from '../../../../context/ThemeContext';
+import {useTheme} from '@context/ThemeContext';
 
 import {Slider} from '@components';
 import {getStyles} from './FullScreenImageModal.style';

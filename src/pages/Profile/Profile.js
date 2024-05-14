@@ -8,8 +8,8 @@ import {CONSTANTS} from '@utils';
 import THEMECOLORS from '@utils/colors.js';
 
 import Storage from '@utils/Storage.js';
-import {useUser} from '../../context/UserProvider.js';
-import {useTheme} from '../../context/ThemeContext.js';
+import {useUser} from '@context/UserProvider.js';
+import {useTheme} from '@context/ThemeContext';
 
 const Profile = ({navigation}) => {
   const {user, setUser} = useUser();

@@ -3,12 +3,12 @@ import {View, Text, FlatList} from 'react-native';
 
 import {MessageCard, Animation, EmptyList} from '@components';
 
-import {getMyRooms} from '../../../services/firebaseChatService';
-import {useUser} from '../../../context/UserProvider';
-import {getUser} from '../../../services/userServices';
-import {getAdvertisementAPI} from '../../../services/advertisementServices';
+import {getMyRooms} from '@services/firebaseChatService';
+import {getUser} from '@services/userServices';
+import {getAdvertisementAPI} from '@services/advertisementServices';
 import {getStyles} from './Messages.style';
-import {useTheme} from '../../../context/ThemeContext';
+import {useUser} from '@context/UserProvider';
+import {useTheme} from '@context/ThemeContext';
 
 import EmptyListDark from '@assets/images/empty_list_dark.png';
 import EmptyListLight from '@assets/images/empty_list_light.png';

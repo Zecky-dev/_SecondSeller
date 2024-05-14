@@ -12,18 +12,18 @@ import {
   checkChatRoom,
   createMessage,
   removeMessage as removeMessageService,
-} from '../../services/firebaseChatService';
+} from '@services/firebaseChatService';
 
 // Vectors
 import NoMessageDark from '@assets/images/no_message_dark.png';
 import NoMessageLight from '@assets/images/no_message_light.png';
 
 // User services
-import {getSenderReceiverData} from '../../services/userServices';
+import {getSenderReceiverData} from '@services/userServices';
 
 // Context
-import {useTheme} from '../../context/ThemeContext';
-import {useUser} from '../../context/UserProvider';
+import {useTheme} from '@context/ThemeContext';
+import {useUser} from '@context/UserProvider';
 import FastMessageChips from './FastMessageChips/FastMessageChips';
 import {CONSTANTS} from '@utils';
 import {showFlashMessage} from '@utils/functions';

@@ -5,16 +5,16 @@ import {Image, Pressable, Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // styles & constants
-import THEMECOLORS from '../../utils/colors';
-import CONSTANTS from '../../utils/constants';
+import THEMECOLORS from '@utils/colors';
+import CONSTANTS from '@utils/constants';
 import {getStyles} from './AdvertisemetCard.style';
 
 // Custom components
 import {Button} from '@components';
 
 // Uygulama genelindeki kullanıcıyı döndüren hook
-import {useUser} from '../../context/UserProvider';
-import {useTheme} from '../../context/ThemeContext';
+import {useUser} from '@context/UserProvider';
+import {useTheme} from '@context/ThemeContext';
 
 // Kart - büyük versiyon
 const LittleCard = ({
