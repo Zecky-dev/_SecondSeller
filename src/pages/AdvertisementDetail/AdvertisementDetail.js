@@ -23,16 +23,11 @@ import {getStyles} from './AdvertisementDetail.style';
 import {
   getAdvertisementAPI,
   removeAdvertisement,
-<<<<<<< HEAD
-} from '../../services/advertisementServices';
-import {getSenderReceiverData, getUser} from '../../services/userServices';
-=======
 } from '@services/advertisementServices';
 import {getSenderReceiverData} from '@services/userServices';
 
 import {useUser} from '@context/UserProvider';
 import {useTheme} from '@context/ThemeContext';
->>>>>>> c3a23d6b0c8a1a6a02537b3fdd49e41ea24d5e84
 
 import {showMessage} from 'react-native-flash-message';
 
@@ -48,12 +43,8 @@ const AdvertisementDetail = ({route, navigation}) => {
 
   const [loading, setLoading] = useState(false);
   const [offerModalVisible, setOfferModalVisible] = useState(false);
-<<<<<<< HEAD
-
-=======
   const [fullScreenImageModalVisible, setFullScreenImageModalVisible] =
     useState(false);
->>>>>>> c3a23d6b0c8a1a6a02537b3fdd49e41ea24d5e84
   const [advertisement, setAdvertisement] = useState(null);
   const [advertisementOwner, setAdvertisementOwner] = useState(null);
 
