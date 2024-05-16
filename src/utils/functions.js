@@ -1,4 +1,4 @@
-import { PermissionsAndroid, Linking } from 'react-native';
+import {PermissionsAndroid, Linking} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import {showMessage} from 'react-native-flash-message';
 import {Buffer} from 'buffer';
@@ -54,7 +54,7 @@ const locationPermissionGranted = async () => {
     return permissionRequestResult === 'granted';
   }
   return true;
-}
+};
 
 // Anlık konum almaak için bir promise döndürür
 const getCurrentLocation = () => {
@@ -72,6 +72,19 @@ const getCurrentLocation = () => {
       },
     );
   });
+};
+
+const notificationPermissionGranted = async () => {
+  const granted = await PermissionsAndroid.check(
+    PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+  );
+  if (!granted) {
+    const permissionRequestResult = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+    );
+    return permissionRequestResult === 'granted';
+  }
+  return true;
 };
 
 // Token'i decode ederek token'de saklanan kullanıcı
@@ -105,11 +118,9 @@ const resizeImage = (asset, width, height) => {
   });
 };
 
-const makePhoneCall = (phoneNumber) => {
-  Linking.openURL(`tel:${phoneNumber}`)
-} 
-
-
+const makePhoneCall = phoneNumber => {
+  Linking.openURL(`tel:${phoneNumber}`);
+};
 
 export {
   showFlashMessage,
@@ -118,4 +129,5 @@ export {
   resizeImage,
   locationPermissionGranted,
   makePhoneCall,
+  notificationPermissionGranted,
 };

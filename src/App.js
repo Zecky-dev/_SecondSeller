@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StatusBar, View} from 'react-native';
+import {Linking, StatusBar, View} from 'react-native';
 import {useIsFocused, CommonActions} from '@react-navigation/native';
 
 // Constants
@@ -10,6 +10,8 @@ import THEMECOLORS from '@utils/colors';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+import messaging from '@react-native-firebase/messaging';
 
 // Icon
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -47,9 +49,57 @@ import BootSplash from 'react-native-bootsplash';
 import {ChatHeader} from '@components';
 
 import {blockUser} from './services/userServices';
+import {handleForegroundMessages} from '@services/firebaseNotificationServices';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+
+const linking = {
+  prefixes: ['myapp://'],
+  config: {
+    initialRouteName: 'HomeScreen',
+    screens: {
+      Home: 'main',
+    },
+  },
+  async getInitialURL() {
+    const url = await Linking.getInitialURL();
+    if (typeof url === 'string') {
+      return url;
+    }
+    const message = await messaging().getInitialNotification();
+    const deeplinkURL = 'myapp://main';
+    if (typeof deeplinkURL === 'string') {
+      return deeplinkURL;
+    }
+  },
+  subscribe(listener) {
+    const onReceiveURL = ({url}) => listener(url);
+
+    // Listen to incoming links from deep linking
+    const linkingSubscription = Linking.addEventListener('url', onReceiveURL);
+
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      console.log('Messasge handled in the background!', remoteMessage);
+    });
+
+    const foreground = messaging().onMessage(async remoteMessage => {
+      handleForegroundMessages(remoteMessage.notification);
+    });
+
+    // onNotificationOpenedApp: When the application is running, but in the background.
+    const unsubscribe = messaging().onNotificationOpenedApp(remoteMessage => {
+      const url = 'myapp://main';
+      listener(url);
+    });
+
+    return async () => {
+      linkingSubscription.remove();
+      unsubscribe();
+      foreground();
+    };
+  },
+};
 
 // İlanlar sayfası için kullanılan stack
 const HomeStack = () => {
@@ -308,7 +358,7 @@ const App = () => {
           backgroundColor={COLORS.primary}
           barStyle={'light-content'}
         />
-        <NavigationContainer>
+        <NavigationContainer linking={linking}>
           {user ? <BottomTabs /> : <AuthStack />}
         </NavigationContainer>
       </View>

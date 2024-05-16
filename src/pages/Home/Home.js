@@ -18,6 +18,7 @@ import {showMessage} from 'react-native-flash-message';
 
 import EmptyListDarkVector from '@assets/images/empty_list_dark.png';
 import EmptyListLightVector from '@assets/images/empty_list_light.png';
+import {handleForegroundMessages} from '@services/firebaseNotificationServices';
 
 const Home = ({navigation}) => {
   const [filterModalVisible, setFilterModalVisible] = useState(false);
@@ -63,6 +64,7 @@ const Home = ({navigation}) => {
     const unsubscribe = navigation.addListener('focus', () => {
       getAllAdvertisements();
     });
+    handleForegroundMessages();
     return unsubscribe;
   }, []);
 

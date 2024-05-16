@@ -116,6 +116,7 @@ dependencies {
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
     implementation("com.android.support:multidex:2.0.1")
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
