@@ -20,8 +20,28 @@ export const getStyles = theme => {
     namePriceContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginTop: CONSTANTS.margin.L3,
+      marginTop: CONSTANTS.margin.L2,
     },
+
+    ownerContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      alignSelf: 'flex-start',
+      marginTop: CONSTANTS.margin.L2,
+    },
+
+    ownerImage: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+    },
+
+    ownerNameSurname: {
+      color: COLORS.textColor,
+      fontWeight: 'bold',
+      marginLeft: CONSTANTS.margin.L2,
+      fontSize: CONSTANTS.fontSize.L3,
+    },  
 
     descriptionContainer: {
       marginVertical: CONSTANTS.margin.L1,

@@ -1,5 +1,13 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {View, Text, Dimensions, ScrollView, Alert} from 'react-native';
+import {
+  View,
+  Text,
+  Dimensions,
+  ScrollView,
+  Alert,
+  Pressable,
+  Image,
+} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 const {height, width} = Dimensions.get('window');
 
@@ -12,7 +20,7 @@ import {
   getAdvertisementAPI,
   removeAdvertisement,
 } from '../../services/advertisementServices';
-import {getSenderReceiverData} from '../../services/userServices';
+import {getSenderReceiverData, getUser} from '../../services/userServices';
 
 import {useUser} from '../../context/UserProvider';
 import {showMessage} from 'react-native-flash-message';
@@ -31,25 +39,49 @@ const AdvertisementDetail = ({route, navigation}) => {
 
   const [loading, setLoading] = useState(false);
   const [offerModalVisible, setOfferModalVisible] = useState(false);
+
   const [advertisement, setAdvertisement] = useState(null);
+  const [advertisementOwner, setAdvertisementOwner] = useState(null);
+
   const {theme} = useTheme();
   const COLORS = theme === 'dark' ? THEMECOLORS.DARK : THEMECOLORS.LIGHT;
   const styles = getStyles(theme);
 
-  const getAdvertisement = () => {
-    setLoading(true);
-    getAdvertisementAPI(advertisementID, token)
-      .then(response => {
-        const advertisementData = response.data.data;
+  const getAdvertisement = async () => {
+    try {
+      setLoading(true);
+      const advertisementData = (
+        await getAdvertisementAPI(advertisementID, token)
+      ).data;
+      const advertisementOwnerData = await getAdvertisementOwner(
+        advertisementData.owner,
+      );
+      if (advertisementData && advertisementOwnerData) {
         setAdvertisement(advertisementData);
-      })
-      .catch(err => {
-        showMessage({
-          message: 'İlan getirilirken bir hata meydana geldi!',
-          type: 'danger',
-        });
+        setAdvertisementOwner(advertisementOwnerData);
+      }
+
+      setLoading(false);
+    } catch (err) {
+      showMessage({
+        message: 'İlan getirilirken bir hata meydana geldi!',
+        type: 'danger',
       });
+    }
     setLoading(false);
+  };
+
+  const getAdvertisementOwner = async id => {
+    try {
+      const response = await getUser(id, token);
+      return response.data;
+    } catch (err) {
+      showMessage({
+        message: 'İlan sahibi getirilirken bir hata meydana geldi!',
+        type: 'danger',
+      });
+      return null;
+    }
   };
 
   useEffect(() => {
@@ -73,7 +105,7 @@ const AdvertisementDetail = ({route, navigation}) => {
     showFlashMessage(200, 'Teklif gönderildi!');
   };
 
-  if (advertisement && !loading) {
+  if (advertisement && advertisementOwner && !loading) {
     const {
       _id: id,
       title,
@@ -96,6 +128,34 @@ const AdvertisementDetail = ({route, navigation}) => {
           {/* Slider */}
           <Slider images={images} />
 
+          {/* İlan sahibi ile ilgili bilgiler */}
+          <Pressable
+            style={styles.ownerContainer}
+            onPress={() => {
+              if (advertisementOwner._id === userID) {
+                navigation.navigate('AdvertisementsScreen', {
+                  screen: 'Advertisements',
+                });
+              } else {
+                navigation.navigate('OwnerProfileScreen', {
+                  screen: 'OwnerProfileStackScreen',
+                  params: { advertisementOwner },
+                });
+              }
+            }}>
+            <Image
+              source={
+                advertisementOwner.imageURL
+                  ? {uri: advertisementOwner.imageURL}
+                  : require('@assets/images/avatar.png')
+              }
+              style={styles.ownerImage}
+            />
+            <Text style={styles.ownerNameSurname}>
+              {advertisementOwner.nameSurname}
+            </Text>
+          </Pressable>
+
           {/* Slider Altındaki Açıklamalar */}
           <View style={styles.namePriceContainer}>
             <Text style={styles.name}>{title}</Text>
@@ -104,7 +164,6 @@ const AdvertisementDetail = ({route, navigation}) => {
 
           {/* İlan açıklaması */}
           <View style={styles.descriptionContainer}>
-            <Text style={styles.descriptionTitle}>İlan Açıklama</Text>
             <Text style={styles.description}>{description}</Text>
           </View>
 

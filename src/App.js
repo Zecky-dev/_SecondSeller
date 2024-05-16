@@ -30,6 +30,7 @@ import {
   Messages,
   Chat,
   UpdatePassword,
+  OwnerProfile
 } from '@pages';
 
 // Context
@@ -96,7 +97,7 @@ const ProfileMessagesStack = () => {
 
 const AdvertisementDetailStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator screenOptions={{headerShown: false,}}>
       <Stack.Screen
         component={AdvertisementDetail}
         name="AdvertisementDetailScreen"
@@ -117,6 +118,13 @@ const AdvertisementDetailStack = () => {
           };
         }}
       />
+
+      <Stack.Screen
+        component={OwnerProfileStack}
+        name='OwnerProfileScreen'
+        options={{ headerShown: false}}
+        />
+
     </Stack.Navigator>
   );
 };
@@ -156,7 +164,40 @@ const ProfileStack = ({navigation}) => {
   );
 };
 
-const AdvertisementStack = () => {
+
+const OwnerProfileStack = () => {
+  return (  
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name='OwnerProfileStackScreen' component={OwnerProfile}/>
+      <Stack.Screen name='OwnerProfileChat' component={Chat}/>
+      <Stack.Screen name='OwnerProfileDetail' component={AdvertisementDetailStack} />
+    </Stack.Navigator>
+  )
+}
+
+
+
+// Favoriler ve ilanlarım stack'i
+
+const AdvertisementStack = ({navigation}) => {
+
+  const isAdvertisementsFocused = useIsFocused();
+
+  useEffect(() => {
+    if (!isAdvertisementsFocused) {
+      // Eğer Profil ekranı odaklanmamışsa, ProfileStack'i sıfırla
+      resetAdvertisementsStack();
+    }
+  }, [isAdvertisementsFocused]);
+
+  const resetAdvertisementsStack = () => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{name: 'Advertisements'}],
+      }),
+    );
+  };
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen component={Advertisements} name="Advertisements" />
@@ -168,6 +209,9 @@ const AdvertisementStack = () => {
         component={CreateAndUpdateAdvertisement}
         name="UpdateAdvertisementScreen"
       />
+      <Stack.Screen
+        component={OwnerProfileStack}
+        name='OwnerProfileScreen'/>
     </Stack.Navigator>
   );
 };

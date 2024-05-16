@@ -10,5 +10,6 @@ export {default as Chat} from './Chat';
 export {default as Messages} from './Profile/Messages'
 export {default as EmailValidation} from './EmailVerification';
 export {default as ChangePassword} from './Profile/ChangePassword';
-export{default as UpdatePassword} from './Auth/Forgot/UpdatePassword';
+export {default as UpdatePassword} from './Auth/Forgot/UpdatePassword';
+export {default as OwnerProfile} from './OwnerProfile'
 export { default as Forgot} from './Auth/Forgot'

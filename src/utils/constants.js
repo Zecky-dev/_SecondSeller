@@ -31,8 +31,8 @@ const APP_FONT = 'Galada-Regular';
 const ADVERTISEMENT_CATEGORIES = [
   {
     key: 1,
-    label: 'Teknoloji',
-    value: 'technology',
+    label: 'Elektronik',
+    value: 'electronic',
   },
   {
     key: 2,
@@ -44,6 +44,21 @@ const ADVERTISEMENT_CATEGORIES = [
     label: 'Araç',
     value: 'vehicle',
   },
+  {
+    key: 4,
+    label: 'Eğlence',
+    value: 'entertainment',
+  },
+  {
+    key: 5,
+    label: 'Kitap',
+    value: 'book',
+  },
+  {
+    key: 6,
+    label: 'Diğer',
+    value: 'other'
+  }
 ];
 
 const FILTER_OPTIONS = {

@@ -59,7 +59,7 @@ const getAdvertisementAPI = async (id, token) => {
           },
         },
       );
-      return advertisement;
+      return advertisement.data;
     } catch (err) {
       return null;
     }

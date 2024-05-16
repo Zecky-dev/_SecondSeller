@@ -21,7 +21,7 @@ const COLORS = {
     textMutedColor: 'rgba(0,0,0,0.5)',
     borderColor: 'black',
     pageBackground: '#ffffff',
-    cardBackground: 'transparent',
+    cardBackground: '#E8E8E8',
   },
   DARK: {
     ...MAIN,

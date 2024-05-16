@@ -104,7 +104,7 @@ const Register = ({navigation}) => {
                     errors.phoneNumber &&
                     errors.phoneNumber
                   }
-                  placeholder="0555-555-5555"
+                  placeholder="0555 555 5555"
                 />
                 <Input
                   label={'Şifre'}
