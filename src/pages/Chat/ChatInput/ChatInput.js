@@ -1,13 +1,10 @@
 import {COLORS, CONSTANTS} from '@utils';
 import React, {useEffect, useRef, useState} from 'react';
-import {TextInput, Pressable, View} from 'react-native';
+import {TextInput, View} from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {getStyles} from './ChatInput.style';
-import {
-  getCurrentLocation,
-  locationPermissionGranted,
-} from '../../../utils/functions';
+import {getCurrentLocation, locationPermissionGranted} from '@utils/functions';
 import {showMessage} from 'react-native-flash-message';
 
 const ChatInput = ({sendMessage, senderID, theme, message}) => {

@@ -12,22 +12,31 @@ import MapView, {Marker} from 'react-native-maps';
 const {height, width} = Dimensions.get('window');
 
 import {Slider, Button, Animation} from '@components';
+import OfferModal from './components/OfferModal/OfferModal';
+import FullScreenImageModal from './components/FullScreenImageModal/FullScreenImageModal';
+
 import THEMECOLORS from '@utils/colors';
+import {showFlashMessage} from '@utils/functions';
 
 import {getStyles} from './AdvertisementDetail.style';
 
 import {
   getAdvertisementAPI,
   removeAdvertisement,
+<<<<<<< HEAD
 } from '../../services/advertisementServices';
 import {getSenderReceiverData, getUser} from '../../services/userServices';
+=======
+} from '@services/advertisementServices';
+import {getSenderReceiverData} from '@services/userServices';
 
-import {useUser} from '../../context/UserProvider';
+import {useUser} from '@context/UserProvider';
+import {useTheme} from '@context/ThemeContext';
+>>>>>>> c3a23d6b0c8a1a6a02537b3fdd49e41ea24d5e84
+
 import {showMessage} from 'react-native-flash-message';
-import {useTheme} from '../../context/ThemeContext';
-import OfferModal from './components/OfferModal/OfferModal';
-import {showFlashMessage} from '@utils/functions';
-import {checkChatRoom, createMessage} from '../../services/firebaseChatService';
+
+import {checkChatRoom, createMessage} from '@services/firebaseChatService';
 
 const AdvertisementDetail = ({route, navigation}) => {
   const {id: advertisementID} = route.params;
@@ -39,7 +48,12 @@ const AdvertisementDetail = ({route, navigation}) => {
 
   const [loading, setLoading] = useState(false);
   const [offerModalVisible, setOfferModalVisible] = useState(false);
+<<<<<<< HEAD
 
+=======
+  const [fullScreenImageModalVisible, setFullScreenImageModalVisible] =
+    useState(false);
+>>>>>>> c3a23d6b0c8a1a6a02537b3fdd49e41ea24d5e84
   const [advertisement, setAdvertisement] = useState(null);
   const [advertisementOwner, setAdvertisementOwner] = useState(null);
 
@@ -126,7 +140,10 @@ const AdvertisementDetail = ({route, navigation}) => {
       <View style={styles.outerContainer}>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
           {/* Slider */}
-          <Slider images={images} />
+          <Slider
+            images={images}
+            onPress={() => setFullScreenImageModalVisible(true)}
+          />
 
           {/* İlan sahibi ile ilgili bilgiler */}
           <Pressable
@@ -288,6 +305,11 @@ const AdvertisementDetail = ({route, navigation}) => {
           setVisible={setOfferModalVisible}
           price={price}
           sendOffer={sendOffer}
+        />
+        <FullScreenImageModal
+          isVisible={fullScreenImageModalVisible}
+          setVisible={setFullScreenImageModalVisible}
+          images={images}
         />
       </View>
     );

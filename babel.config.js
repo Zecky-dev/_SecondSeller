@@ -7,15 +7,15 @@ module.exports = {
         alias: {
           src: './src',
           '@components': './src/components',
-          '@utils':'./src/utils',
-          '@utils/*':'./src/utils/*',
-          '@pages':'./src/pages',
+          '@utils': './src/utils',
+          '@utils/*': './src/utils/*',
+          '@pages': './src/pages',
           '@assets/images': './src/assets/images',
-          '@services/*': './src/services/*',
-          '@context/*': './src/context/*'
+          '@services': './src/services/',
+          '@context': './src/context/',
         },
       },
     ],
-    ['module:react-native-dotenv']
+    ['module:react-native-dotenv'],
   ],
 };

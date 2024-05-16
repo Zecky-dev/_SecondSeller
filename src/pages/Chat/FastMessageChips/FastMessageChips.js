@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, ScrollView} from 'react-native';
 
-import {useTheme} from '../../../context/ThemeContext';
+import {useTheme} from '@context/ThemeContext';
 import {getStyles} from './FastMessageChips.style';
 
 const FastMessageChips = ({messages, onPress}) => {

@@ -4,9 +4,9 @@ import {Button, Input, Animation} from '@components';
 
 import {getStyles} from './EmailVerification.style';
 
-import {register, updateUser} from '../../services/userServices';
-import {useUser} from '../../context/UserProvider';
-import {useTheme} from '../../context/ThemeContext';
+import {register, updateUser} from '@services/userServices';
+import {useUser} from '@context/UserProvider';
+import {useTheme} from '@context/ThemeContext';
 import {getUserFromToken, showFlashMessage} from '@utils/functions';
 import Storage from '@utils/Storage';
 

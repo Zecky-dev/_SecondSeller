@@ -4,11 +4,11 @@ import {View} from 'react-native';
 import {Formik} from 'formik';
 import {Button, Input} from '@components';
 import {ChangePasswordSchema} from '@utils/validationSchemas';
-import {changePassword} from '../../../services/userServices';
-import {useUser} from '../../../context/UserProvider';
+import {changePassword} from '@services/userServices';
 import Storage from '@utils/Storage';
 import {showFlashMessage} from '@utils/functions';
-import {useTheme} from '../../../context/ThemeContext';
+import {useUser} from '@context/UserProvider';
+import {useTheme} from '@context/ThemeContext';
 import {getStyles} from './ChangePassword.style';
 
 const ChangePassword = ({navigation}) => {

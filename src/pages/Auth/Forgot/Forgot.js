@@ -5,7 +5,7 @@ import {EmailSchema} from '@utils/validationSchemas';
 //Style
 import {getStyles} from './Forgot.style';
 
-import {passwordReset} from '../../../services/userServices';
+import {passwordReset} from '@services/userServices';
 
 // Components
 import {Input, Button, Animation} from '@components';
@@ -18,7 +18,7 @@ import ForgotPasswordDark from '@assets/images/forgot_password_dark.png';
 import ForgotPasswordLight from '@assets/images/forgot_password_light.png';
 
 // Context
-import {useTheme} from '../../../context/ThemeContext';
+import {useTheme} from '@context/ThemeContext';
 
 const Forgot = ({navigation}) => {
   const [loading, setLoading] = useState(false);
@@ -61,14 +61,10 @@ const Forgot = ({navigation}) => {
                   errors.emailAddress &&
                   errors.emailAddress
                 }
-                value={values. emailAddress}
+                value={values.emailAddress}
               />
 
-              <Button
-                label="Gönder"
-                onPress={handleSubmit}
-                loading={loading}
-              />
+              <Button label="Gönder" onPress={handleSubmit} loading={loading} />
             </View>
           )}
         </Formik>

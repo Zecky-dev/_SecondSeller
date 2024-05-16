@@ -60,7 +60,7 @@ export const getStyles = theme => {
       image: {
         width: '100%',
         height: 150,
-        resizeMode: 'cover',
+        resizeMode: 'contain',
       },
       name: {
         textAlign: 'center',
