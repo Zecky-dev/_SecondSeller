@@ -25,7 +25,7 @@ export const getStyles = theme => {
       justifyContent: 'space-around',
     },
     offer: {
-      color: COLORS.textColor,
+      color: COLORS.white,
       fontSize: CONSTANTS.fontSize.L5,
       fontWeight: 'bold',
       width: '45%',

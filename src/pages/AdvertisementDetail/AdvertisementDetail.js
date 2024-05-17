@@ -24,7 +24,7 @@ import {
   getAdvertisementAPI,
   removeAdvertisement,
 } from '@services/advertisementServices';
-import {getSenderReceiverData} from '@services/userServices';
+import {getSenderReceiverData, getUser} from '@services/userServices';
 
 import {useUser} from '@context/UserProvider';
 import {useTheme} from '@context/ThemeContext';
@@ -81,6 +81,7 @@ const AdvertisementDetail = ({route, navigation}) => {
       const response = await getUser(id, token);
       return response.data;
     } catch (err) {
+      console.log(err)
       showMessage({
         message: 'İlan sahibi getirilirken bir hata meydana geldi!',
         type: 'danger',

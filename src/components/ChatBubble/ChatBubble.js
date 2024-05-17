@@ -18,6 +18,7 @@ const ChatBubble = ({
   removeMessage,
 }) => {
   const styles = getStyles(theme);
+  console.log(messageDetails)
   const {createDate, message, isLocation, sender} = messageDetails;
   const [location] = useState(isLocation ? JSON.parse(message) : null);
 
@@ -26,9 +27,9 @@ const ChatBubble = ({
     : styles.bubbleContainer_left;
   const bubble = isMessageOwner ? styles.bubble_right : styles.bubble_left;
 
-  const formattedDate = moment(createDate, 'M/D/YYYY, h:mm:ss A')
-    .locale('tr')
-    .format('DD MMMM YYYY, HH:mm');
+  const formattedDate = moment(createDate, 'DD.MM.YYYY HH:mm:ss')
+  .locale('tr')
+  .format('DD MMMM YYYY, HH:mm');
 
   return (
     <Pressable

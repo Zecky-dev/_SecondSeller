@@ -38,13 +38,18 @@
 ---
 <br/>
 
+<div align="center">
+  <img src="./gereksinimler/uygulama_gorselleri/tanitim_gorseli.png" alt="SecondSeller Tanıtım Görseli">
+</div>
 
-# Uygulama Açıklaması
+<br/>
+
+# 📜 Uygulama Açıklaması
 
 İkinci el eşya alım ve satımı için React Native ile yazılmış mobil uygulama projesidir.
 
 
-# Uygulama Özellikleri
+# ⚡️ Uygulama Özellikleri
 
 * **İlan Yönetimi:**
     *   **İlan Ekleme:** Yeni ilanlar oluşturabilirsiniz.
@@ -85,6 +90,26 @@
 *   **Kullanıcı Deneyimi:**
     *   **Koyu & Açık Mod:** Uygulamayı kişisel tercihlerinize göre koyu veya açık modda kullanabilirsiniz.
     *   **Bildirim:** Uygulama içerisindeki bildirimleri açabilir veya kapatabilirsiniz.
+
+# 📱 Uygulama Kurulumu
+
+**Uygulama aşağıdaki şartlar altında test edilmiştir.**
+
+- **React Native Versiyon:** 0.73.4
+- **NodeJS Versiyon:** 20.9.0
+- **İşletim Sistemi:** Android
+
+
+## İndirme Bağlantıları
+
+<a href="https://drive.google.com/uc?export=download&id=1cD2DbFiQJqlsEsZz16C-Stx_n33F2-v2">
+  <img src="./gereksinimler/uygulama_gorselleri/indir.png" alt="Uygulama İndirme Bağlantısı" height="100">
+</a>
+
+
+
+
+
 
 
 
