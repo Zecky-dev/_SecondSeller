@@ -36,7 +36,6 @@ const Messages = ({navigation}) => {
           chat.advertisementID,
           user.token,
         );
-        console.log(advertisement.data)
         const receiverChatInfo = {
           receiverID,
           roomID: chat.roomID,
