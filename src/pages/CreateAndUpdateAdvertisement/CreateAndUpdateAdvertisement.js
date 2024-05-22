@@ -94,6 +94,7 @@ const CreateAndUpdateAdvertisement = ({navigation, route}) => {
         owner: user._id,
         images: imageURLs,
       };
+
       const response = await createAdvertisementAPI(
         advertisementData,
         User.token,

@@ -25,7 +25,7 @@ export const getStyles = theme => {
       justifyContent: 'space-around',
     },
     offer: {
-      color: COLORS.textColor,
+      color: COLORS.white,
       fontSize: CONSTANTS.fontSize.L5,
       fontWeight: 'bold',
       width: '45%',
@@ -35,6 +35,12 @@ export const getStyles = theme => {
       borderWidth: 1,
       borderColor: COLORS.titleColor,
       borderRadius: CONSTANTS.borderRadius.L2,
+    },
+    offerTitle: {
+      color: COLORS.textColor,
+      textAlign: 'center',
+      fontSize: CONSTANTS.fontSize.L5,
+      fontWeight: 'bold',
     },
   });
 };

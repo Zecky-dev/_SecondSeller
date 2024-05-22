@@ -24,7 +24,7 @@ import {
   getAdvertisementAPI,
   removeAdvertisement,
 } from '@services/advertisementServices';
-import {getSenderReceiverData} from '@services/userServices';
+import {getSenderReceiverData, getUser} from '@services/userServices';
 
 import {useUser} from '@context/UserProvider';
 import {useTheme} from '@context/ThemeContext';
@@ -110,6 +110,38 @@ const AdvertisementDetail = ({route, navigation}) => {
     showFlashMessage(200, 'Teklif gönderildi!');
   };
 
+  /*
+      Kullanıcı sohbet başlatır veya teklif gönderirse ChatScreen'e yönlendirlir,
+      Eğer price değeri gönderilirse bir mesaj gönderme işlemi gerçekleştirilir ve ardından sayfa yönlendirmesi yapılır
+  */
+  const startChat = async (price = null, owner, advertisementID, title) => {
+    const {receiver, sender} = await getSenderReceiverData(
+      userID,
+      owner,
+      token,
+    );
+
+    if (!receiver.blocked.includes(sender._id)) {
+      if (price) {
+        await sendOffer(price);
+      }
+
+      navigation.navigate('ChatScreen', {
+        advertisementID,
+        senderID: userID,
+        receiverID: owner,
+        receiver,
+        sender,
+        title,
+      });
+    } else {
+      showMessage({
+        message: 'Bu kullanıcı tarafından bloklandınız!',
+        type: 'danger',
+      });
+    }
+  };
+
   if (advertisement && advertisementOwner && !loading) {
     const {
       _id: id,
@@ -147,7 +179,7 @@ const AdvertisementDetail = ({route, navigation}) => {
               } else {
                 navigation.navigate('OwnerProfileScreen', {
                   screen: 'OwnerProfileStackScreen',
-                  params: { advertisementOwner },
+                  params: {advertisementOwner},
                 });
               }
             }}>
@@ -222,29 +254,9 @@ const AdvertisementDetail = ({route, navigation}) => {
                     flex: 1,
                   },
                 }}
-                onPress={async () => {
-                  const {receiver, sender} = await getSenderReceiverData(
-                    userID,
-                    owner,
-                    token,
-                  );
-
-                  if (!receiver.blocked.includes(sender._id)) {
-                    navigation.navigate('ChatScreen', {
-                      advertisementID,
-                      senderID: userID,
-                      receiverID: owner,
-                      receiver,
-                      sender,
-                      title,
-                    });
-                  } else {
-                    showMessage({
-                      message: 'Bu kullanıcı tarafından bloklandınız!',
-                      type: 'danger',
-                    });
-                  }
-                }}
+                onPress={async () =>
+                  await startChat(null, owner, advertisementID, title)
+                }
               />
               <Button
                 icon={{
@@ -295,7 +307,7 @@ const AdvertisementDetail = ({route, navigation}) => {
           isVisible={offerModalVisible}
           setVisible={setOfferModalVisible}
           price={price}
-          sendOffer={sendOffer}
+          sendOffer={price => startChat(price, owner, advertisementID, title)}
         />
         <FullScreenImageModal
           isVisible={fullScreenImageModalVisible}

@@ -19,22 +19,24 @@ const OfferModal = ({isVisible, setVisible, price, sendOffer}) => {
       isVisible={isVisible}
       onBackButtonPress={() => setVisible(false)}
       onBackdropPress={() => setVisible(false)}>
+      <Text style={styles.offerTitle}>Hazır Teklifler</Text>
       <View style={styles.offerContainer}>
         <Text
           style={styles.offer}
           onPress={() => sendOffer(parseInt(price * 0.9))}>
-          {parseInt(price * 0.9)}
+          {parseInt(price * 0.9) + ' ₺'}
         </Text>
         <Text
           style={styles.offer}
           onPress={() => sendOffer(parseInt(price * 0.8))}>
-          {parseInt(price * 0.8)}
+          {parseInt(price * 0.8) + ' ₺'}
         </Text>
       </View>
       <Input
         keyboardType="number-pad"
         value={offerPrice}
         onChangeText={setOfferPrice}
+        placeholder="Senin teklifin?"
       />
       <Button
         label="Teklif Ver"

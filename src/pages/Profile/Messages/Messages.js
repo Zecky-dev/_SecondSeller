@@ -47,7 +47,7 @@ const Messages = ({navigation}) => {
 
           // Header için gerekli olan veriler
           receiver: receiverUser.data,
-          title: advertisement.data.data.title,
+          title: advertisement.data.title,
         };
         chats.push(receiverChatInfo);
       }
