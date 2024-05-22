@@ -81,6 +81,7 @@ const AdvertisementDetail = ({route, navigation}) => {
       const response = await getUser(id, token);
       return response.data;
     } catch (err) {
+      console.log(err)
       showMessage({
         message: 'İlan sahibi getirilirken bir hata meydana geldi!',
         type: 'danger',

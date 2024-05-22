@@ -36,16 +36,14 @@ const Messages = ({navigation}) => {
           chat.advertisementID,
           user.token,
         );
+        console.log(advertisement.data)
         const receiverChatInfo = {
           receiverID,
           roomID: chat.roomID,
           advertisementID: chat.advertisementID,
-
           nameSurname: receiverUser.data.nameSurname,
           imageURL: receiverUser.data.imageURL,
           messageCount: chat.messageCount,
-
-          // Header için gerekli olan veriler
           receiver: receiverUser.data,
           title: advertisement.data.title,
         };
